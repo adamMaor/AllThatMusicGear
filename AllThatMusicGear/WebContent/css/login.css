@@ -1,13 +1,17 @@
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
+  background-color: black;
+  vertical-align: middle;
 }
 
 .form-signin {
-  max-width: 330px;
+  max-width: 450px;
+  position: relative;
+  top:50%;
   padding: 15px;
   margin: 0 auto;
+  background-color: #848484;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {

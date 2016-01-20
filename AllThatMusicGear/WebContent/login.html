@@ -7,22 +7,24 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>LogIn - AllThatMusicGear</title>
 
+	<!--  Angular -->
+	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="CSS/LogIn.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
 
   </head>
   <body>
 
 	
-	<div class="jumbotron">
+	<div class="container"  ng-app="logInApp" ng-controller="inTableSearchController">
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Welcome To AllThatMusicGear</h2>
+      <form class="form-signin" >
+        <h2 class="form-signin-heading" >Welcome To AllThatMusicGear</h2>
         <p>Please Sign In</p>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
+        <label for="inputPassword" class="sr-only">Passsword</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
