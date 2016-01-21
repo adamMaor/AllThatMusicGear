@@ -96,7 +96,7 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
     					throw e;//re-throw the exception so it will be caught in the
     					//external try..catch and recorded as error in the log
     				}
-    				System.out.println("Table Already Created");
+//    				System.out.println("Table Already Created");
     			}
     		}
     		
@@ -112,14 +112,16 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
 ////    				pstmt.setString(3,customer.getCountry());
 ////    				pstmt.executeUpdate();
 ////    			}
-//    			// create admin - DELETE LATER!!!!
+    			// create admin - DELETE LATER!!!!
+//    		System.out.println("Adding Admin");
 //    			PreparedStatement pstmt = conn.prepareStatement(LogAndRegConstants.REGISTER_USER);
 //    			pstmt.setString(1, "Admin");
-//    			pstmt.setString(1, "Admin");
-//    			pstmt.setString(1, "Admin");
-//    			pstmt.setString(1, "I'm the Admin");
-//    			pstmt.setString(1, "");
-//    			pstmt.setString(1, "Admin");
+//    			pstmt.setString(2, "Admin");
+//    			pstmt.setString(3, "Admin");
+//    			pstmt.setString(4, "I'm the Admin");
+//    			pstmt.setString(5, "");
+//    			pstmt.setInt(6, 0);
+//    			pstmt.executeUpdate();
 //    			
 //    			//commit update
 //    			conn.commit();

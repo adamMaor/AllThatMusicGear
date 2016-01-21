@@ -16,9 +16,9 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>LogAndRegServlet</servlet-name>
-    <url-pattern>/LogAndRegServlet</url-pattern>
-    <url-pattern>/LogAndRegServlet/Login/*</url-pattern>
-    <url-pattern>/LogAndRegServlet/Register/*</url-pattern>
+    <url-pattern>/LogAndRegServlet/Users</url-pattern>
+    <url-pattern>/LogAndRegServlet/Login</url-pattern>
+    <url-pattern>/LogAndRegServlet/Register</url-pattern>
   </servlet-mapping>
   <listener>
     <listener-class>allthatmusicgear.listeners.LogAndRegListener</listener-class>

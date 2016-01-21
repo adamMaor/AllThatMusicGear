@@ -1,8 +1,32 @@
 body {
   padding-top: 40px;
   padding-bottom: 40px;
+  color: white;
   background-color: black;
   vertical-align: middle;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 15px;
+    background-color: grey;
+    color: white;
+    
+}
+
+th{
+	background-color: blue;
+	color: white;
+}
+
+input{
+	color: black;
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+	margin-top: 50px;
+    width: 70%;
 }
 
 .form-signin {
@@ -11,7 +35,7 @@ body {
   top:50%;
   padding: 15px;
   margin: 0 auto;
-  background-color: #848484;
+  background-color: white;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {

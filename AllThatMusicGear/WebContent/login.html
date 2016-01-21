@@ -1,45 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!--     The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>LogIn - AllThatMusicGear</title>
-
-	<!--  Angular -->
 	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
-    <!-- Bootstrap -->
+	<script type="text/javascript" src="js/logInApp.js"></script>
+	
+<!--     Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
+</head>
 
-  </head>
-  <body>
+<body>
+<div class="center" ng-app ="logInApp" ng-controller="logInAppController">
+<!--  create a table with all current users -->
+	<h1> Users Information</h1>
+	<p> {{logedInUserNickName}} <br> Total Users: {{counter}} </p>
+	<div>
+		<table>
+		  <tr>
+			<th>Name</th>
+			<th>Password</th>
+			<th>NickName</th>
+			<th>Description</th>
+			<th>Photo</th>
+			<th>Rating</th>
+		  </tr>  
+		  <!-- output each result into the table -->
+		  <tr ng-repeat="x in allUsers"> 
+		    <td> {{x.userName}} </td>
+		    <td> {{x.password}} </td>
+		    <td> {{x.nickName}} </td>
+		    <td> {{x.descreption}} </td>
+		    <td> <img src={{x.photoURL}} style="width:50px;height:50px" alt="Missing Photo"></td>
+		    <td> {{x.userRating}} </td>
+		  </tr>
+		</table>
+	</div>
+<br><br>
+<h1>LogIn</h1>
+<form>
+	<p>
+		Log In: 
+		<input type="text" ng-model="logUserName" ng-change="clearLogInError()"/>
+		<input type="password" ng-model="logPassword" ng-change="clearLogInError()"/>
+		<input type="submit" ng-click="logIn()" value="Log In">
+		<input type="button" ng-click="resetLogFields()" value="Reset">
+		{{logInError}}
+	</p>
+</form>
 
-	
-	<div class="container"  ng-app="logInApp" ng-controller="inTableSearchController">
 
-      <form class="form-signin" >
-        <h2 class="form-signin-heading" >Welcome To AllThatMusicGear</h2>
-        <p>Please Sign In</p>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Passsword</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+<h1>Register A New User</h1>
+<form>
+	<p>
+		Register a new user: 
+		<input type="text" ng-model="regUserName" name="userName" ng-cahnge="validateUserName()"/>
+		<input type="password" ng-model="regPassword"  name="password"/>
+		<input type="text" ng-model="regNickName" name="nickName" ng-cahnge="validateNickName()"/>
+		<input type="text" ng-model="regDesc" name="descreption"/>
+		<input type="url" ng-model="regPhoto" name="phtoUrl"/>
+		<input type="submit" ng-click="register()" value="Register">
+		<input type="reset" ng-click="resetRegFields()" value="Reset">
+		{{registerError}}
+	</p>
+</form>
 
-    </div> <!-- /container -->
-	
-	
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-  </body>
+</div>
+
+</body>
 </html>
+
+
+
+<!-- <!DOCTYPE html> -->
+<!-- <html ng-app lang="en"> -->
+<!--   <head> -->
+<!--     <meta charset="utf-8"> -->
+<!--     <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!--     The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!--     <title>LogIn - AllThatMusicGear</title> -->
+
+ 	<!--  Angular -->
+<!-- 	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="js/logInApp.js"></script> -->
+<!--     Bootstrap -->
+<!--     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+<!--     <link href="css/login.css" rel="stylesheet"> -->
+
+<!--   </head> -->
+<!--   <body>  -->
+
+<!-- 	<div ng-controller="logInAppController"> -->
+<!-- 			{{userName}} -->
+<!-- 	</div> -->
+	
+<!-- 	<div class="container"> -->
+<!--       <form class="form-signin" > -->
+<!--         <h2 class="form-signin-heading" >Welcome To AllThatMusicGear</h2> -->
+<!--         <p>Please Sign In</p> -->
+<!--         <label for="inputEmail" class="sr-only">Email address</label> -->
+<!--         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus> -->
+<!--         <label for="inputPassword" class="sr-only">Passsword</label> -->
+<!--         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required> -->
+<!--         <div class="checkbox"> -->
+<!--           <label> -->
+<!--             <input type="checkbox" value="remember-me"> Remember me -->
+<!--           </label> -->
+<!--         </div> -->
+<!--         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button> -->
+<!--       </form> -->
+
+<!--     </div> /container -->
+	
+	
+<!--     jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+<!--     Include all compiled plugins (below), or include individual files as needed -->
+<!--     <script src="bootstrap/js/bootstrap.min.js"></script> -->
+<!--   </body> -->
+<!-- </html> -->
