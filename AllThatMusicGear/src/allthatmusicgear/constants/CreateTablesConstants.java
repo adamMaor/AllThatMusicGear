@@ -12,7 +12,7 @@ public interface CreateTablesConstants {
 	+ "NickName VARCHAR(20) UNIQUE NOT NULL,"
 	+ "Descreption	VARCHAR(50) DEFAULT '',"
 	+ "PhotoURL VARCHAR(100) DEFAULT '', "/*we will check for valid URL in javascript*/
-	+ "UserRating INT DEFAULT 0 )" ;
+	+ "UserRating DOUBLE DEFAULT 0 )" ;
 	
 	
 	
@@ -20,16 +20,16 @@ public interface CreateTablesConstants {
 	+ "(QID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
 	+ "QUNickName VARCHAR(20) NOT NULL,"
 	+ "QText VARCHAR(300) NOT NULL,"
-	+ "QSubmissionTime DATE DEFAULT CURRENT_DATE,"
+	+ "QSubmissionTime TIMESTAMP DEFAULT TIMESTAMP(CURRENT_DATE,CURRENT_TIME),"
 	+ "QVotingScore INT DEFAULT 0,"
-	+ "QRating INT DEFAULT 0,"
-	+ "FOREIGN KEY(QUNickName) REFERENCES tblUser(NickName))";
+	+ "QRating DOUBLE DEFAULT 0,"
+	+ "FOREIGN KEY(QUNickName) REFERENCES app.tblUser(NickName))";
 	
 	public final String CREATE_QUESTION_TOPIC_TABLE = "CREATE TABLE app.tblQuestionTopics"
 	+ "(QID INT,"
 	+ "Topic VARCHAR(50),"
 	+ "PRIMARY KEY (QID, Topic),"
-	+ "FOREIGN KEY (QID) REFERENCES tblQuestion(QID))";
+	+ "FOREIGN KEY (QID) REFERENCES app.tblQuestion(QID))";
 	
 	public final String CREATE_ANSWER_TABLE = "CREATE TABLE app.tblAnswer" 
 	+ "(AID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
@@ -38,8 +38,8 @@ public interface CreateTablesConstants {
 	+ "AText VARCHAR(300) NOT NULL,"
 	+ "ASubmissionTime DATE DEFAULT CURRENT_DATE,"
 	+ "AVotingScore INT DEFAULT 0,"
-	+ "FOREIGN KEY (QuestionID) REFERENCES tblQuestion(QID),"
-	+ "FOREIGN KEY(AUNickName) REFERENCES tblUser(NickName))";
+	+ "FOREIGN KEY (QuestionID) REFERENCES app.tblQuestion(QID),"
+	+ "FOREIGN KEY(AUNickName) REFERENCES app.tblUser(NickName))";
 	
 
 }

@@ -45,10 +45,7 @@ public class LogAndRegServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		try {
-//			System.out.println("In Servlet doGet: URI = " + request.getRequestURI());
-			
+		try {			
 			Context context = new InitialContext();
     		BasicDataSource ds = (BasicDataSource)context.lookup(DBConstants.DB_DATASOURCE);
     		Connection conn = ds.getConnection();
@@ -61,17 +58,13 @@ public class LogAndRegServlet extends HttpServlet {
     			Statement stmt;
     			try {
     				stmt = conn.createStatement();
-					ResultSet rs = stmt.executeQuery(LogAndRegConstants.GET_ALL_USERS_AND_PASS);
-//					System.out.println("Before");
+					ResultSet rs = stmt.executeQuery(LogAndRegConstants.GET_ALL_USERS);
 					while (rs.next())
 					{
-//						System.out.println("Inside");
 						String desc = rs.getObject(4) == null ? "" : rs.getString(4);
 						String photo = rs.getObject(5) == null ? "" : rs.getString(5);
-						userCollection.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), desc, photo, rs.getInt(6)));
-//						System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3) + rs.getString(4) + rs.getString(5) + rs.getInt(6));
+						userCollection.add(new User(rs.getString(1), rs.getString(2), rs.getString(3), desc, photo, rs.getDouble(6)));
 					}
-//					System.out.println("After");
 					rs.close();
 					stmt.close();
     			} catch (SQLException e) {
@@ -82,7 +75,6 @@ public class LogAndRegServlet extends HttpServlet {
     		
     		else if (uri.indexOf(LogAndRegConstants.REGISTER) != -1)
     		{
-    			System.out.println("In Servlet - Register");
     			PreparedStatement pstmt;		
     			try {
     				
@@ -122,7 +114,7 @@ public class LogAndRegServlet extends HttpServlet {
     		
     		conn.close();
     		Gson gson = new Gson();
-    		String userJsonRes = gson.toJson(userCollection, LogAndRegConstants.USER_PASSWORD_MAP);
+    		String userJsonRes = gson.toJson(userCollection, LogAndRegConstants.USER_COLLECTION);
     		
     		PrintWriter writer = response.getWriter();
     		writer.println(userJsonRes);

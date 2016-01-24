@@ -7,6 +7,7 @@
 <!--     The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>LogIn - AllThatMusicGear</title>
 	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+<!-- 	Log In JS App -->
 	<script type="text/javascript" src="js/logInApp.js"></script>
 	
 <!--     Bootstrap -->
@@ -18,7 +19,12 @@
 <div class="center" ng-app ="logInApp" ng-controller="logInAppController">
 <!--  create a table with all current users -->
 	<h1> Users Information</h1>
+	
+	<!--  This button will only be shown if user is logged in -->
 	<p> {{logedInUserNickName}} <br> Total Users: {{counter}} </p>
+	<form action="http://localhost:8080/AllThatMusicGear/html/Main.html" ng-style="gotomainpagevis">
+		<input type="submit" value="Go To Main Page" >
+	</form>
 	<div>
 		<table>
 		  <tr>
@@ -27,7 +33,7 @@
 			<th>NickName</th>
 			<th>Description</th>
 			<th>Photo</th>
-			<th>Rating</th>
+			<th>User Rating</th>
 		  </tr>  
 		  <!-- output each result into the table -->
 		  <tr ng-repeat="x in allUsers"> 
@@ -36,7 +42,7 @@
 		    <td> {{x.nickName}} </td>
 		    <td> {{x.descreption}} </td>
 		    <td> <img src={{x.photoURL}} style="width:50px;height:50px" alt="Missing Photo"></td>
-		    <td> {{x.userRating}} </td>
+		    <td> {{x.userRating | number:2}} </td>
 		  </tr>
 		</table>
 	</div>
@@ -45,11 +51,11 @@
 <form>
 	<p>
 		Log In: 
+		{{logInError}}<br>
 		<input type="text" ng-model="logUserName" ng-change="clearLogInError()"/>
 		<input type="password" ng-model="logPassword" ng-change="clearLogInError()"/>
 		<input type="submit" ng-click="logIn()" value="Log In">
 		<input type="button" ng-click="resetLogFields()" value="Reset">
-		{{logInError}}
 	</p>
 </form>
 
@@ -58,19 +64,104 @@
 <form>
 	<p>
 		Register a new user: 
-		<input type="text" ng-model="regUserName" name="userName" ng-cahnge="validateUserName()"/>
+		{{registerError}}<br>
+		<input type="text" ng-model="regUserName" name="userName" ng-change="validateUserName()"/>
 		<input type="password" ng-model="regPassword"  name="password"/>
-		<input type="text" ng-model="regNickName" name="nickName" ng-cahnge="validateNickName()"/>
+		<input type="text" ng-model="regNickName" name="nickName" ng-change="validateNickName()"/>
 		<input type="text" ng-model="regDesc" name="descreption"/>
 		<input type="url" ng-model="regPhoto" name="phtoUrl"/>
-		<input type="submit" ng-click="register()" value="Register">
+		<input type="submit" ng-click="register()" value="Register" >
 		<input type="reset" ng-click="resetRegFields()" value="Reset">
-		{{registerError}}
+	</p>
+</form>
+<h1> New Questions</h1>
+<div>
+	<table>
+	  <tr>
+		<th>ID</th>
+		<th>User Nick Name</th>
+		<th>Text</th>
+		<th>Submission Date</th>
+		<th>Voting Score</th>
+		<th>Rating</th>
+		<th>Topics</th>
+		<th>Vote</th>
+	  </tr>  
+	  <!-- output each result into the table -->
+	  <tr ng-repeat="x in newQuestions"> 		  
+	    <td> {{x.qID}} </td>
+	    <td> {{x.qUserNickName}} </td>
+	    <td> {{x.qText}} </td>
+	    <td> {{x.qSubDate | date:'medium'}} </td>
+	    <td> {{x.qVotingScore}}</td>
+	    <td> <span>{{x.qRating | number:2}}</span> </td>
+	    <td> <span ng-repeat="y in x.qTopics">{{y}}<br></span> </td>
+	    <td> 
+		    <div ng-click="voteQuestion(x.qID, x.qUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-thumbs-up"></span> Vote
+	        </div>
+	        <div ng-click="deVoteQuestion(x.qID, x.qUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-thumbs-down"></span> deVote
+	        </div>
+        </td>
+	  </tr>
+	</table>
+</div>
+
+<h1> All Questions</h1>
+<div>
+	<table>
+	  <tr>
+		<th>ID</th>
+		<th>User Nick Name</th>
+		<th>Text</th>
+		<th>Submission Date</th>
+		<th>Voting Score</th>
+		<th>Rating</th>
+		<th>Topics</th>
+		<th>Vote</th>
+	  </tr>  
+	  <!-- output each result into the table -->
+	  <tr ng-repeat="x in allQuestions"> 		  
+	    <td> {{x.qID}} </td>
+	    <td> {{x.qUserNickName}} </td>
+	    <td> {{x.qText}} </td>
+	    <td> <span>{{x.qSubDate | date:'medium'}}</span> </td>
+	    <td> {{x.qVotingScore}}</td>
+	    <td> <span>{{x.qRating | number:2}}</span> </td>
+	    <td> <span ng-repeat="y in x.qTopics">{{y}}<br></span> </td>
+	    <td> 
+		    <div ng-click="voteQuestion(x.qID, x.qUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-thumbs-up"></span> Vote
+	        </div>
+	        <div ng-click="deVoteQuestion(x.qID, x.qUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-thumbs-down"></span> deVote
+	        </div>
+        </td>
+	  </tr>
+	</table>
+</div>
+
+<h1> Submit a New Question</h1>
+<form>
+	<p>
+		Submit a New Question: 
+		{{questionError}}<br>
+		<input type="text" ng-model="qText" name="questionText" />
+		<input type="text" ng-model="qTopics"  name="questionTopics"/>
+		<input type="submit" ng-click="submitQuestion()" value="Submit Question" >
+		<input type="reset" ng-click="resetQFields()" value="Reset">
 	</p>
 </form>
 
+
 </div>
 
+
+
+
+	<!-- jQuery -->
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 </body>
 </html>
 

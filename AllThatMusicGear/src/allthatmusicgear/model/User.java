@@ -1,14 +1,14 @@
 package allthatmusicgear.model;
 
 public class User {
-	public User (String vName, String vPassword, String vNickName, String vDesc, String vPhoto, int vRating)
+	public User (String vName, String vPassword, String vNickName, String vDesc, String vPhoto, double RatingScore)
 	{
 		userName = vName;
 		password = vPassword;
 		nickName = vNickName;
 		descreption = vDesc;
 		photoURL = vPhoto;
-		userRating = vRating;
+		userRating = RatingScore;
 	}
 	
 	public String getUserName() {
@@ -31,12 +31,12 @@ public class User {
 		return photoURL;
 	}
 
-	public int getUserRating() {
+	public double getUserRating() {
 		return userRating;
 	}
 
 	/* Members */
 	private String userName, password, nickName, descreption, photoURL;
-	private int userRating;
+	private double userRating;
 	
 }

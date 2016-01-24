@@ -69,7 +69,18 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
     		Context context = new InitialContext();
     		BasicDataSource ds = (BasicDataSource)context.lookup(DBConstants.DB_DATASOURCE);
     		Connection conn = ds.getConnection();
+    		
+    		
+    		
     		List<String> dmlList = new ArrayList<String>();
+ 
+//    		If you want to remove all the tables uncomment this and comment the next 4 Lines - remeber to comment them again
+    		
+//    		dmlList.add("DROP TABLE app.tblAnswer");
+//    		dmlList.add("DROP TABLE app.tblQuestionTopics");
+//    		dmlList.add("DROP TABLE app.tblQuestion");
+//    		dmlList.add("DROP TABLE app.tblUser");
+    		
     		dmlList.add(CreateTablesConstants.CREATE_USER_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_QUESTION_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_QUESTION_TOPIC_TABLE);
@@ -79,13 +90,8 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
     		{    			
     			boolean created = false;
     			try{
-    				//create Customers table
     				Statement stmt = conn.createStatement();
-    				//stmt.executeUpdate("DROP TABLE tblUser");
-    				//stmt.executeUpdate(CreateTablesConstants.CREATE_USER_TABLE);
-    				//stmt.executeUpdate("DROP TABLE tblQuestion");
     				stmt.executeUpdate(currCreateStat);
-    				//commit update
     				conn.commit();
     				stmt.close();
     			}catch (SQLException e){
@@ -96,40 +102,9 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
     					throw e;//re-throw the exception so it will be caught in the
     					//external try..catch and recorded as error in the log
     				}
-//    				System.out.println("Table Already Created");
     			}
     		}
     		
-    		//if no database exist in the past - further populate its records in the table
-//    		if (!created){
-//    			//populate customers table with customer data from json file
-////    			Collection<Customer> customers = loadCustomers(cntx.getResourceAsStream(File.separator +
-////    														   AppConstants.CUSTOMERS_FILE));
-////    			PreparedStatement pstmt = conn.prepareStatement(AppConstants.INSERT_CUSTOMER_STMT);
-////    			for (Customer customer : customers){
-////    				pstmt.setString(1,customer.getName());
-////    				pstmt.setString(2,customer.getCity());
-////    				pstmt.setString(3,customer.getCountry());
-////    				pstmt.executeUpdate();
-////    			}
-    			// create admin - DELETE LATER!!!!
-//    		System.out.println("Adding Admin");
-//    			PreparedStatement pstmt = conn.prepareStatement(LogAndRegConstants.REGISTER_USER);
-//    			pstmt.setString(1, "Admin");
-//    			pstmt.setString(2, "Admin");
-//    			pstmt.setString(3, "Admin");
-//    			pstmt.setString(4, "I'm the Admin");
-//    			pstmt.setString(5, "");
-//    			pstmt.setInt(6, 0);
-//    			pstmt.executeUpdate();
-//    			
-//    			//commit update
-//    			conn.commit();
-//    			//close statements
-//    			pstmt.close();
-//    		}
-    		
-
     		//close connection
     		conn.close();
 

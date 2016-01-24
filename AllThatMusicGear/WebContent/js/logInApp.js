@@ -3,6 +3,7 @@
  logInApp.controller('logInAppController', ['$scope', '$http', function($scope, $http) {
 		$scope.logedInUserNickName = "";
 		$scope.http = $http;
+		$scope.gotomainpagevis = {'visibility' : 'hidden'};
 		
 		$scope.logIn = function() {
 			/* first check userName */
@@ -11,7 +12,10 @@
 					if ($scope.allUsers[x].password == $scope.logPassword){
 						/* good LogIn */
 						$scope.logedInUserNickName = "Current Logged In User NickName: " + $scope.allUsers[x].nickName;
+						$scope.logedInUser = $scope.allUsers[x].nickName;
 						$scope.logInError = "Logged in - Take care to move to main question view";
+						$scope.gotomainpagevis = {'visibility' : 'visible'};
+						$scope.resetLogFields();
 						return;
 					}
 					else{
@@ -23,7 +27,13 @@
 			$scope.logInError = "User Name Doesn't Exist";
 		}
 		
-		$scope.register = function(){ 			
+		$scope.register = function(){ 
+			
+			if ($scope.regUserName == "" || $scope.regPassword =="" || $scope.regNickName== ""){
+				$scope.registerError = "Must Fill UserName + Password + NickName";
+				return;
+			}
+			
 			var parameters = {
 					params: {
 						userName: $scope.regUserName,
@@ -37,8 +47,10 @@
 			$scope.http.get("http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Register", parameters)
 			.success(function(response) {			
 				$scope.logedInUserNickName = "Current Logged In User NickName: " + response[0].nickName;
+				$scope.logedInUser = response[0].nickName;
 				$scope.resetRegFields();
 				$scope.updateAllUserTable();
+				$scope.gotomainpagevis = {'visibility' : 'visible'};
 			})
 		}
 		
@@ -52,6 +64,117 @@
 					$scope.counter = $scope.counter + 1;
 				}
 			});
+		}
+		
+		$scope.updateAllQuestionsTable = function()
+		{
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/AllQuestions")
+			.success(function(response) {			
+				$scope.allQuestions = response;
+				$scope.qCounter = 0;
+				for (x in $scope.allQuestions) {
+					$scope.qCounter = $scope.qCounter + 1;
+				}
+			});
+		}
+		
+		$scope.updateNewQuestionsTable = function()
+		{
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/NewQuestions")
+			.success(function(response) {			
+				$scope.newQuestions = response;
+				$scope.qNewCounter = 0;
+				for (x in $scope.allQuestions) {
+					$scope.qNewCounter = $scope.qNewCounter + 1;
+				}
+			});
+		}
+		
+		$scope.submitQuestion = function()
+		{
+			if ($scope.logedInUser ==""){
+				$scope.questionError - "Must be Loged in!!!";
+				return;
+			}
+			if ($scope.qText == ""){
+				$scope.questionError - "question Must have a text!!!";
+				return;
+			}
+			var parameters = {
+					params: {
+						userNickName: $scope.logedInUser,
+						qText: $scope.qText,
+						topicList: $scope.qTopics,						
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/InsertQuestion", parameters)
+			.success(function(response) {
+				$scope.updateAllQuestionsTable();
+				$scope.updateNewQuestionsTable();
+				$scope.resetQFields();
+			});
+		}
+		
+		$scope.updateUserRating = function(userNickNameToUpdate)
+		{
+			var parameters = {
+					params: {
+						userNickName: userNickNameToUpdate,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/UserServlet/UpdateUserRating", parameters)
+			.success(function(response) {
+				$scope.updateAllUserTable();
+			});
+			
+		}
+		
+		$scope.voteQuestion = function(qID, userNickName)
+		{
+			var parameters = {
+					params: {
+						qId: qID,
+						changeVS: 1,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateQuestion", parameters)
+			.success(function(response) {
+				$scope.updateAllQuestionsTable();
+				$scope.updateNewQuestionsTable();
+				$scope.updateUserRating(userNickName);
+			});
+			
+
+		}
+		
+		$scope.deVoteQuestion = function(qID, userNickName)
+		{
+			var parameters = {
+					params: {
+						qId: qID,
+						changeVS: -1,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateQuestion", parameters)
+			.success(function(response) {
+				$scope.updateAllQuestionsTable();
+				$scope.updateNewQuestionsTable();
+				$scope.updateUserRating(userNickName);
+			});
+		}
+		
+		
+		
+		$scope.resetQFields = function()
+		{
+			$scope.qText = "";
+			$scope.qTopics = "";
+			$scope.clearQError();
+		}
+		
+		$scope.clearQError = function()
+		{
+			$scope.questionError ="";
 		}
 		
 		$scope.clearLogInError = function(){
@@ -75,6 +198,7 @@
 			$scope.regNickName = "";
 			$scope.regDesc = "";
 			$scope.regPhoto = "";
+			$scope.clearRegisterError();
 		}
 		
 	     
@@ -95,11 +219,14 @@
 				}
 	    	}
 	    }
-	      
-		
+	     
+	    $scope.logedInUser = "";
 		$scope.resetLogFields();
-		$scope.clearLogInError();
-		$scope.clearRegisterError();
+		$scope.resetRegFields();
+		$scope.resetQFields();
 		$scope.updateAllUserTable();
+		$scope.updateAllQuestionsTable();
+		$scope.updateNewQuestionsTable();
+		
 		
 	}]);
