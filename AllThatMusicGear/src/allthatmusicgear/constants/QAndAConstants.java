@@ -14,11 +14,12 @@ public interface QAndAConstants {
 	public final String ANSWER = "Answer";
 	public final String NEW_QUESTIONS = "New"+QUESTION+"s";
 	public final String ALL_QUESTIONS = "All"+QUESTION+"s";
-	public final String QUESTION_ANS = "AnsOf"+QUESTION;
 	public final String INSERT_QUESTION = "Insert"+QUESTION;
 	public final String INSERT_ANSWER = "Insert"+ANSWER;
 	public final String UPDATE_QUESTION = "Update"+QUESTION;
-	public final String UPDATE_ANSWER = "Update"+ANSWER;
+	public final String UPDATE_ANSWER_POS = "Update"+ANSWER+"Pos";
+	public final String QUESTION_ANS = ANSWER+"sOfQ";
+	public final String UPDATE_ANSWER_NEG = "Update"+ANSWER+"Neg";
 	
 	public final Type QUESTION_COLLECTION = new TypeToken<Collection<Question>>() {}.getType();
 	public final Type ANSWER_COLLECTION = new TypeToken<Collection<Answer>>() {}.getType();
@@ -48,9 +49,9 @@ public interface QAndAConstants {
 	
 	public final String UPDATE_QUESTION_SCORES = "UPDATE app.tblQuestion SET app.tblQuestion.QVotingScore = ?, app.tblQuestion.QRating = ? WHERE app.tblQuestion.QID=?";
 	
-	public final String VOTE_ANSWER_POS = "UPDATE tblAnswer SET AVotingScore = AVotingScore + 1 ,WHERE QID=?";
+	public final String VOTE_ANSWER_POS = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + 1 WHERE AID=?";
 	
-	public final String VOTE_ANSWER_NEG = "UPDATE tblAnswer SET AVotingScore = AVotingScore - 1 ,WHERE QID=?";
+	public final String VOTE_ANSWER_NEG = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore - 1 WHERE AID=?";
 
 	
 }

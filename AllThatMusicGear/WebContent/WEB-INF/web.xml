@@ -35,9 +35,10 @@
     <url-pattern>/QandAServlet</url-pattern>
     <url-pattern>/QandAServlet/NewQuestions</url-pattern>
     <url-pattern>/QandAServlet/AllQuestions</url-pattern>
-    <url-pattern>/QandAServlet/AnswersOfQuestion</url-pattern>
+    <url-pattern>/QandAServlet/AnswersOfQ</url-pattern>
     <url-pattern>/QandAServlet/UpdateQuestion</url-pattern>
-    <url-pattern>/QandAServlet/UpdateAnswer</url-pattern>
+    <url-pattern>/QandAServlet/UpdateAnswerPos</url-pattern>
+    <url-pattern>/QandAServlet/UpdateAnswerNeg</url-pattern>
     <url-pattern>/QandAServlet/InsertQuestion</url-pattern>
     <url-pattern>/QandAServlet/InsertAnswer</url-pattern>
   </servlet-mapping>

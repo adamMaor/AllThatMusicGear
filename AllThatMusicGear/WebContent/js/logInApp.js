@@ -51,7 +51,7 @@
 				$scope.resetRegFields();
 				$scope.updateAllUserTable();
 				$scope.gotomainpagevis = {'visibility' : 'visible'};
-			})
+			});
 		}
 		
 		$scope.updateAllUserTable = function()
@@ -72,7 +72,9 @@
 			.success(function(response) {			
 				$scope.allQuestions = response;
 				$scope.qCounter = 0;
+				$scope.allAnswers = [];
 				for (x in $scope.allQuestions) {
+					$scope.addAnswersToMainAnsTable($scope.allQuestions[x].qID);
 					$scope.qCounter = $scope.qCounter + 1;
 				}
 			});
@@ -84,7 +86,7 @@
 			.success(function(response) {			
 				$scope.newQuestions = response;
 				$scope.qNewCounter = 0;
-				for (x in $scope.allQuestions) {
+				for (x in $scope.newQuestions) {
 					$scope.qNewCounter = $scope.qNewCounter + 1;
 				}
 			});
@@ -163,6 +165,140 @@
 			});
 		}
 		
+		$scope.updateQuestionDueToAnswerChange = function(qID)
+		{
+			var parameters = {
+					params: {
+						qId: qID,
+						changeVS: 0,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateQuestion", parameters)
+			.success(function(response) {
+				$scope.updateAllQuestionsTable();
+				$scope.updateNewQuestionsTable();
+			});
+		}
+			
+		$scope.addAnswersToMainAnsTable = function(qId)
+		{
+			var parameters = {
+					params: {
+						qID: qId,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/AnswersOfQ", parameters)
+			.success(function(response) {
+				$scope.remark = "In here";
+				var tempArray = response;
+				for (x in tempArray){
+					$scope.allAnswers.push(tempArray[x]);					
+				}
+			});
+		}
+		
+		$scope.answerQuestion = function(qID, qUserNickName)
+		{
+			if ($scope.logedInUser == qUserNickName){
+				$scope.answerError ="you cant answer your own questions!";
+				return;
+			}
+			$scope.qToAnser = qID;
+			$scope.qUserToUpdate = qUserNickName;
+		}
+		
+		$scope.submitAnswer = function()
+		{
+			if ($scope.logedInUser == "") {
+				$scope.answerError ="a User Must be Logged In!";
+				return;
+			}
+			if ($scope.qToAnser == "") {
+				$scope.answerError ="You Must Select a question!";
+				return;
+			}
+			if ($scope.aText == "") {
+				$scope.answerError ="Answer must have text!";
+				return;
+			}
+			var parameters = {
+					params: {
+						qID: $scope.qToAnser,
+						userNickName: $scope.logedInUser,
+						aText: $scope.aText,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/InsertAnswer", parameters)
+			.success(function(response) {
+//				First of all updating the questing Rating
+				$scope.updateQuestionDueToAnswerChange($scope.qToAnser);
+//				now updated the answer submiter Rating 
+				$scope.updateUserRating($scope.logedInUser);
+				$scope.updateAllQuestionsTable();
+				$scope.updateNewQuestionsTable();
+				$scope.resetAFields();
+			});
+		}
+		
+		$scope.voteAnswer = function(aId, qId, aUserNickName)
+		{
+			var parameters = {
+					params: {
+						aID: aId,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateAnswerPos", parameters)
+			.success(function(response) {
+//				First of all updating the questing Rating
+				$scope.updateQuestionDueToAnswerChange(qId);
+//				 - and question submiter Rating
+				for (x in $scope.allQuestions){
+					if ($scope.allQuestions[x].qID == qId){
+						$scope.updateUserRating($scope.allQuestions[x].qUserNickName);
+						break;
+					}
+				}
+//				now updated the answer submiter Rating 
+				$scope.updateUserRating(aUserNickName);
+			});
+		}
+		
+		
+		
+		$scope.deVoteAnswer = function(aId, qId, aUserNickName)
+		{
+			var parameters = {
+					params: {
+						aID: aId,
+					}
+			};
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateAnswerNeg", parameters)
+			.success(function(response) {
+//				First of all updating the questing Rating
+				$scope.updateQuestionDueToAnswerChange(qId);
+//				 - and question submiter Rating
+				for (x in $scope.allQuestions){
+					if ($scope.allQuestions[x].qID == qId){
+						$scope.updateUserRating($scope.allQuestions[x].qUserNickName);
+						break;
+					}
+				}
+//				now updated the answer submiter Rating 
+				$scope.updateUserRating(aUserNickName);
+			});
+		}
+		
+		$scope.resetAFields = function()
+		{
+			$scope.aText = "";
+			$scope.qToAnser = "";
+			$scope.qUserToUpdate = "";
+			$scope.clearAError();
+		}
+		$scope.clearAError = function()
+		{
+			$scope.answerError ="";
+		}
 		
 		
 		$scope.resetQFields = function()
@@ -219,14 +355,15 @@
 				}
 	    	}
 	    }
-	     
 	    $scope.logedInUser = "";
 		$scope.resetLogFields();
 		$scope.resetRegFields();
 		$scope.resetQFields();
+		$scope.resetAFields();
 		$scope.updateAllUserTable();
 		$scope.updateAllQuestionsTable();
 		$scope.updateNewQuestionsTable();
+		$scope.remark = "";
 		
 		
 	}]);

@@ -122,68 +122,154 @@ public class QandAServlet extends HttpServlet {
     					QuestionRS.close();
     					stmt.close();
     				} catch (SQLException e) {
-    					getServletContext().log("Error while querying for New Questions", e);
+    					getServletContext().log("Error while querying for All Questions", e);
     					response.sendError(500);//internal server error
     				}				
     			}
     			
     			else if (uri.indexOf(QAndAConstants.INSERT_QUESTION) != -1){
-    				PreparedStatement pstmt;
-    				pstmt = conn.prepareStatement(QAndAConstants.INSERT_NEW_QUESTION); 
-    				pstmt.setString(1, request.getParameter("userNickName"));
-    				pstmt.setString(2, request.getParameter("qText"));
-					pstmt.executeUpdate();
-	    			
-	    			//commit update
-	    			conn.commit();
-	    			//close statements
-	    			pstmt.close();
-	    			
-	    			String[] topicList = request.getParameter("topicList").split(",");
-	    			for (int i = 0; i < topicList.length; ++i)
-	    			{
-	    				PreparedStatement topicPstmt;
-	    				topicPstmt = conn.prepareStatement(QAndAConstants.INSERT_TOPIC_TO_LATEST_QUESTION);
-	    				topicPstmt.setString(1, topicList[i]);
-	    				topicPstmt.executeUpdate();		    			
-		    			//commit update
-		    			conn.commit();
-		    			//close statements
-		    			topicPstmt.close();
-	    			}		
+    				try{
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.INSERT_NEW_QUESTION); 
+    					pstmt.setString(1, request.getParameter("userNickName"));
+    					pstmt.setString(2, request.getParameter("qText"));
+    					pstmt.executeUpdate();
+    					
+    					//commit update
+    					conn.commit();
+    					//close statements
+    					pstmt.close();
+    					
+    					String[] topicList = request.getParameter("topicList").split(",");
+    					for (int i = 0; i < topicList.length; ++i)
+    					{
+    						PreparedStatement topicPstmt;
+    						topicPstmt = conn.prepareStatement(QAndAConstants.INSERT_TOPIC_TO_LATEST_QUESTION);
+    						topicPstmt.setString(1, topicList[i]);
+    						topicPstmt.executeUpdate();		    			
+    						//commit update
+    						conn.commit();
+    						//close statements
+    						topicPstmt.close();
+    					}		    					
+    				}  catch (SQLException e) {
+    					getServletContext().log("Error while Inserting a New Question", e);
+    					response.sendError(500);//internal server error
+    				}	
+    				
     			}
     			
     			else if (uri.indexOf(QAndAConstants.UPDATE_QUESTION) != -1){
-    				PreparedStatement pstmt;
-    				pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTION_SCORES); 
-    				pstmt.setInt(1, Integer.parseInt(request.getParameter("qId")));
-    				int votingScoreChange = Integer.parseInt(request.getParameter("changeVS"));
-    				ResultSet QuestionRS = pstmt.executeQuery();
-    				while (QuestionRS.next())
-    				{
-    					int votingScore = QuestionRS.getInt(1);
-    					votingScore += votingScoreChange;
-    					double answersAVGScore = QuestionRS.getObject(2) == null ? 0 : QuestionRS.getDouble(2);
-    					PreparedStatement updatePstmt;
-    					updatePstmt = conn.prepareStatement(QAndAConstants.UPDATE_QUESTION_SCORES);
-    					updatePstmt.setInt(1, votingScore);
-    					updatePstmt.setDouble(2, answersAVGScore*0.8 + votingScore*0.2);
-    					updatePstmt.setInt(3, Integer.parseInt(request.getParameter("qId")));
-    					updatePstmt.executeUpdate();
-    					//commit update
-    					conn.commit();
-    					updatePstmt.close();   						
-    				}
-	    			
-    				QuestionRS.close();
-	    			//close statements
-	    			pstmt.close();    			
+    				try {
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTION_SCORES); 
+    					pstmt.setInt(1, Integer.parseInt(request.getParameter("qId")));
+    					int votingScoreChange = Integer.parseInt(request.getParameter("changeVS"));
+    					ResultSet QuestionRS = pstmt.executeQuery();
+    					while (QuestionRS.next())
+    					{
+    						int votingScore = QuestionRS.getInt(1);
+    						votingScore += votingScoreChange;
+    						double answersAVGScore = QuestionRS.getObject(2) == null ? 0 : QuestionRS.getDouble(2);
+    						PreparedStatement updatePstmt;
+    						updatePstmt = conn.prepareStatement(QAndAConstants.UPDATE_QUESTION_SCORES);
+    						updatePstmt.setInt(1, votingScore);
+    						updatePstmt.setDouble(2, answersAVGScore*0.8 + votingScore*0.2);
+    						updatePstmt.setInt(3, Integer.parseInt(request.getParameter("qId")));
+    						updatePstmt.executeUpdate();
+    						//commit update
+    						conn.commit();
+    						updatePstmt.close();   						
+    					}
+    					
+    					QuestionRS.close();
+    					//close statements
+    					pstmt.close();    			    					
+    				} catch (SQLException e) {
+    					getServletContext().log("Error while Updating Question", e);
+    					response.sendError(500);//internal server error
+    				}	
     			}
     		}
     		/* Second Big Case - It deals with Answers */
     		else if (uri.indexOf(QAndAConstants.ANSWER) != -1)
     		{
+    			bISQuestRelated = false;
+    			if (uri.indexOf(QAndAConstants.QUESTION_ANS) != -1) {    				    				
+    				try{
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.GET_ANSWERS_TO_QUESTION); 
+    					pstmt.setInt(1, Integer.parseInt(request.getParameter("qID")));
+    					ResultSet rs = pstmt.executeQuery();
+    					while (rs.next()){
+    						ansCollection.add(new Answer(rs.getInt(1), 
+					    								rs.getInt(2), 
+					    								rs.getString(3), 
+					    								rs.getString(4), 
+					    								rs.getTimestamp(5).getTime(), 
+					    								rs.getInt(6)));
+    					}
+    					rs.close();
+    					pstmt.close();    					
+    				}  catch (SQLException e) {
+    					getServletContext().log("Error while querying for Answers to Question", e);
+    					response.sendError(500);//internal server error
+    				}	
+    			}
     			
+    			
+    			else if (uri.indexOf(QAndAConstants.INSERT_ANSWER) != -1){
+    				try{
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.INSERT_NEW_ANSWER); 
+    					pstmt.setInt(1, Integer.parseInt(request.getParameter("qID")));
+    					pstmt.setString(2, request.getParameter("userNickName"));
+    					pstmt.setString(3, request.getParameter("aText"));
+    					pstmt.executeUpdate();
+    					
+    					//commit update
+    					conn.commit();
+    					//close statements
+    					pstmt.close();	    				   					
+    				}  catch (SQLException e) {
+    					getServletContext().log("Error while Inserting a New Answer", e);
+    					response.sendError(500);//internal server error
+    				}	
+    			}
+    			
+    			else if (uri.indexOf(QAndAConstants.UPDATE_ANSWER_POS) != -1) {
+    				try{
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.VOTE_ANSWER_POS); 
+    					pstmt.setInt(1, Integer.parseInt(request.getParameter("aID")));
+    					pstmt.executeUpdate();
+    					
+    					//commit update
+    					conn.commit();
+    					//close statements
+    					pstmt.close();	    				   					
+    				}  catch (SQLException e) {
+    					getServletContext().log("Error while Updating Pos Answer Vote", e);
+    					response.sendError(500);//internal server error
+    				}	
+    			}
+    			
+    			else if (uri.indexOf(QAndAConstants.UPDATE_ANSWER_NEG) != -1) {
+    				try{
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.VOTE_ANSWER_NEG); 
+    					pstmt.setInt(1, Integer.parseInt(request.getParameter("aID")));
+    					pstmt.executeUpdate();
+    					
+    					//commit update
+    					conn.commit();
+    					//close statements
+    					pstmt.close();	    				   					
+    				}  catch (SQLException e) {
+    					getServletContext().log("Error while Updating Neg Answer Vote", e);
+    					response.sendError(500);//internal server error
+    				}	
+    			}
     		}
     		
     		

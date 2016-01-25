@@ -74,7 +74,20 @@
 		<input type="reset" ng-click="resetRegFields()" value="Reset">
 	</p>
 </form>
-<h1> New Questions</h1>
+
+<h1> Submit a New Question</h1>
+<form>
+	<p>
+		Submit a New Question: 
+		{{questionError}}<br>
+		<input type="text" ng-model="qText" name="questionText" />
+		<input type="text" ng-model="qTopics"  name="questionTopics"/>
+		<input type="submit" ng-click="submitQuestion()" value="Submit Question" >
+		<input type="reset" ng-click="resetQFields()" value="Reset">
+	</p>
+</form>
+
+<h1> New Questions: {{qNewCounter}}</h1>
 <div>
 	<table>
 	  <tr>
@@ -86,6 +99,7 @@
 		<th>Rating</th>
 		<th>Topics</th>
 		<th>Vote</th>
+		<th>Answer</th>
 	  </tr>  
 	  <!-- output each result into the table -->
 	  <tr ng-repeat="x in newQuestions"> 		  
@@ -104,11 +118,16 @@
 	          <span class="glyphicon glyphicon-thumbs-down"></span> deVote
 	        </div>
         </td>
+        <td>
+        	<div ng-click="answerQuestion(x.qID, x.qUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-pencil"></span> Answer this Question
+	        </div>
+        </td>
 	  </tr>
 	</table>
 </div>
 
-<h1> All Questions</h1>
+<h1> All Questions: {{qCounter}}</h1>
 <div>
 	<table>
 	  <tr>
@@ -120,6 +139,7 @@
 		<th>Rating</th>
 		<th>Topics</th>
 		<th>Vote</th>
+		<th>Answer</th>
 	  </tr>  
 	  <!-- output each result into the table -->
 	  <tr ng-repeat="x in allQuestions"> 		  
@@ -138,21 +158,62 @@
 	          <span class="glyphicon glyphicon-thumbs-down"></span> deVote
 	        </div>
         </td>
+        <td>
+        	<div ng-click="answerQuestion(x.qID, x.qUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-pencil"></span> Answer this Question
+	        </div>
+        </td>
 	  </tr>
 	</table>
 </div>
 
-<h1> Submit a New Question</h1>
+<h1> Submit a New Answer</h1>
 <form>
 	<p>
-		Submit a New Question: 
-		{{questionError}}<br>
-		<input type="text" ng-model="qText" name="questionText" />
-		<input type="text" ng-model="qTopics"  name="questionTopics"/>
-		<input type="submit" ng-click="submitQuestion()" value="Submit Question" >
-		<input type="reset" ng-click="resetQFields()" value="Reset">
+		Submit a New Answer: 
+		{{answerError}}<br>
+		Answering Question #{{qToAnser}} <br>
+		<input type="text" ng-model="aText" name="answerText" />
+		<input type="submit" ng-click="submitAnswer()" value="Submit Answer" >
+		<input type="reset" ng-click="resetAFields()" value="Reset">
 	</p>
 </form>
+
+
+{{remark}}<br>
+
+<h1> All Answers</h1>
+<div>
+	<table>
+	  <tr>
+		<th>ID</th>
+		<th>Q-ID</th>
+		<th>User Nick Name</th>
+		<th>Text</th>
+		<th>Submission Date</th>
+		<th>Voting Score</th>
+		<th>Vote</th>
+	  </tr>  
+	  <!-- output each result into the table -->
+	  <tr ng-repeat="x in allAnswers"> 		  
+	    <td> {{x.aID}} </td>
+	    <td> {{x.qID}} </td>
+	    <td> {{x.aUserNickName}} </td>
+	    <td> {{x.aText}} </td>
+	    <td> <span>{{x.aSubDate | date:'medium'}}</span> </td>
+	    <td> {{x.aVotingScore}}</td>
+	    <td> 
+		    <div ng-click="voteAnswer(x.aID, x.qID, x.aUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-thumbs-up"></span> Vote
+	        </div>
+	        <div ng-click="deVoteAnswer(x.aID, x.qID, x.aUserNickName)" class="btn btn-info btn-sm">
+	          <span class="glyphicon glyphicon-thumbs-down"></span> deVote
+	        </div>
+        </td>
+	  </tr>
+	</table>
+</div>
+
 
 
 </div>

@@ -14,13 +14,13 @@ public class Question {
 	 * @param qRating
 	 * @param qTopics
 	 */
-	public Question(int qID, String qUserNickName, String qText, long timeStamp, int qVotingScore, double qRating,
+	public Question(int qID, String qUserNickName, String qText, long submissionTimeStamp, int qVotingScore, double qRating,
 			List<String> qTopics) {
 		super();
 		this.qID = qID;
 		this.qUserNickName = qUserNickName;
 		this.qText = qText;
-		this.qSubDate = timeStamp;
+		this.qSubDate = submissionTimeStamp;
 		this.qVotingScore = qVotingScore;
 		this.qRating = qRating;
 		this.qTopics = qTopics;

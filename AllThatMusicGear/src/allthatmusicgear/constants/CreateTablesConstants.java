@@ -36,9 +36,9 @@ public interface CreateTablesConstants {
 	+ "QuestionID INT NOT NULL,"
 	+ "AUNickName VARCHAR(20) NOT NULL,"
 	+ "AText VARCHAR(300) NOT NULL,"
-	+ "ASubmissionTime DATE DEFAULT CURRENT_DATE,"
+	+ "ASubmissionTime TIMESTAMP DEFAULT TIMESTAMP(CURRENT_DATE,CURRENT_TIME),"
 	+ "AVotingScore INT DEFAULT 0,"
-	+ "FOREIGN KEY (QuestionID) REFERENCES app.tblQuestion(QID),"
+	+ "FOREIGN KEY(QuestionID) REFERENCES app.tblQuestion(QID),"
 	+ "FOREIGN KEY(AUNickName) REFERENCES app.tblUser(NickName))";
 	
 

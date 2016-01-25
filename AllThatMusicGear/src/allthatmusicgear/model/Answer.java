@@ -3,15 +3,13 @@
  */
 package allthatmusicgear.model;
 
-import java.sql.Date;
 
 /**
  * @author Adam
  *
  */
 public class Answer {
-	
-	
+		
 	/**
 	 * @param aID
 	 * @param qID
@@ -20,13 +18,13 @@ public class Answer {
 	 * @param aSubDate
 	 * @param aVotingScore
 	 */
-	public Answer(int aID, int qID, String aUserNickName, String aText, Date aSubDate, int aVotingScore) {
+	public Answer(int aID, int qID, String aUserNickName, String aText, long submissionTimeStamp, int aVotingScore) {
 		super();
 		this.aID = aID;
 		this.qID = qID;
 		this.aUserNickName = aUserNickName;
 		this.aText = aText;
-		this.aSubDate = aSubDate;
+		this.aSubDate = submissionTimeStamp;
 		this.aVotingScore = aVotingScore;
 	}
 	/**
@@ -68,7 +66,7 @@ public class Answer {
 	/**
 	 * @return the aSubDate
 	 */
-	public Date getaSubDate() {
+	public long getaSubDate() {
 		return aSubDate;
 	}
 	/**
@@ -78,6 +76,6 @@ public class Answer {
 		return aUserNickName;
 	}
 	private int aID, qID, aVotingScore;
-	private Date aSubDate;
+	private long aSubDate;
 	private String aUserNickName, aText;
 }
