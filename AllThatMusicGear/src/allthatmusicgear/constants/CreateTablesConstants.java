@@ -6,40 +6,40 @@ import java.util.Map;
 public interface CreateTablesConstants {
 	
 	
-	public final String CREATE_USER_TABLE = "CREATE TABLE tblUser "
+	public final String CREATE_USER_TABLE = "CREATE TABLE app.tblUser "
 	+ "(UserName VARCHAR(10) PRIMARY KEY,"
 	+ "Password VARCHAR(8) NOT NULL,"
 	+ "NickName VARCHAR(20) UNIQUE NOT NULL,"
 	+ "Descreption	VARCHAR(50) DEFAULT '',"
 	+ "PhotoURL VARCHAR(100) DEFAULT '', "/*we will check for valid URL in javascript*/
-	+ "UserRating INT DEFAULT 0 )" ;
+	+ "UserRating DOUBLE DEFAULT 0 )" ;
 	
 	
 	
-	public final String CREATE_QUESTION_TABLE = "CREATE TABLE tblQuestion"
+	public final String CREATE_QUESTION_TABLE = "CREATE TABLE app.tblQuestion"
 	+ "(QID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
 	+ "QUNickName VARCHAR(20) NOT NULL,"
 	+ "QText VARCHAR(300) NOT NULL,"
-	+ "QSubmissionTime DATE DEFAULT CURRENT_DATE,"
+	+ "QSubmissionTime TIMESTAMP DEFAULT TIMESTAMP(CURRENT_DATE,CURRENT_TIME),"
 	+ "QVotingScore INT DEFAULT 0,"
-	+ "QRating INT DEFAULT 0,"
-	+ "FOREIGN KEY(QUNickName) REFERENCES tblUser(NickName))";
+	+ "QRating DOUBLE DEFAULT 0,"
+	+ "FOREIGN KEY(QUNickName) REFERENCES app.tblUser(NickName))";
 	
-	public final String CREATE_QUESTION_TOPIC_TABLE = "CREATE TABLE tblQuestionTopics"
+	public final String CREATE_QUESTION_TOPIC_TABLE = "CREATE TABLE app.tblQuestionTopics"
 	+ "(QID INT,"
 	+ "Topic VARCHAR(50),"
 	+ "PRIMARY KEY (QID, Topic),"
-	+ "FOREIGN KEY (QID) REFERENCES tblQuestion(QID))";
+	+ "FOREIGN KEY (QID) REFERENCES app.tblQuestion(QID))";
 	
-	public final String CREATE_ANSWER_TABLE = "CREATE TABLE tblAnswer" 
+	public final String CREATE_ANSWER_TABLE = "CREATE TABLE app.tblAnswer" 
 	+ "(AID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
 	+ "QuestionID INT NOT NULL,"
 	+ "AUNickName VARCHAR(20) NOT NULL,"
 	+ "AText VARCHAR(300) NOT NULL,"
-	+ "ASubmissionTime DATE DEFAULT CURRENT_DATE,"
+	+ "ASubmissionTime TIMESTAMP DEFAULT TIMESTAMP(CURRENT_DATE,CURRENT_TIME),"
 	+ "AVotingScore INT DEFAULT 0,"
-	+ "FOREIGN KEY (QuestionID) REFERENCES tblQuestion(QID),"
-	+ "FOREIGN KEY(AUNickName) REFERENCES tblUser(NickName))";
+	+ "FOREIGN KEY(QuestionID) REFERENCES app.tblQuestion(QID),"
+	+ "FOREIGN KEY(AUNickName) REFERENCES app.tblUser(NickName))";
 	
 
 }
