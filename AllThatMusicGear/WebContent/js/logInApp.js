@@ -44,7 +44,7 @@
 					}
 			};
 			
-			$scope.http.post("http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Register", parameters)
+			$scope.http.get("http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Register", parameters)
 			.success(function(response) {			
 				$scope.logedInUserNickName = "Current Logged In User NickName: " + response[0].nickName;
 				$scope.logedInUser = response[0].nickName;
@@ -192,6 +192,7 @@
 				$scope.remark = "In here";
 				var tempArray = response;
 				for (x in tempArray){
+					// TODO: This result needs to be attached to a specific question and not all answers should be united
 					$scope.allAnswers.push(tempArray[x]);					
 				}
 			});

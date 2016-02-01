@@ -25,8 +25,10 @@ import com.google.gson.Gson;
 
 import allthatmusicgear.constants.DBConstants;
 import allthatmusicgear.constants.QAndAConstants;
+import allthatmusicgear.constants.UserConstants;
 import allthatmusicgear.model.Answer;
 import allthatmusicgear.model.Question;
+import allthatmusicgear.model.QuestionAnswerPair;
 
 /**
  * Servlet implementation class QandAServlet
@@ -65,7 +67,9 @@ public class QandAServlet extends HttpServlet {
     		String uri = request.getRequestURI();
     		Collection<Question> questCollection = new ArrayList<Question>();
     		Collection<Answer> ansCollection = new ArrayList<Answer>();
+    		Collection<QuestionAnswerPair> questAndAnsPairCollection = new ArrayList<QuestionAnswerPair>();
     		boolean bISQuestRelated = false;
+    		boolean bIsQuestwithAns = false;
     		
     		/* First Big Case - It deals with Questions */
     		if (uri.indexOf(QAndAConstants.QUESTION) != -1)
@@ -187,6 +191,34 @@ public class QandAServlet extends HttpServlet {
     					response.sendError(500);//internal server error
     				}	
     			}
+    			else if (uri.indexOf(QAndAConstants.USER_LAST_ASKED) != -1)
+        		{
+        			try {
+    					PreparedStatement pstmt;
+    					String strUserName =  request.getParameter("userNickName");
+        				pstmt = conn.prepareStatement(QAndAConstants.GET_USER_LAST_QUESTION); 
+        				pstmt.setString(1, strUserName);
+        				ResultSet rs = pstmt.executeQuery();
+    					while (rs.next())
+    					{
+    						int qID = rs.getInt(1);
+    						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
+    						questCollection.add(new Question(rs.getInt(1), 
+						    								rs.getString(2), 
+						    								rs.getString(3), 
+						    								rs.getTimestamp(4).getTime(), 
+						    								rs.getInt(5), 
+						    								rs.getDouble(6), 
+						    								qTopicList));
+    						
+    					}
+    					rs.close();
+    					pstmt.close();				
+    				} catch (SQLException e) {
+    					getServletContext().log("Error while fetching User last questions", e);
+    					response.sendError(500);//internal server error
+    				}
+        		}
     		}
     		/* Second Big Case - It deals with Answers */
     		else if (uri.indexOf(QAndAConstants.ANSWER) != -1)
@@ -265,7 +297,41 @@ public class QandAServlet extends HttpServlet {
     				}  catch (SQLException e) {
     					getServletContext().log("Error while Updating Neg Answer Vote", e);
     					response.sendError(500);//internal server error
-    				}	
+    				}
+    			}
+    				else if (uri.indexOf(QAndAConstants.USER_LAST_ANSWERED) != -1)
+    				{
+    					bIsQuestwithAns = true;
+    					try {
+    						PreparedStatement pstmt;
+    						String strUserName =  request.getParameter("userNickName");
+    						pstmt = conn.prepareStatement(QAndAConstants.GET_USER_LAST_ANSWERS); 
+    						pstmt.setString(1, strUserName);
+    						ResultSet rs = pstmt.executeQuery();
+    						while (rs.next()){
+    							int qID = rs.getInt(1);
+        						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
+        						Question qst = new Question(	rs.getInt(1), 
+    						    								rs.getString(2), 
+    						    								rs.getString(3), 
+    						    								rs.getTimestamp(4).getTime(), 
+    						    								rs.getInt(5), 
+    						    								rs.getDouble(6), 
+    						    								qTopicList);
+        						Answer ans = new Answer(	rs.getInt(7), 
+    					    								rs.getInt(8), 
+    					    								rs.getString(9), 
+    					    								rs.getString(10), 
+    					    								rs.getTimestamp(11).getTime(), 
+    					    								rs.getInt(12));
+        						questAndAnsPairCollection.add(new QuestionAnswerPair(qst, ans));
+        					}
+    						rs.close();
+    						pstmt.close();				
+    					} catch (SQLException e) {
+    						getServletContext().log("Error while fetching User's last answers", e);
+    						response.sendError(500);//internal server error
+    					}
     			}
     		}
     		
@@ -273,7 +339,10 @@ public class QandAServlet extends HttpServlet {
     		conn.close();
     		Gson gson = new Gson();
     		String JsonRes;
-    		if (bISQuestRelated){
+    		if (bIsQuestwithAns) {
+    			JsonRes = gson.toJson(questAndAnsPairCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
+    		}
+    		else if (bISQuestRelated){
     			JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION);  			
     		}
     		else{

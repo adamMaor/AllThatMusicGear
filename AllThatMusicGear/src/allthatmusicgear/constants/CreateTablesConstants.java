@@ -10,9 +10,7 @@ public interface CreateTablesConstants {
 	+ "Descreption	VARCHAR(50) DEFAULT '',"
 	+ "PhotoURL VARCHAR(100) DEFAULT '', "/*we will check for valid URL in javascript*/
 	+ "UserRating DOUBLE DEFAULT 0 )" ;
-	
-	
-	
+		
 	public final String CREATE_QUESTION_TABLE = "CREATE TABLE app.tblQuestion"
 	+ "(QID INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
 	+ "QUNickName VARCHAR(20) NOT NULL,"

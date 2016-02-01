@@ -1,10 +1,14 @@
 package allthatmusicgear.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,8 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
+import com.google.gson.Gson;
+
 import allthatmusicgear.constants.DBConstants;
+import allthatmusicgear.constants.LogAndRegConstants;
 import allthatmusicgear.constants.UserConstants;
+import allthatmusicgear.model.Question;
 
 
 /**
@@ -89,6 +97,35 @@ public class UserServlet extends HttpServlet {
 					response.sendError(500);//internal server error
 				}		
     		}
+    		else if (uri.indexOf(UserConstants.USER_EXPERTISE) != -1)
+    		{
+    			List<String> topicList = new ArrayList<String>();
+    			try {
+					PreparedStatement pstmt;
+					String strUserName =  request.getParameter("userNickName");
+    				pstmt = conn.prepareStatement(UserConstants.GET_USER_EXPERTISE); 
+    				pstmt.setString(1, strUserName);
+    				ResultSet rs = pstmt.executeQuery();
+					while (rs.next())
+					{
+						topicList.add(rs.getString(1));
+						
+					}
+					rs.close();
+					pstmt.close();
+					conn.close();
+		    		Gson gson = new Gson();
+		    		String userJsonRes = gson.toJson(topicList, UserConstants.TOPIC_LIST);
+		    		
+		    		PrintWriter writer = response.getWriter();
+		    		writer.println(userJsonRes);
+		    		writer.close();					
+				} catch (SQLException e) {
+					getServletContext().log("Error while fetching User topics", e);
+					response.sendError(500);//internal server error
+				}
+    		}
+    		
     		
     		conn.close();
 		

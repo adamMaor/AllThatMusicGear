@@ -64,7 +64,7 @@
 <form>
 	<p>
 		Register a new user: 
-		{{registerError}}<br>
+		{{registerError}} - {{regUserName}}<br>
 		<input type="text" ng-model="regUserName" name="userName" ng-change="validateUserName()"/>
 		<input type="password" ng-model="regPassword"  name="password"/>
 		<input type="text" ng-model="regNickName" name="nickName" ng-change="validateNickName()"/>

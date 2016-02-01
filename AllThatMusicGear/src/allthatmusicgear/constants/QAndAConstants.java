@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 
 import allthatmusicgear.model.Answer;
 import allthatmusicgear.model.Question;
+import allthatmusicgear.model.QuestionAnswerPair;
 
 public interface QAndAConstants {
 
@@ -20,9 +21,12 @@ public interface QAndAConstants {
 	public final String UPDATE_ANSWER_POS = "Update"+ANSWER+"Pos";
 	public final String QUESTION_ANS = ANSWER+"sOfQ";
 	public final String UPDATE_ANSWER_NEG = "Update"+ANSWER+"Neg";
+	public final String USER_LAST_ASKED = "UserLastAsked"+QUESTION+"s";
+	public final String USER_LAST_ANSWERED = "UserLastAnswerd"+ANSWER+"s";
 	
 	public final Type QUESTION_COLLECTION = new TypeToken<Collection<Question>>() {}.getType();
 	public final Type ANSWER_COLLECTION = new TypeToken<Collection<Answer>>() {}.getType();
+	public final Type QUESTION__AND_ANS_COLLECTION = new TypeToken<Collection<QuestionAnswerPair>>() {}.getType();
 	
 	
 	public final String INSERT_NEW_QUESTION = "INSERT INTO app.tblQuestion (QUNickName, QText) VALUES (?,?)";
@@ -52,6 +56,12 @@ public interface QAndAConstants {
 	public final String VOTE_ANSWER_POS = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + 1 WHERE AID=?";
 	
 	public final String VOTE_ANSWER_NEG = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore - 1 WHERE AID=?";
+	
+	public final String GET_USER_LAST_QUESTION = "SELECT * FROM app.tblQuestion WHERE app.tblQuestion.QUNickName = ?"
+			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC FETCH FIRST 5 ROWS ONLY ";
+	
+	public final String GET_USER_LAST_ANSWERS = "SELECT * FROM app.tblQuestion JOIN app.tblAnswer WHERE app.tblAnswer.AUNickName = ?"
+			+ "ORDER BY app.tblAnswer.ASubmissionTime DESC FETCH FIRST 5 ROWS ONLY";
 
 	
 }
