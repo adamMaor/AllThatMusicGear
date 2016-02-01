@@ -5,10 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -21,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import allthatmusicgear.constants.DBConstants;
-import allthatmusicgear.constants.QAndAConstants;
 import allthatmusicgear.constants.UserConstants;
-import allthatmusicgear.model.Question;
 
 
 /**

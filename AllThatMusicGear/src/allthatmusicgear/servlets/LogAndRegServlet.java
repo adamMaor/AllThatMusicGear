@@ -9,8 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -24,7 +22,8 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import com.google.gson.Gson;
 
-import allthatmusicgear.constants.*;
+import allthatmusicgear.constants.DBConstants;
+import allthatmusicgear.constants.LogAndRegConstants;
 import allthatmusicgear.model.User;
 
 /**

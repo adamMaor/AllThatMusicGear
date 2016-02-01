@@ -1,8 +1,5 @@
 package allthatmusicgear.constants;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public interface CreateTablesConstants {
 	
 	

@@ -44,7 +44,7 @@
 					}
 			};
 			
-			$scope.http.get("http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Register", parameters)
+			$scope.http.post("http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Register", parameters)
 			.success(function(response) {			
 				$scope.logedInUserNickName = "Current Logged In User NickName: " + response[0].nickName;
 				$scope.logedInUser = response[0].nickName;

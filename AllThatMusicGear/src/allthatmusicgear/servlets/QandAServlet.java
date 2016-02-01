@@ -3,7 +3,6 @@ package allthatmusicgear.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,11 +24,9 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import com.google.gson.Gson;
 
 import allthatmusicgear.constants.DBConstants;
-import allthatmusicgear.constants.LogAndRegConstants;
 import allthatmusicgear.constants.QAndAConstants;
 import allthatmusicgear.model.Answer;
 import allthatmusicgear.model.Question;
-import allthatmusicgear.model.User;
 
 /**
  * Servlet implementation class QandAServlet
