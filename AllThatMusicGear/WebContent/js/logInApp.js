@@ -1,6 +1,6 @@
  
  var logInApp = angular.module('logInApp',[]);
- logInApp.controller('logInAppController', ['$scope', '$http', function($scope, $http) {
+ logInApp.controller('logInAppController', ['$scope', '$http', function($scope, $http, $window) {
 		$scope.logedInUserNickName = "";
 		$scope.http = $http;
 		$scope.gotomainpagevis = {'visibility' : 'hidden'};
@@ -16,6 +16,7 @@
 						$scope.logInError = "Logged in - Take care to move to main question view";
 						$scope.gotomainpagevis = {'visibility' : 'visible'};
 						$scope.resetLogFields();
+						$window.location.href = '/AllThatMusicGear/Main.html';
 						return;
 					}
 					else{

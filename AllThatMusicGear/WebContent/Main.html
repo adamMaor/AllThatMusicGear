@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>All That Music Gear</title>
-    
    	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
-    
     <!-- 	MainPage JS App -->
 	<script type="text/javascript" src="js/mainPageApp.js"></script>
 
@@ -16,14 +14,8 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!--     <link href="../CSS/LogIn.css" rel="stylesheet"> -->
 
-  </head>
-  <body>
-  <div class="center" ng-app ="mainPageApp" ng-controller="mainPageAppController">
-	<p>{{logedInUserNickName}}</p>
-</div>
-  
-  
-  
+</head>
+<body>
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
@@ -57,8 +49,16 @@
 		</div>
 	</div>
 	
+	<br><br><br><br>
+	<div id="1" ng-app="mainPageApp" ng-controller="mainPageAppController">
+		<h1> 33  {{loggedInUserNickName}}</h1>
+	</div>
 	
+	<div id="2" ng-app="">
+ 		<p>My first expression: {{ 5 + 5 }}</p>
+	</div>
 	
+  
 	<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
 		<div class="container">
 			<div class="navbar-text pull-left">
@@ -72,5 +72,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
+    
   </body>
 </html>
