@@ -113,7 +113,6 @@ public class UserServlet extends HttpServlet {
 					}
 					rs.close();
 					pstmt.close();
-					conn.close();
 		    		Gson gson = new Gson();
 		    		String userJsonRes = gson.toJson(topicList, UserConstants.TOPIC_LIST);
 		    		
@@ -125,7 +124,17 @@ public class UserServlet extends HttpServlet {
 					response.sendError(500);//internal server error
 				}
     		}
-    		
+    		else if (uri.indexOf(UserConstants.GET_USER_INFO_URI) != -1) {
+    			try {
+	    			String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
+	    			String photoURL = (String) request.getSession().getAttribute("LoggedInUserPhotoURL");
+	    			response.getWriter().println("{\"nickName\":\"" + nickName + "\", \"photoURL\":\"" + photoURL + "\"}" );
+    			}
+    			catch (Exception e){
+    				getServletContext().log("Error while fetching user nickname", e);
+					response.sendError(500);//internal server error
+    			}
+    		}
     		
     		conn.close();
 		

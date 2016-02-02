@@ -4,6 +4,11 @@
   <welcome-file-list>
     <welcome-file>login.html</welcome-file>
   </welcome-file-list>
+  <session-config>
+  	<session-timeout>
+  		30 <!-- minutes -->
+  	</session-timeout>
+  </session-config>
   <servlet>
     <description></description>
     <display-name>LogAndRegServlet</display-name>
@@ -52,5 +57,6 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/UserServlet</url-pattern>
     <url-pattern>/UserServlet/UpdateUserRating</url-pattern>
+    <url-pattern>/UserServlet/GetUserInfo</url-pattern>
   </servlet-mapping>
 </web-app>

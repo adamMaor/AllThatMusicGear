@@ -15,7 +15,7 @@
 <!--     <link href="../CSS/LogIn.css" rel="stylesheet"> -->
 
 </head>
-<body>
+<body ng-app="mainPageApp" ng-controller="mainPageAppController">
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
@@ -29,8 +29,8 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">About</a></li>
+					<li class="active"><a href="#">New Questions</a></li>
+					<li><a href="#">All Questions</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Themes<b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -44,21 +44,12 @@
 						</ul>
 					</li>
 					<li><a href="#">Contact</a></li>
+					<li><a>{{loggedInUserNickName}}<img src={{loggedInUserPhotoURL}} style="width:20px;height:20px;" alt="Missing Photo"></a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	
-	<br><br><br><br>
-	<div id="1" ng-app="mainPageApp" ng-controller="mainPageAppController">
-		<h1> 33  {{loggedInUserNickName}}</h1>
-	</div>
-	
-	<div id="2" ng-app="">
- 		<p>My first expression: {{ 5 + 5 }}</p>
-	</div>
-	
-  
+	  
 	<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
 		<div class="container">
 			<div class="navbar-text pull-left">

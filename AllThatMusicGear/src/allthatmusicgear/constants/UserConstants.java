@@ -18,7 +18,7 @@ public interface UserConstants {
 	
 	public final String UPDATE_UR = "UpdateUserRating";
 	public final String USER_EXPERTISE = "UserExpertise";
-
+	public final String GET_USER_INFO_URI = "GetUserInfo";
 	
 	
 	public final Type TOPIC_LIST = new TypeToken<Collection<String>>() {}.getType();

@@ -7,25 +7,36 @@
 		
 		$scope.logIn = function() {
 			/* first check userName */
-			for (x in $scope.allUsers) {
-				if ($scope.allUsers[x].userName == $scope.logUserName){
-					if ($scope.allUsers[x].password == $scope.logPassword){
-						/* good LogIn */
-						$scope.logedInUserNickName = "Current Logged In User NickName: " + $scope.allUsers[x].nickName;
-						$scope.logedInUser = $scope.allUsers[x].nickName;
-						$scope.logInError = "Logged in - Take care to move to main question view";
-						$scope.gotomainpagevis = {'visibility' : 'visible'};
-						$scope.resetLogFields();
-						$window.location.href = '/AllThatMusicGear/Main.html';
-						return;
-					}
-					else{
-						$scope.logInError = "Password Incorrect";
-						return;
-					}	
-				}
-			}
-			$scope.logInError = "User Name Doesn't Exist";
+//			for (x in $scope.allUsers) {
+//				if ($scope.allUsers[x].userName == $scope.logUserName){
+//					if ($scope.allUsers[x].password == $scope.logPassword){
+//						/* good LogIn */
+//						$scope.logedInUserNickName = "Current Logged In User NickName: " + $scope.allUsers[x].nickName;
+//						$scope.logedInUser = $scope.allUsers[x].nickName;
+//						$scope.logInError = "Logged in - Take care to move to main question view";
+//						$scope.gotomainpagevis = {'visibility' : 'visible'};
+//						$scope.resetLogFields();
+//						$window.location.href = '/AllThatMusicGear/Main.html';
+//						return;
+//					}
+//					else{
+//						$scope.logInError = "Password Incorrect";
+//						return;
+//					}	
+//				}
+//			}
+//			$scope.logInError = "User Name Doesn't Exist";
+			$http({
+				method : "POST",
+				url : "http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Login",
+				params: { 	userName: $scope.logUserName,
+							password: $scope.logPassword },
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			}).success(function(response){
+					
+			})
+			
+			
 		}
 		
 		$scope.register = function(){ 
