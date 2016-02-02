@@ -7,6 +7,8 @@ mainPageApp.controller('mainPageAppController', ['$scope', '$http', function($sc
 			 ).success(function(response) {
 				 if (response.nickName != "null"){
 					 // redirect to login page
+					 
+					 
 					 $scope.loggedInUserNickName = "Welcome " + response.nickName + " ";					 
 				 }
 				 if (response.photoURL != "null"){
