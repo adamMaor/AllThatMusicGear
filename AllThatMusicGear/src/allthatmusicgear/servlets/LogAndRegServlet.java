@@ -133,5 +133,6 @@ public class LogAndRegServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }
+
+

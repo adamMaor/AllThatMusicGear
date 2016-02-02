@@ -34,25 +34,23 @@
 				$scope.registerError = "Must Fill UserName + Password + NickName";
 				return;
 			}
-			
-			var parameters = {
-					params: {
-						userName: $scope.regUserName,
-						password: $scope.regPassword,
-						nickName: $scope.regNickName,
-						description: $scope.regDesc,
-						phtoUrl: $scope.regPhoto						
-					}
-			};
-			
-			$scope.http.get("http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Register", parameters)
-			.success(function(response) {			
+
+			$http({
+				method : "POST",
+				url : "http://localhost:8080/AllThatMusicGear/LogAndRegServlet/Register",
+				params: { 	userName: $scope.regUserName,
+							password: $scope.regPassword,
+							nickName: $scope.regNickName,
+							description: $scope.regDesc,
+							phtoUrl: $scope.regPhoto },
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			}).success(function(response){
 				$scope.logedInUserNickName = "Current Logged In User NickName: " + response[0].nickName;
 				$scope.logedInUser = response[0].nickName;
 				$scope.resetRegFields();
 				$scope.updateAllUserTable();
-				$scope.gotomainpagevis = {'visibility' : 'visible'};
-			});
+				$scope.gotomainpagevis = {'visibility' : 'visible'};	
+			})
 		}
 		
 		$scope.updateAllUserTable = function()
