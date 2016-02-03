@@ -131,8 +131,9 @@ public class QandAServlet extends HttpServlet {
     			else if (uri.indexOf(QAndAConstants.INSERT_QUESTION) != -1){
     				try{
     					PreparedStatement pstmt;
-    					pstmt = conn.prepareStatement(QAndAConstants.INSERT_NEW_QUESTION); 
-    					pstmt.setString(1, request.getParameter("userNickName"));
+    					pstmt = conn.prepareStatement(QAndAConstants.INSERT_NEW_QUESTION);
+    					String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
+    					pstmt.setString(1, nickName);
     					pstmt.setString(2, request.getParameter("qText"));
     					pstmt.executeUpdate();
     					
@@ -141,7 +142,7 @@ public class QandAServlet extends HttpServlet {
     					//close statements
     					pstmt.close();
     					
-    					String[] topicList = request.getParameter("topicList").split(",");
+    					String[] topicList = request.getParameter("topicList").split(" ,");
     					for (int i = 0; i < topicList.length; ++i)
     					{
     						PreparedStatement topicPstmt;

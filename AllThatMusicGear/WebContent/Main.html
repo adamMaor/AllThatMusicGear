@@ -64,7 +64,7 @@
 		         	<h4 class="modal-title">Submit a question:</h4>
 		        </div>
 				<div class="modal-body">
-					<form>
+					<form ng-submit="submitQuestion()">
 			      		<div class="form-group">
 							<label for="question">Question:</label>
 							<textarea class="form-control" rows="5" id="question" ng-model="qText" name="questionText" placeholder="Question text" required autofocus></textarea>
@@ -73,7 +73,7 @@
 							<label for="topics">Topics:</label>
 							<textarea class="form-control" rows="1" id="topics" ng-model="qTopics" name="questionTopics" placeholder="Headphones, Guitars, Amps, ..." required></textarea>
 						</div>
-						<button type="submit" class="btn btn-primary" ng-click="submitQuestion()" value="Submit Question">Submit</button>
+						<button type="submit" class="btn btn-primary" value="Submit Question">Submit</button>
 						<button type="button" class="btn btn-default" ng-click="resetQFields()" value="Reset">Reset</button>
 				        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
 					</form>
