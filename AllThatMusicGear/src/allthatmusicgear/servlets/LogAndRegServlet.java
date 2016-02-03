@@ -57,7 +57,7 @@ public class LogAndRegServlet extends HttpServlet {
 		    			request.getSession().setAttribute("LoggedInUserPhotoURL", rs.getString(2));
 	    			}
 	    			else {
-	    				response.getWriter().println("Invalid username or password");
+	    				response.getWriter().println("Invalid username/password combination");
 	    			}
  					rs.close();
  					pstmt.close();
