@@ -12,11 +12,11 @@
 
     <!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!--     <link href="../CSS/LogIn.css" rel="stylesheet"> -->
+    <link href="css/general.css" rel="stylesheet">
 
 </head>
-<body ng-app="mainPageApp" ng-controller="mainPageAppController">
-	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<body ng-app="mainPageApp">
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="navBarController">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -50,11 +50,9 @@
 			</div>
 		</div>
 	</div>
-	
-	
 	</div>
 	<!-- Modal -->
-	<div class="modal fade" id="askQuestionModal" role="dialog">
+	<div class="modal fade" id="askQuestionModal" role="dialog" ng-controller="navBarController">
 		<div class="modal-dialog">
 	  
 		    <!-- Modal content-->
@@ -81,15 +79,51 @@
 			</div>
    		</div>
 	</div>
-	<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
-		<div class="container">
-			<div class="navbar-text pull-left">
-				<p> Created by Vadim & Adam 2016</p>
-			</div>
+	
+	<br><br>
+	<div id="newQuestions" ng-controller="NewQuestions">	
+	<h1>Unanswered Questions:</h1><br>
+		<nav>
+	  		<ul class="pager">
+			    <li><a href="#" ng-click="prevPage()">Previous</a></li>
+			    <b>[{{pageNum}}/{{maxPageNum}}]</b>
+			    <li><a href="#" ng-click="nextPage()">Next</a></li>
+	  		</ul>
+		</nav>
+		
+		<div>
+			<table class="table" id="qTable">
+				<tbody>
+			    	<tr id="mainRow" ng-repeat="x in newQuestions">
+			        	<td id="votingScore"> 
+			        	<button type="button" class="btn btn-default" aria-label="Left Align">
+  							<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+						</button>
+						<br>{{x.qVotingScore}}<br>
+						<button type="button" class="btn btn-default" aria-label="Left Align">
+  							<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+						</button></td>
+			        	<td id="qText"><p>{{x.qText}}</p></td>
+			    	</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
-	
-	
+qID:
+qRating: 30.6
+qSubDate: 1454087962000
+qText: "drums2"
+qTopics: Array[1]
+qUserNickName: "admin"
+qVotingScore: 49
+
+<!-- 	<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation"> -->
+<!-- 		<div class="container"> -->
+<!-- 			<div class="navbar-text pull-left"> -->
+<!-- 				<p> Created by Vadim & Adam 2016</p> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

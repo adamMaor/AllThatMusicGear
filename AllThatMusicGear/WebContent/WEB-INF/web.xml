@@ -17,9 +17,10 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>LogAndRegServlet</servlet-name>
-    <url-pattern>/LogAndRegServlet/Users</url-pattern>
-    <url-pattern>/LogAndRegServlet/Login</url-pattern>
-    <url-pattern>/LogAndRegServlet/Register</url-pattern>
+    <url-pattern>/LogAndRegServlet/*</url-pattern>
+<!--     <url-pattern>/LogAndRegServlet/Users</url-pattern> -->
+<!--     <url-pattern>/LogAndRegServlet/Login</url-pattern> -->
+<!--     <url-pattern>/LogAndRegServlet/Register</url-pattern> -->
   </servlet-mapping>
   <listener>
     <listener-class>allthatmusicgear.listeners.LogAndRegListener</listener-class>
@@ -37,15 +38,15 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>QandAServlet</servlet-name>
-    <url-pattern>/QandAServlet</url-pattern>
-    <url-pattern>/QandAServlet/NewQuestions</url-pattern>
-    <url-pattern>/QandAServlet/AllQuestions</url-pattern>
-    <url-pattern>/QandAServlet/AnswersOfQ</url-pattern>
-    <url-pattern>/QandAServlet/UpdateQuestion</url-pattern>
-    <url-pattern>/QandAServlet/UpdateAnswerPos</url-pattern>
-    <url-pattern>/QandAServlet/UpdateAnswerNeg</url-pattern>
-    <url-pattern>/QandAServlet/InsertQuestion</url-pattern>
-    <url-pattern>/QandAServlet/InsertAnswer</url-pattern>
+    <url-pattern>/QandAServlet/*</url-pattern>
+<!--     <url-pattern>/QandAServlet/NewQuestions</url-pattern> -->
+<!--     <url-pattern>/QandAServlet/AllQuestions</url-pattern> -->
+<!--     <url-pattern>/QandAServlet/AnswersOfQ</url-pattern> -->
+<!--     <url-pattern>/QandAServlet/UpdateQuestion</url-pattern> -->
+<!--     <url-pattern>/QandAServlet/UpdateAnswerPos</url-pattern> -->
+<!--     <url-pattern>/QandAServlet/UpdateAnswerNeg</url-pattern> -->
+<!--     <url-pattern>/QandAServlet/InsertQuestion</url-pattern> -->
+<!--     <url-pattern>/QandAServlet/InsertAnswer</url-pattern> -->
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -55,8 +56,8 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>UserServlet</servlet-name>
-    <url-pattern>/UserServlet</url-pattern>
-    <url-pattern>/UserServlet/UpdateUserRating</url-pattern>
-    <url-pattern>/UserServlet/GetUserInfo</url-pattern>
+    <url-pattern>/UserServlet/*</url-pattern>
+<!--     <url-pattern>/UserServlet/UpdateUserRating</url-pattern> -->
+<!--     <url-pattern>/UserServlet/GetUserInfo</url-pattern> -->
   </servlet-mapping>
 </web-app>

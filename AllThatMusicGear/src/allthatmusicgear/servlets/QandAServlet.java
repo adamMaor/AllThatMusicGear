@@ -141,8 +141,7 @@ public class QandAServlet extends HttpServlet {
     					conn.commit();
     					//close statements
     					pstmt.close();
-    					
-    					String[] topicList = request.getParameter("topicList").split(" ,");
+    					String[] topicList = request.getParameter("topicList").replaceAll("^[,\\s]+", "").split("[,\\s]+");
     					for (int i = 0; i < topicList.length; ++i)
     					{
     						PreparedStatement topicPstmt;
