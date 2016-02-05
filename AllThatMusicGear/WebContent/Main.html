@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -16,114 +16,75 @@
 
 </head>
 <body ng-app="mainPageApp">
-	<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="navBarController">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">AllThatMusicGear</a>			
-			</div>
-			<div class="navbar-collapse collapse">
-				<a class="btn btn-default navbar-btn btn-md" href="#askQuestionModal" data-toggle="modal">Ask Question</a>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="#">New Questions</a></li>
-					<li><a href="#">All Questions</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Themes<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li class="dropdown-header">Admin & Dashboard</li>
-							<li><a href="#">Admin 1</a></li>
-							<li><a href="#">Admin 2</a></li>
-							<li class="divider"></li>
-							<li class="dropdown-header">Portfolio</li>
-							<li><a href="#">Portfolio 1</a></li>
-							<li><a href="#">Portfolio 2</a></li>
-						</ul>
-					</li>
-					<li><a href="#">Contact</a></li>
-					<li><a><b>{{loggedInUserNickName}}</b><img src={{loggedInUserPhotoURL}} class="img-circle" style="width:25px;height:25px;" alt="Missing Photo"></a></li>
-				</ul>
-			</div>
+	<!-- header directive -->
+	<header></header>
+	
+	<div class="container" id="questions" ng-controller="questions">
+		<div class="row">
+		<h1>All Questions:</h1><br>
+		<span class="col-md-4">
+			<nav>
+	  			<ul class="pager">
+				    <li><a href="#" ng-click="prevPage()">Previous</a></li>
+				    <b>[{{pageNum}}/{{maxPageNum}}]</b>
+				    <li><a href="#" ng-click="nextPage()">Next</a></li>
+	  			</ul>
+			</nav>
+		</span>
 		</div>
-	</div>
-	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="askQuestionModal" role="dialog" ng-controller="navBarController">
-		<div class="modal-dialog">
-	  
-		    <!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-		        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-		         	<h4 class="modal-title">Submit a question:</h4>
-		        </div>
-				<div class="modal-body">
-					<form ng-submit="submitQuestion()">
-			      		<div class="form-group">
-							<label for="question">Question:</label>
-							<textarea class="form-control" rows="5" id="question" ng-model="qText" name="questionText" placeholder="Question text" required autofocus></textarea>
-						</div>
-						<div class="form-group">
-							<label for="topics">Topics:</label>
-							<input class="form-control" id="topics" ng-model="qTopics" name="questionTopics" placeholder="Headphones, Guitars, Amps, ..." required>
-						</div>
-						<button type="submit" class="btn btn-primary" value="Submit Question">Submit</button>
-						<button type="button" class="btn btn-default" ng-click="resetQFields()" value="Reset">Reset</button>
-				        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
-					</form>
+	   	<div class="row" ng-repeat="qstn in questions">
+		   	<div class="col-md-10" id="Element">
+		       	<div class="col-md-1" id="votingScore"> 
+		        	<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, 1)">
+					<span class="glyphicon glyphicon-menu-up" aria-hidden="true" ></span>
+					</button>
+					<br>{{qstn.qVotingScore}}<br>
+					<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, -1)">
+					<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+					</button>
 				</div>
+		       	<div class="col-md-9" id="elementBody">
+		       		<div class="row">
+			       		<p>{{qstn.qText}}</p>
+		       		</div>
+		       		<div class="row">
+			       		<p> question rating: {{qstn.qRating}}</p>
+			       		<p>nickname: <b>{{qstn.qUserNickName}}</b> date : {{qstn.qSubDate | date:'medium' }}</p>
+		       			<button type="button" class="btn btn-default pull-right" ng-click="showAnswerBox=!showAnswerBox" ng-init="showAnswerBox=false" aria-label="Left Align">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true">Answer</span>
+						</button>	       		
+			       		<span ng-repeat="t in qstn.qTopics"><mark>{{t}}</mark>, </span>
+		       		</div>
+				</div>
+	   			<div class="row" id="answers" >
+					<div class ="col-md-5 col-md-offset-1" ng-repeat="anwr in qstn.answers">
+						<p>answerID:{{anwr.aID}}</p>
+					</div>
+				</div>
+				
+				<div class="row" ng-show="showAnswerBox">
+					<div class ="col-md-5 col-md-offset-1">
+						<form ng-submit="submitAnswer(qstn.qID, aText)">
+							<textarea class="form-control" rows="5" id="question" maxlength="300" ng-model="aText" name="answerText" placeholder="Your answer" title="Answer can't be blank" required autofocus></textarea>
+							<button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+							<button type="button" class="btn btn-default" ng-click='aText=""' value="Reset">Reset</button>
+						</form>
+					</div>
 			</div>
-   		</div>
+		   	</div>
+	   		
+		</div>
 	</div>
 	
-	<br><br>
-	<div id="newQuestions" ng-controller="NewQuestions">	
-	<h1>Unanswered Questions:</h1><br>
-		<nav>
-	  		<ul class="pager">
-			    <li><a href="#" ng-click="prevPage()">Previous</a></li>
-			    <b>[{{pageNum}}/{{maxPageNum}}]</b>
-			    <li><a href="#" ng-click="nextPage()">Next</a></li>
-	  		</ul>
-		</nav>
-		
-		<div>
-			<table class="table" id="qTable">
-				<tbody>
-			    	<tr id="mainRow" ng-repeat="x in newQuestions">
-			        	<td id="votingScore"> 
-			        	<button type="button" class="btn btn-default" aria-label="Left Align">
-  							<span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-						</button>
-						<br>{{x.qVotingScore}}<br>
-						<button type="button" class="btn btn-default" aria-label="Left Align">
-  							<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-						</button></td>
-			        	<td id="qText"><p>{{x.qText}}</p></td>
-			    	</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-qID:
-qRating: 30.6
-qSubDate: 1454087962000
-qText: "drums2"
-qTopics: Array[1]
-qUserNickName: "admin"
-qVotingScore: 49
-
-<!-- 	<div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation"> -->
-<!-- 		<div class="container"> -->
-<!-- 			<div class="navbar-text pull-left"> -->
-<!-- 				<p> Created by Vadim & Adam 2016</p> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+aID: 1
+aSubDate: 1454241074000
+aText: "yes"
+aUserNickName: "vad"
+aVotingScore: 26
+qID: 2
+	
+	<!-- footer directive -->
+	<footer></footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -252,7 +252,7 @@ public class QandAServlet extends HttpServlet {
     					PreparedStatement pstmt;
     					pstmt = conn.prepareStatement(QAndAConstants.INSERT_NEW_ANSWER); 
     					pstmt.setInt(1, Integer.parseInt(request.getParameter("qID")));
-    					pstmt.setString(2, request.getParameter("userNickName"));
+    					pstmt.setString(2, (String)request.getSession().getAttribute("LoggedInUserNickName"));
     					pstmt.setString(3, request.getParameter("aText"));
     					pstmt.executeUpdate();
     					
