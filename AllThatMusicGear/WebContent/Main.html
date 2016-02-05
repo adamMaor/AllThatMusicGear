@@ -56,11 +56,7 @@
 			       		<span ng-repeat="t in qstn.qTopics"><mark>{{t}}</mark>, </span>
 		       		</div>
 				</div>
-	   			<div class="row" id="answers" >
-					<div class ="col-md-5 col-md-offset-1" ng-repeat="anwr in qstn.answers">
-						<p>answerID:{{anwr.aID}}</p>
-					</div>
-				</div>
+
 				
 				<div class="row" ng-show="showAnswerBox">
 					<div class ="col-md-5 col-md-offset-1">
@@ -70,8 +66,13 @@
 							<button type="button" class="btn btn-default" ng-click='aText=""' value="Reset">Reset</button>
 						</form>
 					</div>
-			</div>
+				</div>
 		   	</div>
+   			<div class="row" id="answers" >
+				<div class ="col-md-5 col-md-offset-1" ng-repeat="anwr in qstn.answers">
+					<p>answerID:{{anwr.aID}}</p>
+				</div>
+			</div>
 	   		
 		</div>
 	</div>
