@@ -115,7 +115,40 @@ mainPageApp.controller('questions', ['$scope', '$http', function($scope, $http) 
 		var parameters = { params: { qId: qID, changeVS: changeScore,} };
 		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
-			$scope.updateQuestions();
+			for (var i = 0; i < $scope.questions.length; i++){
+				if ($scope.questions[i].qID == qID){
+					$scope.questions[i].qVotingScore += changeScore;
+					$scope.questions.sort(function(a,b)
+							{
+								return b.qVotingScore - a.qVotingScore;
+							});
+					return;
+				}
+			}
+			//TODO in server	$scope.updateUserRating(userNickName);
+		});
+	}
+	
+	$scope.voteAnswer = function(qID, aID, changeScore)
+	{
+		checkLogin();
+		var parameters = { params: { qId: qID ,aID: aID, changeVS: changeScore,} };
+		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateAnswer", parameters)
+		.success(function(response) {
+			for (var i = 0; i < $scope.questions.length; i++){
+				if ($scope.questions[i].qID == qID){
+					for (var j = 0;j < $scope.questions[i].answers.length; j++){
+						if ($scope.questions[i].answers[j].aID == aID){
+							$scope.questions[i].answers[j].aVotingScore += changeScore;
+							$scope.questions[i].answers.sort(function(a,b)
+									{
+										return b.aVotingScore - a.aVotingScore;
+									});
+							return;
+						}
+					}
+				}
+			}
 			//TODO in server	$scope.updateUserRating(userNickName);
 		});
 	}
@@ -135,9 +168,22 @@ mainPageApp.controller('questions', ['$scope', '$http', function($scope, $http) 
 			// TODO-server should be done on server $scope.updateQuestionDueToAnswerChange($scope.qToAnser);
 			//now updated the answer submiter Rating 
 			// TODO-server $scope.updateUserRating($scope.logedInUser);
-			$scope.updateQuestions();
-			$scope.aText = "";
-			$scope.showAnswerBox=false
+			var parameters = {
+					params: {
+						qID: qID,
+					}
+			};
+			$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/AnswersOfQ", parameters)
+			.success(function(response) {
+				if(response[0] !== undefined){
+					for (var i = 0; i < $scope.questions.length; i++){
+						if ($scope.questions[i].qID == qID){
+							$scope.questions[i].answers = response;
+						}
+					}
+				}
+			});
+			
 		});
 	}
 	

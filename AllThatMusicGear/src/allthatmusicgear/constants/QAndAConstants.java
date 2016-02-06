@@ -18,7 +18,7 @@ public interface QAndAConstants {
 	public final String INSERT_QUESTION = "Insert"+QUESTION;
 	public final String INSERT_ANSWER = "Insert"+ANSWER;
 	public final String UPDATE_QUESTION = "Update"+QUESTION;
-	public final String UPDATE_ANSWER_POS = "Update"+ANSWER+"Pos";
+	public final String UPDATE_ANSWER = "Update"+ANSWER;
 	public final String QUESTION_ANS = ANSWER+"sOfQ";
 	public final String UPDATE_ANSWER_NEG = "Update"+ANSWER+"Neg";
 	public final String USER_LAST_ASKED = "UserLastAsked"+QUESTION+"s";
@@ -53,10 +53,8 @@ public interface QAndAConstants {
 	
 	public final String UPDATE_QUESTION_SCORES = "UPDATE app.tblQuestion SET app.tblQuestion.QVotingScore = ?, app.tblQuestion.QRating = ? WHERE app.tblQuestion.QID=?";
 	
-	public final String VOTE_ANSWER_POS = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + 1 WHERE AID=?";
-	
-	public final String VOTE_ANSWER_NEG = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore - 1 WHERE AID=?";
-	
+	public final String VOTE_ANSWER = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID=?";
+		
 	public final String GET_USER_LAST_QUESTION = "SELECT * FROM app.tblQuestion WHERE app.tblQuestion.QUNickName = ?"
 			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC FETCH FIRST 5 ROWS ONLY ";
 	

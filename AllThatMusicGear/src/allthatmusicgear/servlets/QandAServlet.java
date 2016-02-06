@@ -156,8 +156,7 @@ public class QandAServlet extends HttpServlet {
     				}  catch (SQLException e) {
     					getServletContext().log("Error while Inserting a New Question", e);
     					response.sendError(500);//internal server error
-    				}	
-    				
+    				}    				
     			}
     			
     			else if (uri.indexOf(QAndAConstants.UPDATE_QUESTION) != -1){
@@ -266,11 +265,12 @@ public class QandAServlet extends HttpServlet {
     				}	
     			}
     			
-    			else if (uri.indexOf(QAndAConstants.UPDATE_ANSWER_POS) != -1) {
+    			else if (uri.indexOf(QAndAConstants.UPDATE_ANSWER) != -1) {
     				try{
     					PreparedStatement pstmt;
-    					pstmt = conn.prepareStatement(QAndAConstants.VOTE_ANSWER_POS); 
-    					pstmt.setInt(1, Integer.parseInt(request.getParameter("aID")));
+    					pstmt = conn.prepareStatement(QAndAConstants.VOTE_ANSWER); 
+    					pstmt.setInt(1, Integer.parseInt(request.getParameter("changeVS")));
+    					pstmt.setInt(2, Integer.parseInt(request.getParameter("aID")));
     					pstmt.executeUpdate();
     					
     					//commit update
@@ -283,23 +283,7 @@ public class QandAServlet extends HttpServlet {
     				}	
     			}
     			
-    			else if (uri.indexOf(QAndAConstants.UPDATE_ANSWER_NEG) != -1) {
-    				try{
-    					PreparedStatement pstmt;
-    					pstmt = conn.prepareStatement(QAndAConstants.VOTE_ANSWER_NEG); 
-    					pstmt.setInt(1, Integer.parseInt(request.getParameter("aID")));
-    					pstmt.executeUpdate();
-    					
-    					//commit update
-    					conn.commit();
-    					//close statements
-    					pstmt.close();	    				   					
-    				}  catch (SQLException e) {
-    					getServletContext().log("Error while Updating Neg Answer Vote", e);
-    					response.sendError(500);//internal server error
-    				}
-    			}
-    				else if (uri.indexOf(QAndAConstants.USER_LAST_ANSWERED) != -1)
+    			else if (uri.indexOf(QAndAConstants.USER_LAST_ANSWERED) != -1)
     				{
     					bIsQuestwithAns = true;
     					try {
