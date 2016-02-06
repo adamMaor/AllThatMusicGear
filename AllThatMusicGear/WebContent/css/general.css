@@ -13,5 +13,12 @@ body{
 	text-align:center;
 /* 	width:70px; */
 }
-#elementBody{
+#topics{
+	padding:5px;
+	margin:5px;
+	background-color: #dadada;
+}
+
+.pager {
+	float:left;
 }
