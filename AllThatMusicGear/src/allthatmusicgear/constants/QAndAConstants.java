@@ -35,8 +35,15 @@ public interface QAndAConstants {
 	public final String INSERT_NEW_ANSWER = "INSERT INTO app.tblAnswer (QuestionID, AUNickName, AText) VALUES (?,?,?)";
 	
 	public final String GET_NEW_QUESTIONS = "SELECT * FROM app.tblQuestion "
-										+ "WHERE app.tblQuestion.QID NOT IN	(SELECT DISTINCT QuestionID FROM app.tblAnswer)"
-										+ "ORDER BY app.tblQuestion.QSubmissionTime DESC" ;
+										+ "WHERE app.tblQuestion.QID NOT IN	(SELECT DISTINCT QuestionID FROM app.tblAnswer) "
+										+ "ORDER BY app.tblQuestion.QSubmissionTime DESC ";
+//										TODO: when you'd like to limit the rows you fetch
+//										+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY";
+//	
+//	SELECT COUNTRY , count(*) as frequency
+//	FROM CUSTOMERS
+//	GROUP BY COUNTRY
+//	order by count(*) desc
 	
 	public final String GET_ALL_QUESTIONS = "SELECT * FROM app.tblQuestion ORDER BY app.tblQuestion.QRating DESC";
 	
@@ -45,6 +52,8 @@ public interface QAndAConstants {
 											+ "ORDER BY app.tblAnswer.AVotingScore DESC";
 	
 	final public String GET_QUESTION_TOPICS = "SELECT Topic FROM app.tblQuestionTopics WHERE app.tblQuestionTopics.QID = ?";
+	
+	//final public String GET_QUESTIONS_BY_TOPICS = ""
 	
 	public final String GET_QUESTION_SCORES = "SELECT app.tblQuestion.QVotingScore, AVG(app.tblAnswer.AVotingScore) as AVGAnswerScore"
 											+ " FROM app.tblQuestion LEFT OUTER JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID"

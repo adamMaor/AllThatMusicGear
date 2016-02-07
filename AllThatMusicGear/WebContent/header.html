@@ -12,8 +12,8 @@
 		<div class="navbar-collapse collapse">
 			<a class="btn btn-default navbar-btn btn-md" href="#askQuestionModal" data-toggle="modal">Ask Question</a>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">New Questions</a></li>
-				<li><a href="#">All Questions</a></li>
+				<li><a href="newquestions.html">New Questions</a></li>
+				<li><a href="topquestions.html">Top Questions</a></li>
 				<li><a href="#">Topics</a></li>
 				<li><a href="#">Leaderboard</a></li>
 				<li class="dropdown">
@@ -48,7 +48,7 @@
 					</div>
 					<div class="form-group">
 						<label for="topics">Topics:</label>
-						<input class="form-control" id="topics" ng-model="qTopics" name="questionTopics" placeholder="Headphones, Guitars, Amps, ..." required>
+						<input class="form-control" ng-model="qTopics" name="questionTopics" placeholder="Headphones, Guitars, Amps, ..." required>
 					</div>
 					<button type="submit" class="btn btn-primary" value="Submit Question">Submit</button>
 					<button type="button" class="btn btn-default" ng-click="resetQFields()" value="Reset">Reset</button>

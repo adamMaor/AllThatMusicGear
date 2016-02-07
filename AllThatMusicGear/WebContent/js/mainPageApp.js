@@ -20,6 +20,11 @@ mainPageApp.directive('footer', function(){
 	};
 });
 
+mainPageApp.directive('questionsthread', function(){
+	return {
+	    templateUrl: "/AllThatMusicGear/questionsthread.html",
+	};
+});
 
 mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, $http) {
 	$scope.loggedInUserNickName = "Welcome ";
@@ -62,12 +67,21 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	}			 
  }]);
 
-mainPageApp.controller('questions', ['$scope', '$http', function($scope, $http) {
+mainPageApp.controller('questions', ['$scope', '$http', '$location',function($scope, $http, $location) {
 	$scope.pageNum = 1;
 	$scope.maxPageNum = 1;
 	
+	var url = window.location.pathname;
+	if (url.search("newquestions") != -1){
+		$scope.displayMode = "NewQuestions";
+	}
+	else {
+		$scope.displayMode = "AllQuestions";
+	}
+	
+	
 	$scope.updateQuestions = function(){
-		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/AllQuestions")
+		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/" + $scope.displayMode)
 		.success(function(response) {
 			$scope.questions = angular.copy(response);
 			$scope.qNewCounter = 0;
@@ -118,12 +132,16 @@ mainPageApp.controller('questions', ['$scope', '$http', function($scope, $http) 
 			for (var i = 0; i < $scope.questions.length; i++){
 				if ($scope.questions[i].qID == qID){
 					$scope.questions[i].qVotingScore += changeScore;
-					$scope.questions.sort(function(a,b)
-							{
-								return b.qVotingScore - a.qVotingScore;
-							});
+					if ($scope.displayMode != "NewQuestions")
+					{
+						$scope.questions.sort(function(a,b)
+								{
+							return b.qVotingScore - a.qVotingScore;
+								});
+					}
 					return;
-				}
+						
+					}
 			}
 			//TODO in server	$scope.updateUserRating(userNickName);
 		});

@@ -19,86 +19,8 @@
 	<!-- header directive -->
 	<header></header>
 	
-	<div class="container" id="questions" ng-controller="questions">
-		<div class="row">
-		<h1>All Questions:</h1><br>
-		<span class="col-md-4">
-			<nav>
-	  			<ul class="pager">
-				    <li><a href="#" ng-click="prevPage()">Previous</a></li>
-				    <b>[{{pageNum}}/{{maxPageNum}}]</b>
-				    <li><a href="#" ng-click="nextPage()">Next</a></li>
-	  			</ul>
-			</nav>
-		</span>
-		</div>
-	   	<div class="row" ng-repeat="qstn in questions">
-		   	<div class="col-md-10" id="Element">
-		       	<div class="col-md-1" id="votingScore"> 
-		        	<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, 1)">
-					<span class="glyphicon glyphicon-menu-up" aria-hidden="true" ></span>
-					</button>
-					<br>{{qstn.qVotingScore}}<br>
-					<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, -1)">
-					<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-					</button>
-				</div>
-		       	<div class="col-md-9" id="elementBody">
-		       		<div class="row">
-			       		<p>{{qstn.qText}}</p>
-		       		</div>
-		       		<div class="row">
-			       		<p> question rating: {{qstn.qRating}}</p>
-			       		<p>nickname: <b>{{qstn.qUserNickName}}</b></p>
-			       		<p>date : {{qstn.qSubDate | date:'medium' }}</p>
-						<span><b>Topics:</b></span>
-			       		<span ng-repeat="t in qstn.qTopics" id="topics">{{t}}</span>
-			       	</div>
-			       	<div class="row">
-		       			<button type="button" class="btn btn-default pull-right" ng-click="showAnswerBox=!showAnswerBox" aria-label="Left Align">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true">Answer</span>
-						</button>
-			       		<button type="button" class="btn btn-default pull-right" ng-show="qstn.answers.length > 1" ng-click="expandAnswers=!expandAnswers" aria-label="Left Align">
-							<span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
-						</button>
-		       		</div>
-				</div>
-				<div class="row" ng-show="showAnswerBox">
-					<div class ="col-md-5 col-md-offset-1">
-						<form ng-submit='submitAnswer(qstn.qID, aText); showAnswerBox=!showAnswerBox; aText=""'>
-							<textarea class="form-control" rows="5" id="question" maxlength="300" ng-model="aText" name="answerText" placeholder="Your answer" title="Answer can't be blank" required autofocus></textarea>
-							<button type="submit" class="btn btn-primary" value="Submit">Submit</button>
-							<button type="button" class="btn btn-default" ng-click='aText=""' value="Reset">Reset</button>
-						</form>
-					</div>
-				</div>
-		   	</div>
-   			<div class="row" id="answers" >
-				<div class ="col-md-8 col-md-offset-1" ng-repeat="anwr in qstn.answers" ng-show="$index==0 || expandAnswers">
-					<div class="col-md-1" id="votingScore"> 
-			        	<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteAnswer(qstn.qID ,anwr.aID, 1)">
-						<span class="glyphicon glyphicon-menu-up" aria-hidden="true" ></span>
-						</button>
-						<br>{{anwr.aVotingScore}}<br>
-						<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteAnswer(qstn.qID ,anwr.aID, -1)">
-						<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-						</button>
-					</div>
-					<div class="col-md-9" id="elementBody">
-			       		<div class="row">
-				       		<p>{{anwr.aText}}</p>
-			       		</div>
-			       		<div class="row">
-			       			<p>answerID: {{anwr.aID}}</p>
-				       		<p>nickname: <b>{{anwr.aUserNickName}}</b></p>
-				       		<p>date : {{anwr.aSubDate | date:'medium' }}</p>
-			       		</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-		
+	
+	
 	<!-- footer directive -->
 	<footer></footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
