@@ -15,7 +15,7 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 			}).success(function(response){
 				$scope.logInError = response;
 				if ($scope.logInError == ""){
-					$window.location.href = '/AllThatMusicGear/Main.html';
+					$window.location.href = '/AllThatMusicGear/newquestions.html';
 				}
 			})				
 		}			
@@ -40,7 +40,7 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 			}).success(function(response){
 				$scope.registerError = response;
 				if ($scope.registerError == ""){
-					$window.location.href = '/AllThatMusicGear/Main.html';
+					$window.location.href = '/AllThatMusicGear/newquestions.html';
 				}	
 			})
 			

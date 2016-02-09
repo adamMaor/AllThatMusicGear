@@ -1,6 +1,8 @@
+var loggedInUser = "null";
 var checkLogin = function () {
-	$.get("http://localhost:8080/AllThatMusicGear/UserServlet/GetUserInfo", function(data, status){
+	$.get("UserServlet/GetSessionInfo", function(data, status){
 		if (data.nickName == "null"){
+			loggedInUser = data.nickName;
 			window.location.href = '/AllThatMusicGear/login.html';			
 		}
 	});
@@ -10,35 +12,29 @@ var mainPageApp = angular.module('mainPageApp',[]);
 
 mainPageApp.directive('header', function(){
 	return {
-	    templateUrl: "/AllThatMusicGear/header.html",
+	    templateUrl: "/AllThatMusicGear/html-resources/header.html",
 	};
 });
 
 mainPageApp.directive('footer', function(){
 	return {
-	    templateUrl: "/AllThatMusicGear/footer.html",
+	    templateUrl: "/AllThatMusicGear/html-resources/footer.html",
 	};
 });
 
 mainPageApp.directive('questionsthread', function(){
 	return {
-	    templateUrl: "/AllThatMusicGear/questionsthread.html",
+	    templateUrl: "/AllThatMusicGear/html-resources/questionsthread.html",
 	};
 });
 
 mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, $http) {
-	$scope.loggedInUserNickName = "Welcome ";
-	$scope.loggedInUserPhotoURL = "media/defaultIcon.png"; //TODO make default to insert to DB when no url provided
-	
 	$scope.loggedInUserInfo = function(){
-		$http.get(
-				"http://localhost:8080/AllThatMusicGear/UserServlet/GetUserInfo"
-		).success(function(response) {
+		$http.get("UserServlet/GetSessionInfo")
+		.success(function(response) {
 			if (response.nickName != "null"){
-				$scope.loggedInUserNickName = "Welcome " + response.nickName + " ";	
-				if (response.photoURL != "null" && response.photoURL !=""){
-					$scope.loggedInUserPhotoURL = response.photoURL;
-				}
+				$scope.loggedInUserNickName = response.nickName;	
+				$scope.loggedInUserPhotoURL = response.photoURL;
 			}
 			else {
 				window.location.href = '/AllThatMusicGear/login.html';
@@ -56,7 +52,7 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 						topicList: $scope.qTopics,						
 					}
 			};
-			$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/InsertQuestion", parameters);
+			$http.get("QandAServlet/InsertQuestion", parameters);
 			$scope.resetQFields();
 			$('#askQuestionModal').modal('hide');
 		}
@@ -64,7 +60,11 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	$scope.resetQFields = function(){
 		$scope.qText = "";
 		$scope.qTopics = "";
-	}			 
+	}
+	
+	$scope.logOut = function(){
+		$http.post("UserServlet/LogOut");
+	}
  }]);
 
 mainPageApp.controller('questions', ['$scope', '$http', '$location',function($scope, $http, $location) {
@@ -81,7 +81,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	
 	
 	$scope.updateQuestions = function(){
-		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/" + $scope.displayMode)
+		$http.get("QandAServlet/" + $scope.displayMode)
 		.success(function(response) {
 			$scope.questions = angular.copy(response);
 			$scope.qNewCounter = 0;
@@ -93,7 +93,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 							qID: $scope.questions[i].qID,
 						}
 				};
-				$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/AnswersOfQ", parameters)
+				$http.get("QandAServlet/AnswersOfQ", parameters)
 				.success(function(response) {
 					if(response[0] !== undefined){
 						for (var j =0;j < $scope.questions.length; j++){
@@ -127,7 +127,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	{
 		checkLogin();
 		var parameters = { params: { qId: qID, changeVS: changeScore,} };
-		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateQuestion", parameters)
+		$http.get("QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
 			for (var i = 0; i < $scope.questions.length; i++){
 				if ($scope.questions[i].qID == qID){
@@ -151,7 +151,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	{
 		checkLogin();
 		var parameters = { params: { qId: qID ,aID: aID, changeVS: changeScore,} };
-		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/UpdateAnswer", parameters)
+		$http.get("QandAServlet/UpdateAnswer", parameters)
 		.success(function(response) {
 			for (var i = 0; i < $scope.questions.length; i++){
 				if ($scope.questions[i].qID == qID){
@@ -180,7 +180,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 					aText: qText,
 				}
 		};
-		$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/InsertAnswer", parameters)
+		$http.get("QandAServlet/InsertAnswer", parameters)
 		.success(function(response) {
 			//First of all updating the questing Rating
 			// TODO-server should be done on server $scope.updateQuestionDueToAnswerChange($scope.qToAnser);
@@ -191,7 +191,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 						qID: qID,
 					}
 			};
-			$http.get("http://localhost:8080/AllThatMusicGear/QandAServlet/AnswersOfQ", parameters)
+			$http.get("QandAServlet/AnswersOfQ", parameters)
 			.success(function(response) {
 				if(response[0] !== undefined){
 					for (var i = 0; i < $scope.questions.length; i++){
@@ -207,11 +207,56 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	
 }]);
 
-mainPageApp.controller('submitAnswer', ['$scope', '$http', function($scope, $http) {
+mainPageApp.controller('userProfile', ['$scope', '$http', '$location', function($scope, $http, $location) {
+	$scope.userNickname = $location.hash();
 	
+	var parameters = {
+			params: {
+				userNickName: $scope.userNickname,
+			}};
+	
+	$http.get("UserServlet/GetUserInfo", parameters)
+	.success(function(response) {
+		$scope.userInfo = response;
+	});
+//	TODO: EXPERTISE doesn't work
+//	$http.get("http://localhost:8080/AllThatMusicGear/UserServlet/UserExpertise", parameters)
+//	.success(function(response) {
+//		$scope.userInfo = response;
+//	});
+	$http.get("QandAServlet/UserLastAnswerdAnswers", parameters)
+	.success(function(response) {
+		$scope.userInfo = response;
+	});
 	
 }]);
 
-
-
-
+mainPageApp.controller('leaderboardCtrl', ['$scope', '$http', function($scope, $http) {
+	$scope.pageNum = 1;
+	$scope.maxPageNum = 1;
+	
+	$scope.updateLeaderboard = function(){
+		$http.get("UserServlet/GetAllUserInfo")
+		.success(function(response){
+			$scope.allUsers = response;
+			$scope.maxPageNum = parseInt($scope.allUsers.length/20) + 1;
+			$scope.allUsers = $scope.allUsers.slice(($scope.pageNum-1)*20,$scope.pageNum*20)
+		});
+	};
+	
+	$scope.updateLeaderboard();
+	
+	$scope.nextPage = function(){
+		if ($scope.pageNum < $scope.maxPageNum){
+			$scope.pageNum += 1;
+			$scope.updateLeaderboard();
+		}
+	}
+	
+	$scope.prevPage = function(){
+		if ($scope.pageNum > 1){
+			$scope.pageNum -= 1;
+			$scope.updateLeaderboard();
+		}	
+	}
+}]);

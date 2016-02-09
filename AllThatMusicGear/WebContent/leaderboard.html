@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>All That Music Gear</title>
+   	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+    <!-- 	MainPage JS App -->
+	<script type="text/javascript" src="js/mainPageApp.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/general.css" rel="stylesheet">
+
+</head>
+<body ng-app="mainPageApp">
+	<!-- header directive -->
+	<header></header>
+	
+	<div class="container" ng-controller="leaderboardCtrl">
+		<h2>Leaderboard:</h2>
+		<nav>
+  			<ul class="pager">
+			    <li><a href="#" ng-click="prevPage()">Previous</a></li>
+			    <b>[{{pageNum}}/{{maxPageNum}}]</b>
+			    <li><a href="#" ng-click="nextPage()">Next</a></li>
+  			</ul>
+		</nav>
+		<table class="table table-striped">
+ 		<tr>
+ 			<th>Rank</th>
+	 		<th>User</th>
+	 		<th>Rating</th>
+	 		<th>Expretise</th>
+ 		</tr>
+ 		<tr ng-repeat="user in allUsers">
+ 			<td>
+ 				<p><b>#{{(pageNum-1)*20 + $index +1}}</b></p>
+ 			</td>
+ 			<td>
+ 				<a ng-href="profile.html#/user#{{user.nickName}}">
+	 				<img src="{{user.photoURL}}" class="img-circle" id="leaderboardPhoto" alt="Missing Photo">
+	 				<b>{{user.nickName}}</b>
+ 				</a>
+ 			</td>
+ 			<td>{{user.userRating}}</td>
+ 		</tr>
+ 		</table>
+	</div>
+	
+	
+	<!-- footer directive -->
+	<footer></footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>

@@ -27,7 +27,7 @@
 	       		</div>
 	       		<div class="row">
 		       		<p> question rating: {{qstn.qRating}}</p>
-		       		<p>nickname: <b>{{qstn.qUserNickName}}</b></p>
+		       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
 		       		<p>date : {{qstn.qSubDate | date:'medium' }}</p>
 		       		<div class="container">
 						<span><b>Topics:</b></span>

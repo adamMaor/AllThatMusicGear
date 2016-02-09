@@ -75,7 +75,7 @@ public class LogAndRegServlet extends HttpServlet {
     				String password = request.getParameter("password");
     				String nickName = request.getParameter("nickName");
     				String desc = request.getParameter("description") == null ? "" : request.getParameter("description");
-    				String photo = request.getParameter("phtoUrl") == null ? "" : request.getParameter("phtoUrl");
+    				String photo = request.getParameter("phtoUrl") == "" ? "media/defaultIcon.png" : request.getParameter("phtoUrl");
     				
      				pstmt = conn.prepareStatement(LogAndRegConstants.CHECK_EXISTING_USER);
      				pstmt.setString(1, request.getParameter("userName"));

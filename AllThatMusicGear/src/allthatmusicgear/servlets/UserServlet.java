@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,8 +25,10 @@ import com.google.gson.Gson;
 
 import allthatmusicgear.constants.DBConstants;
 import allthatmusicgear.constants.LogAndRegConstants;
+import allthatmusicgear.constants.QAndAConstants;
 import allthatmusicgear.constants.UserConstants;
 import allthatmusicgear.model.Question;
+import allthatmusicgear.model.User;
 
 
 /**
@@ -124,14 +127,77 @@ public class UserServlet extends HttpServlet {
 					response.sendError(500);//internal server error
 				}
     		}
-    		else if (uri.indexOf(UserConstants.GET_USER_INFO_URI) != -1) {
+    		else if (uri.indexOf(UserConstants.GET_SESSION_INFO) != -1) {
     			try {
 	    			String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
 	    			String photoURL = (String) request.getSession().getAttribute("LoggedInUserPhotoURL");
 	    			response.getWriter().println("{\"nickName\":\"" + nickName + "\", \"photoURL\":\"" + photoURL + "\"}" );
     			}
     			catch (Exception e){
-    				getServletContext().log("Error while fetching user nickname", e);
+    				getServletContext().log("Error while fetching user session info", e);
+					response.sendError(500);//internal server error
+    			}
+    		}
+    		else if (uri.indexOf(UserConstants.LOGOUT) != -1) {
+    			try {
+    				request.getSession().invalidate();
+    			}
+    			catch (Exception e){
+    				getServletContext().log("Error while logging out", e);
+					response.sendError(500);//internal server error
+    			}
+    		}
+    		
+    		else if (uri.indexOf(UserConstants.GET_USER_INFO) != -1) {
+    			try {
+	    			String nickName = request.getParameter("userNickName");
+	    			PreparedStatement pstmt;
+    				pstmt = conn.prepareStatement(UserConstants.GET_USER_INFO_QUERY); 
+    				pstmt.setString(1, nickName);
+    				ResultSet rs = pstmt.executeQuery();
+    				rs.next();
+    				User user = new User(rs.getString(1), 
+    								rs.getString(2),
+    								rs.getString(3),
+    								rs.getDouble(4)
+    						);
+    				rs.close();
+    				pstmt.close();
+    				
+    	    		Gson gson = new Gson();
+    	    		String JsonRes = gson.toJson(user);
+    	    		PrintWriter writer = response.getWriter();
+    	    		writer.println(JsonRes);
+    	    		writer.close();
+    			}
+    			catch (Exception e){
+    				getServletContext().log("Error while fetching user info", e);
+					response.sendError(500);//internal server error
+    			}
+    		}
+    		else if (uri.indexOf(UserConstants.GET_ALL_USER_INFO) != -1) {
+    			try {
+    				Statement stmt = conn.createStatement();
+					ResultSet allUsersRS = stmt.executeQuery(UserConstants.GET_ALL_USER_INFO_QUERY);
+					Collection<User> userCollection = new ArrayList<User>();
+					while (allUsersRS.next())
+					{
+						userCollection.add(new User(allUsersRS.getString(1), 
+						    						allUsersRS.getString(2),
+						    						allUsersRS.getString(3),
+						    						allUsersRS.getDouble(4)));
+					}
+					allUsersRS.close();
+					stmt.close();
+    				
+    	    		Gson gson = new Gson();
+    	    		String JsonRes = gson.toJson(userCollection, UserConstants.USER_COLLECTION);  
+    	    		PrintWriter writer = response.getWriter();
+    	    		writer.println(JsonRes);
+    	    		writer.close();
+    			}
+    			catch (Exception e){
+    				getServletContext().log("Error while fetching all user info", e);
 					response.sendError(500);//internal server error
     			}
     		}
