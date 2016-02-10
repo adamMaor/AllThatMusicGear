@@ -39,11 +39,6 @@ public interface QAndAConstants {
 										+ "ORDER BY app.tblQuestion.QSubmissionTime DESC ";
 //										TODO: when you'd like to limit the rows you fetch
 //										+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY";
-//	
-//	SELECT COUNTRY , count(*) as frequency
-//	FROM CUSTOMERS
-//	GROUP BY COUNTRY
-//	order by count(*) desc
 	
 	public final String GET_ALL_QUESTIONS = "SELECT * FROM app.tblQuestion ORDER BY app.tblQuestion.QRating DESC";
 	
