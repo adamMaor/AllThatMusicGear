@@ -62,7 +62,8 @@ public interface QAndAConstants {
 	public final String GET_USER_LAST_QUESTION = "SELECT * FROM app.tblQuestion WHERE app.tblQuestion.QUNickName = ?"
 			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC FETCH FIRST 5 ROWS ONLY ";
 	
-	public final String GET_USER_LAST_ANSWERS = "SELECT * FROM app.tblQuestion JOIN app.tblAnswer WHERE app.tblAnswer.AUNickName = ?"
+	public final String GET_USER_LAST_ANSWERS = "SELECT * FROM app.tblQuestion JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID "
+			+ "WHERE app.tblAnswer.AUNickName = ?"
 			+ "ORDER BY app.tblAnswer.ASubmissionTime DESC FETCH FIRST 5 ROWS ONLY";
 
 	

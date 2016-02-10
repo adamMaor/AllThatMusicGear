@@ -69,11 +69,18 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
 //    		dmlList.add("DROP TABLE app.tblQuestionTopics");
 //    		dmlList.add("DROP TABLE app.tblQuestion");
 //    		dmlList.add("DROP TABLE app.tblUser");
+//    		dmlList.add("DROP TABLE app.tblQuestionVotes");
+//    		dmlList.add("DROP TABLE app.tblAnswerVotes");
+    		
     		
     		dmlList.add(CreateTablesConstants.CREATE_USER_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_QUESTION_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_QUESTION_TOPIC_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_ANSWER_TABLE);
+    		dmlList.add(CreateTablesConstants.CREATE_QUESTION_VOTES_TABLE);
+    		dmlList.add(CreateTablesConstants.CREATE_ANSWER_VOTES_TABLE);
+    		
+    		
     		
     		for (String currCreateStat : dmlList)
     		{    			
