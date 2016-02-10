@@ -47,5 +47,5 @@ public interface CreateTablesConstants {
 			+ "PRIMARY KEY (AID, UNickName),"
 			+ "FOREIGN KEY(AID) REFERENCES app.tblAnswer(AID),"
 			+ "FOREIGN KEY(UNickName) REFERENCES app.tblUser(NickName))";
-	// a change just for commit
+	
 }
