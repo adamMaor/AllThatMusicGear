@@ -25,6 +25,7 @@ public interface QAndAConstants {
 	public final String USER_LAST_ASKED = "UserLastAsked"+QUESTION+"s";
 	public final String USER_LAST_ANSWERED = "UserLastAnswerd"+ANSWER+"s";
 	public final String TOPIC_BY_TPOP = "QuestionTopicsByTpop";
+	public final String QUESTIONS_BY_TOPIC = "QuestionsByTopic";
 	
 	public final Type QUESTION_COLLECTION = new TypeToken<Collection<Question>>() {}.getType();
 	public final Type ANSWER_COLLECTION = new TypeToken<Collection<Answer>>() {}.getType();
@@ -83,7 +84,7 @@ public interface QAndAConstants {
 	public final String VOTE_ANSWER = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID=?";
 		
 	public final String GET_USER_LAST_QUESTION = "SELECT * FROM app.tblQuestion "
-			+ "WHERE app.tblQuestion.QUNickName = ?"
+			+ "WHERE app.tblQuestion.QUNickName = ? "
 			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC "
 			+ "FETCH FIRST 5 ROWS ONLY ";
 	
@@ -91,7 +92,7 @@ public interface QAndAConstants {
 			+ "FROM app.tblQuestion JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID "
 			+ "WHERE app.tblAnswer.AUNickName = ? "
 			+ "ORDER BY app.tblAnswer.ASubmissionTime DESC "
-			+ "FETCH FIRST 5 ROWS ONLY";
+			+ "FETCH FIRST 5 ROWS ONLY ";
 
 	
 }

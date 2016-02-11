@@ -53,33 +53,36 @@ public class QandAServlet extends HttpServlet {
         }
         return voted;
     }
+    	
+	private List<String> getQuestionTopics(int qID, Connection conn) throws SQLException{
+		List<String> qTopicList = new ArrayList<String>();
+		PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTION_TOPICS); 
+		pstmt.setInt(1, qID);
+		ResultSet TopicRS = pstmt.executeQuery();
+		while (TopicRS.next())
+		{
+			qTopicList.add(TopicRS.getString(1));
+		}
+		TopicRS.close();
+		pstmt.close();
+		return qTopicList;
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-//		public final String NEW_QUESTION = "NewQuestions";
-//		public final String ALL_QUESTION = "AllQuestions";
-//		public final String QUESTION_ANSWERS = "AnswersOfQuestion";
-//		public final String INSERT_QUESTION = "InsertQuestion";
-//		public final String INSERT_ANSWER = "InsertAnswer";
-//		public final String UPDATE_QUESTION = "UpdateQuestion";
-//		public final String UPDATE_ANSWER = "UpdateAnswer";
 		
 		try {
-//			System.out.println("In Servlet doGet: URI = " + request.getRequestURI());
 			
 			Context context = new InitialContext();
     		BasicDataSource ds = (BasicDataSource)context.lookup(DBConstants.DB_DATASOURCE);
     		Connection conn = ds.getConnection();
     		String uri = request.getRequestURI();
     		Gson gson = new Gson();
-    		String JsonRes = null;
-    		
-    		//Collection<Question> questCollection = new ArrayList<Question>();
-//    		Collection<Answer> ansCollection = new ArrayList<Answer>();
+    		String JsonRes = null;  		
     		
     		/* First Big Case - It deals with Questions */
     		if (uri.indexOf(QAndAConstants.QUESTION) != -1)
@@ -235,7 +238,7 @@ public class QandAServlet extends HttpServlet {
     					{
     						int qID = rs.getInt(1);
     						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
-    						questCollection.add(new Question(rs.getInt(1), 
+    						questCollection.add(new Question(qID, 
 						    								rs.getString(2), 
 						    								rs.getString(3), 
 						    								rs.getTimestamp(4).getTime(), 
@@ -267,6 +270,32 @@ public class QandAServlet extends HttpServlet {
     					pstmt.close();	
     					JsonRes = gson.toJson(topicList, QAndAConstants.TOPIC_AND_TPOP_COLLECTION);
     				} catch (SQLException e) {
+    					getServletContext().log("Error while fetching User last questions", e);
+    					response.sendError(500);//internal server error
+    				}
+    			}
+    			else if (uri.indexOf(QAndAConstants.QUESTIONS_BY_TOPIC) != 1){
+    				try {
+    					PreparedStatement pstmt;
+        				pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTIONS_BY_TOPIC);
+        				pstmt.setString(1, request.getParameter("topic"));
+        				Collection<Question> questCollection = new ArrayList<Question>();        				ResultSet rs = pstmt.executeQuery();
+    					while (rs.next())
+    					{
+    						int qID = rs.getInt(1);
+    						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
+    						questCollection.add(new Question(qID, 
+						    								rs.getString(2), 
+						    								rs.getString(3), 
+						    								rs.getTimestamp(4).getTime(), 
+						    								rs.getInt(5), 
+						    								rs.getDouble(6), 
+						    								qTopicList));   						
+    					}
+    					rs.close();
+    					pstmt.close();	
+    					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION);  
+    					} catch (SQLException e) {
     					getServletContext().log("Error while fetching User last questions", e);
     					response.sendError(500);//internal server error
     				}
@@ -405,12 +434,7 @@ public class QandAServlet extends HttpServlet {
 		{
 			getServletContext().log("Error while closing connection", e);
     		response.sendError(500);//internal server error
-		}
-		finally {
-			
-		}
-		
-		
+		}		
 	}
 
 	/**
@@ -420,20 +444,4 @@ public class QandAServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
-	private List<String> getQuestionTopics(int qID, Connection conn) throws SQLException{
-		List<String> qTopicList = new ArrayList<String>();
-		PreparedStatement pstmt;
-		pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTION_TOPICS); 
-		pstmt.setInt(1, qID);
-		ResultSet TopicRS = pstmt.executeQuery();
-		while (TopicRS.next())
-		{
-			qTopicList.add(TopicRS.getString(1));
-		}
-		TopicRS.close();
-		pstmt.close();
-		return qTopicList;
-	}
-
 }
