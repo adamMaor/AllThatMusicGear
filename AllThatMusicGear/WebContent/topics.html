@@ -7,6 +7,11 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>All That Music Gear</title>
    	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    
     <!-- 	MainPage JS App -->
 	<script type="text/javascript" src="js/mainPageApp.js"></script>
 
@@ -19,17 +24,16 @@
 	<!-- header directive -->
 	<header></header>
 	
-	<div class="container">
+	<div class="container" ng-controller="topicsCtrl">
 		<h2>Topics:</h2>
+		<div class="container">
+		  <h3>Popover Example</h3>
+		  <a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">Toggle popover</a>
+		</div>
 	</div>
-	
 	
 	<!-- footer directive -->
 	<footer></footer>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
     
   </body>
 </html>

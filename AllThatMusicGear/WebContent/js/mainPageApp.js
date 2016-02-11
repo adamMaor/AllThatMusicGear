@@ -70,6 +70,10 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
  }]);
 
 mainPageApp.controller('questions', ['$scope', '$http', '$location',function($scope, $http, $location) {
+	$(document).ready(function(){
+	    $('[data-toggle="popover"]').popover();   
+	});
+	
 	$scope.pageNum = 1;
 	$scope.maxPageNum = 1;
 	
@@ -132,8 +136,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$http.get("QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
 			if (response[0] !== undefined){
-				alert(response);
-				return;
+			
 			}
 			for (var i = 0; i < $scope.questions.length; i++){
 				if ($scope.questions[i].qID == qID){
@@ -270,4 +273,8 @@ mainPageApp.controller('leaderboardCtrl', ['$scope', '$http', function($scope, $
 			$scope.updateLeaderboard();
 		}	
 	}
+}]);
+
+mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http) {
+	
 }]);
