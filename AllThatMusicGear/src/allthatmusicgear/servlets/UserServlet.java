@@ -44,6 +44,19 @@ public class UserServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    private List<String> getUserExp(String nickName, Connection conn) throws SQLException
+    {
+    	List<String> resArray = new ArrayList<String>();
+    	PreparedStatement pstmt;
+    	pstmt = conn.prepareStatement(UserConstants.GET_USER_EXPERTISE);
+    	pstmt.setString(1, nickName);
+    	System.out.println(nickName);
+    	ResultSet rs = pstmt.executeQuery();
+    	while (rs.next()){
+    		resArray.add(rs.getString(1));
+    	}  	
+    	return resArray;
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -155,12 +168,16 @@ public class UserServlet extends HttpServlet {
     				pstmt = conn.prepareStatement(UserConstants.GET_USER_INFO_QUERY); 
     				pstmt.setString(1, nickName);
     				ResultSet rs = pstmt.executeQuery();
-    				rs.next();
-    				User user = new User(rs.getString(1), 
-    								rs.getString(2),
-    								rs.getString(3),
-    								rs.getDouble(4)
-    						);
+    				User user = null ;
+    				if (rs.next()){
+    					List<String> expertise = getUserExp(rs.getString(1), conn);
+    					user = new User(rs.getString(1), 
+							rs.getString(2),
+							rs.getString(3),
+							rs.getDouble(4),
+							expertise
+							);				
+    				}
     				rs.close();
     				pstmt.close();
     				
@@ -182,10 +199,12 @@ public class UserServlet extends HttpServlet {
 					Collection<User> userCollection = new ArrayList<User>();
 					while (allUsersRS.next())
 					{
+						List<String> expertise = getUserExp(allUsersRS.getString(1), conn);
 						userCollection.add(new User(allUsersRS.getString(1), 
 						    						allUsersRS.getString(2),
 						    						allUsersRS.getString(3),
-						    						allUsersRS.getDouble(4)));
+						    						allUsersRS.getDouble(4),
+						    						expertise));
 					}
 					allUsersRS.close();
 					stmt.close();

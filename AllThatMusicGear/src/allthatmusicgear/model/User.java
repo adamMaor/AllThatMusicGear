@@ -1,12 +1,15 @@
 package allthatmusicgear.model;
 
+import java.util.List;
+
 public class User {
-	public User (String vNickName, String vDesc, String vPhoto, double RatingScore)
+	public User (String vNickName, String vDesc, String vPhoto, double RatingScore, List<String> vExpertise)
 	{
 		nickName = vNickName;
 		descreption = vDesc;
 		photoURL = vPhoto;
 		userRating = RatingScore;
+		expertise = vExpertise;
 	}
 	
 	public String getNickName() {
@@ -28,5 +31,6 @@ public class User {
 	/* Members */
 	private String nickName, descreption, photoURL;
 	private double userRating;
+	List<String> expertise;
 	
 }

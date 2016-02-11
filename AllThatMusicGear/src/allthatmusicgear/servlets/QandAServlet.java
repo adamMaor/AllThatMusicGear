@@ -25,10 +25,10 @@ import com.google.gson.Gson;
 
 import allthatmusicgear.constants.DBConstants;
 import allthatmusicgear.constants.QAndAConstants;
-import allthatmusicgear.constants.UserConstants;
 import allthatmusicgear.model.Answer;
 import allthatmusicgear.model.Question;
 import allthatmusicgear.model.QuestionAnswerPair;
+import allthatmusicgear.model.TopicQRatingPair;
 
 /**
  * Servlet implementation class QandAServlet
@@ -42,6 +42,16 @@ public class QandAServlet extends HttpServlet {
     public QandAServlet() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    private boolean userAlreadyVoted(SQLException e) {
+        boolean voted;
+        if(e.getSQLState().equals("23505")) {
+        	voted = true;
+        } else {
+        	voted = false;
+        }
+        return voted;
     }
 
 	/**
@@ -65,16 +75,15 @@ public class QandAServlet extends HttpServlet {
     		BasicDataSource ds = (BasicDataSource)context.lookup(DBConstants.DB_DATASOURCE);
     		Connection conn = ds.getConnection();
     		String uri = request.getRequestURI();
-    		Collection<Question> questCollection = new ArrayList<Question>();
-    		Collection<Answer> ansCollection = new ArrayList<Answer>();
-    		Collection<QuestionAnswerPair> questAndAnsPairCollection = new ArrayList<QuestionAnswerPair>();
-    		boolean bISQuestRelated = false;
-    		boolean bIsQuestwithAns = false;
+    		Gson gson = new Gson();
+    		String JsonRes = null;
+    		
+    		//Collection<Question> questCollection = new ArrayList<Question>();
+//    		Collection<Answer> ansCollection = new ArrayList<Answer>();
     		
     		/* First Big Case - It deals with Questions */
     		if (uri.indexOf(QAndAConstants.QUESTION) != -1)
     		{
-    			bISQuestRelated = true;
     			/* First Question case - get New submitted questions */
     			if (uri.indexOf(QAndAConstants.NEW_QUESTIONS) != -1)
     			{
@@ -82,6 +91,7 @@ public class QandAServlet extends HttpServlet {
     				try {
     					stmt = conn.createStatement();
     					ResultSet QuestionRS = stmt.executeQuery(QAndAConstants.GET_NEW_QUESTIONS);
+    					Collection<Question> questCollection = new ArrayList<Question>();
     					while (QuestionRS.next())
     					{
     						int qID = QuestionRS.getInt(1);
@@ -95,6 +105,7 @@ public class QandAServlet extends HttpServlet {
 						    								qTopicList));
     					}
     					QuestionRS.close();
+    					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION); 
     					stmt.close();
     				} catch (SQLException e) {
     					getServletContext().log("Error while querying for New Questions", e);
@@ -108,6 +119,8 @@ public class QandAServlet extends HttpServlet {
     				try {
     					stmt = conn.createStatement();
     					ResultSet QuestionRS = stmt.executeQuery(QAndAConstants.GET_ALL_QUESTIONS);
+    					Collection<Question> questCollection = new ArrayList<Question>();
+
     					while (QuestionRS.next())
     					{
     						int qID = QuestionRS.getInt(1);
@@ -121,6 +134,8 @@ public class QandAServlet extends HttpServlet {
 						    								qTopicList));
     					}
     					QuestionRS.close();
+    					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION); 
+
     					stmt.close();
     				} catch (SQLException e) {
     					getServletContext().log("Error while querying for All Questions", e);
@@ -161,11 +176,23 @@ public class QandAServlet extends HttpServlet {
     			
     			else if (uri.indexOf(QAndAConstants.UPDATE_QUESTION) != -1){
     				try {
+    					// first: user has voted and we need to save the vote
+    					PreparedStatement saveVoteStmt;
+    					int qId = Integer.parseInt(request.getParameter("qId"));
+    					String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
+    					saveVoteStmt = conn.prepareStatement(QAndAConstants.ADD_QUESTION_VOTE);
+    					saveVoteStmt.setInt(1, qId);
+    					saveVoteStmt.setString(2, nickName);
+    					saveVoteStmt.executeUpdate();
+    					// commit is here - if failed will roll back!!!
+    					saveVoteStmt.close();
+    					 
     					PreparedStatement pstmt;
     					pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTION_SCORES); 
-    					pstmt.setInt(1, Integer.parseInt(request.getParameter("qId")));
+    					pstmt.setInt(1, qId);
     					int votingScoreChange = Integer.parseInt(request.getParameter("changeVS"));
     					ResultSet QuestionRS = pstmt.executeQuery();
+    					
     					while (QuestionRS.next())
     					{
     						int votingScore = QuestionRS.getInt(1);
@@ -177,17 +204,21 @@ public class QandAServlet extends HttpServlet {
     						updatePstmt.setDouble(2, answersAVGScore*0.8 + votingScore*0.2);
     						updatePstmt.setInt(3, Integer.parseInt(request.getParameter("qId")));
     						updatePstmt.executeUpdate();
-    						//commit update
-    						conn.commit();
-    						updatePstmt.close();   						
+    						updatePstmt.close();
     					}
-    					
-    					QuestionRS.close();
+    					conn.commit(); 								
+    					QuestionRS.close();   					
     					//close statements
     					pstmt.close();    			    					
     				} catch (SQLException e) {
-    					getServletContext().log("Error while Updating Question", e);
-    					response.sendError(500);//internal server error
+    					conn.rollback();
+    					if (userAlreadyVoted(e))	{
+    						response.getWriter().println("Can't vote more than once!!!");
+    					}
+    					else {
+    						getServletContext().log("Error while Updating Question", e);
+    						response.sendError(500);//internal server error    						
+    					}
     				}	
     			}
     			else if (uri.indexOf(QAndAConstants.USER_LAST_ASKED) != -1)
@@ -198,6 +229,8 @@ public class QandAServlet extends HttpServlet {
         				pstmt = conn.prepareStatement(QAndAConstants.GET_USER_LAST_QUESTION); 
         				pstmt.setString(1, strUserName);
         				ResultSet rs = pstmt.executeQuery();
+    					Collection<Question> questCollection = new ArrayList<Question>();
+
     					while (rs.next())
     					{
     						int qID = rs.getInt(1);
@@ -212,22 +245,43 @@ public class QandAServlet extends HttpServlet {
     						
     					}
     					rs.close();
-    					pstmt.close();				
+    					pstmt.close();
+    					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION); 
+
     				} catch (SQLException e) {
     					getServletContext().log("Error while fetching User last questions", e);
     					response.sendError(500);//internal server error
     				}
         		}
+    			else if (uri.indexOf(QAndAConstants.TOPIC_BY_TPOP) != -1){
+    				try {
+    					PreparedStatement pstmt;
+        				pstmt = conn.prepareStatement(QAndAConstants.GET_TOPICS_BY_POPULARITY);
+        				List<TopicQRatingPair> topicList = new ArrayList<TopicQRatingPair>();
+        				ResultSet rs = pstmt.executeQuery();
+    					while (rs.next())
+    					{
+    						topicList.add(new TopicQRatingPair(rs.getString(1), rs.getDouble(2)));   						
+    					}
+    					rs.close();
+    					pstmt.close();	
+    					JsonRes = gson.toJson(topicList, QAndAConstants.TOPIC_AND_TPOP_COLLECTION);
+    				} catch (SQLException e) {
+    					getServletContext().log("Error while fetching User last questions", e);
+    					response.sendError(500);//internal server error
+    				}
+    			}
     		}
     		/* Second Big Case - It deals with Answers */
     		else if (uri.indexOf(QAndAConstants.ANSWER) != -1)
     		{
-    			bISQuestRelated = false;
     			if (uri.indexOf(QAndAConstants.QUESTION_ANS) != -1) {    				    				
     				try{
     					PreparedStatement pstmt;
     					pstmt = conn.prepareStatement(QAndAConstants.GET_ANSWERS_TO_QUESTION); 
     					pstmt.setInt(1, Integer.parseInt(request.getParameter("qID")));
+    		    		Collection<Answer> ansCollection = new ArrayList<Answer>();
+
     					ResultSet rs = pstmt.executeQuery();
     					while (rs.next()){
     						ansCollection.add(new Answer(rs.getInt(1), 
@@ -238,7 +292,9 @@ public class QandAServlet extends HttpServlet {
 					    								rs.getInt(6)));
     					}
     					rs.close();
-    					pstmt.close();    					
+    					pstmt.close();
+    	    			JsonRes = gson.toJson(ansCollection, QAndAConstants.ANSWER_COLLECTION);
+
     				}  catch (SQLException e) {
     					getServletContext().log("Error while querying for Answers to Question", e);
     					response.sendError(500);//internal server error
@@ -267,31 +323,47 @@ public class QandAServlet extends HttpServlet {
     			
     			else if (uri.indexOf(QAndAConstants.UPDATE_ANSWER) != -1) {
     				try{
+    					// Save Vote
+    					PreparedStatement saveVoteStmt;
+    					int aId = Integer.parseInt(request.getParameter("aID"));
+    					String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
+    					saveVoteStmt = conn.prepareStatement(QAndAConstants.ADD_ANSWER_VOTE);
+    					saveVoteStmt.setInt(1, aId);
+    					saveVoteStmt.setString(2, nickName);
+    					saveVoteStmt.executeUpdate();
+    					saveVoteStmt.close();
+    					
     					PreparedStatement pstmt;
     					pstmt = conn.prepareStatement(QAndAConstants.VOTE_ANSWER); 
     					pstmt.setInt(1, Integer.parseInt(request.getParameter("changeVS")));
-    					pstmt.setInt(2, Integer.parseInt(request.getParameter("aID")));
+    					pstmt.setInt(2, aId);
     					pstmt.executeUpdate();
-    					
-    					//commit update
-    					conn.commit();
     					//close statements
-    					pstmt.close();	    				   					
+    					pstmt.close();
+    					conn.commit();
+    				   					  					
     				}  catch (SQLException e) {
-    					getServletContext().log("Error while Updating Pos Answer Vote", e);
-    					response.sendError(500);//internal server error
+    					conn.rollback();
+    					if (userAlreadyVoted(e)){
+    						response.getWriter().println("Can't vote more than once!!!");
+    					}
+    					else{
+    						getServletContext().log("Error while Updating Pos Answer Vote", e);
+    						response.sendError(500);//internal server error    						
+    					}
     				}	
     			}
     			
     			else if (uri.indexOf(QAndAConstants.USER_LAST_ANSWERED) != -1)
     				{
-    					bIsQuestwithAns = true;
     					try {
     						PreparedStatement pstmt;
     						String strUserName =  request.getParameter("userNickName");
     						pstmt = conn.prepareStatement(QAndAConstants.GET_USER_LAST_ANSWERS); 
     						pstmt.setString(1, strUserName);
     						ResultSet rs = pstmt.executeQuery();
+    			    		Collection<QuestionAnswerPair> questAndAnsPairCollection = new ArrayList<QuestionAnswerPair>();
+
     						while (rs.next()){
     							int qID = rs.getInt(1);
         						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
@@ -311,7 +383,9 @@ public class QandAServlet extends HttpServlet {
         						questAndAnsPairCollection.add(new QuestionAnswerPair(qst, ans));
         					}
     						rs.close();
-    						pstmt.close();				
+    						pstmt.close();
+    		    			JsonRes = gson.toJson(questAndAnsPairCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
+
     					} catch (SQLException e) {
     						getServletContext().log("Error while fetching User's last answers", e);
     						response.sendError(500);//internal server error
@@ -321,26 +395,19 @@ public class QandAServlet extends HttpServlet {
     		
     		
     		conn.close();
-    		Gson gson = new Gson();
-    		String JsonRes;
-    		if (bIsQuestwithAns) {
-    			JsonRes = gson.toJson(questAndAnsPairCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
-    		}
-    		else if (bISQuestRelated){
-    			JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION);  			
-    		}
-    		else{
-    			JsonRes = gson.toJson(ansCollection, QAndAConstants.ANSWER_COLLECTION);
-    		}
-    		
+    		   		
     		PrintWriter writer = response.getWriter();
     		writer.println(JsonRes);
     		writer.close();
+    		
     		
 		} catch (SQLException | NamingException e)
 		{
 			getServletContext().log("Error while closing connection", e);
     		response.sendError(500);//internal server error
+		}
+		finally {
+			
 		}
 		
 		

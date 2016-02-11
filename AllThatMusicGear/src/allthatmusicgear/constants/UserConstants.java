@@ -33,12 +33,13 @@ public interface UserConstants {
 	public final String GET_USER_AVG_A_SCORES = "SELECT AVG(app.tblAnswer.AVotingScore) FROM app.tblAnswer WHERE app.tblAnswer.AUNickName = ? ";
 	public final String UPDATE_UR_QUERY = "UPDATE app.tblUser SET app.tblUser.UserRating = ? WHERE app.tblUser.NickName=?";
 	
-	public final String GET_USER_EXPERTISE = "SELECT app.tblQuestionTopics.topic as Topic,"
-			+ "COUNT(app.tblAnswer.AVotingScore) as TotalVotes"
-			+ "FROM app.tblAnswer LEFT OUTER JOIN app.tblQuestionTopics ON app.tblAnswer.QuestionID = app.tblQuestionTopics.QID"
-			+ "WHERE app.tblAnswer.AUNickName = ?"
-			+ "GROUP BY app.tblQuestionTopics.topic"
-			+ "ORDER BY TotalVotes DESC";
+	public final String GET_USER_EXPERTISE = "SELECT app.tblQuestionTopics.topic as Topic, "
+			+ "SUM(app.tblAnswer.AVotingScore) as TotalVotes "
+			+ "FROM app.tblAnswer JOIN app.tblQuestionTopics "
+			+ "ON app.tblAnswer.QuestionID = app.tblQuestionTopics.QID "
+			+ "WHERE app.tblAnswer.AUNickName = ? "
+			+ "GROUP BY app.tblQuestionTopics.topic "
+			+ "ORDER BY TotalVotes DESC ";
 	
 	public final String GET_USER_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " +
 			"FROM app.tblUser WHERE app.tblUser.NickName=?";

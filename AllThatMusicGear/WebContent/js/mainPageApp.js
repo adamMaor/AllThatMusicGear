@@ -1,9 +1,11 @@
 var loggedInUser = "null";
 var checkLogin = function () {
 	$.get("UserServlet/GetSessionInfo", function(data, status){
-		if (data.nickName == "null"){
-			loggedInUser = data.nickName;
+		if (data.nickName == "null"){		
 			window.location.href = '/AllThatMusicGear/login.html';			
+		}
+		else{
+			loggedInUser = jQuery.parseJSON(data).nickName;
 		}
 	});
 };
@@ -129,6 +131,10 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		var parameters = { params: { qId: qID, changeVS: changeScore,} };
 		$http.get("QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
+			if (response[0] !== undefined){
+				alert(response);
+				return;
+			}
 			for (var i = 0; i < $scope.questions.length; i++){
 				if ($scope.questions[i].qID == qID){
 					$scope.questions[i].qVotingScore += changeScore;
@@ -150,9 +156,13 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	$scope.voteAnswer = function(qID, aID, changeScore)
 	{
 		checkLogin();
-		var parameters = { params: { qId: qID ,aID: aID, changeVS: changeScore,} };
+		var parameters = { params: { qId: qID ,aID: aID, changeVS: changeScore,}};
 		$http.get("QandAServlet/UpdateAnswer", parameters)
 		.success(function(response) {
+			if (response[0] !== undefined){
+				alert(response);
+				return;
+			}
 			for (var i = 0; i < $scope.questions.length; i++){
 				if ($scope.questions[i].qID == qID){
 					for (var j = 0;j < $scope.questions[i].answers.length; j++){
@@ -217,7 +227,8 @@ mainPageApp.controller('userProfile', ['$scope', '$http', '$location', function(
 	
 	$http.get("UserServlet/GetUserInfo", parameters)
 	.success(function(response) {
-		$scope.userInfo = response;
+		$scope.userInfo = angular.copy(response);
+//		alert(response);
 	});
 //	TODO: EXPERTISE doesn't work
 //	$http.get("http://localhost:8080/AllThatMusicGear/UserServlet/UserExpertise", parameters)
@@ -226,7 +237,7 @@ mainPageApp.controller('userProfile', ['$scope', '$http', '$location', function(
 //	});
 	$http.get("QandAServlet/UserLastAnswerdAnswers", parameters)
 	.success(function(response) {
-		$scope.userInfo = response;
+		$scope.userInfo.lastAnswered = angular.copy(response);
 	});
 	
 }]);

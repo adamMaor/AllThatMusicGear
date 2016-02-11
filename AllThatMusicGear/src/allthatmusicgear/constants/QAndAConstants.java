@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import allthatmusicgear.model.Answer;
 import allthatmusicgear.model.Question;
 import allthatmusicgear.model.QuestionAnswerPair;
+import allthatmusicgear.model.TopicQRatingPair;
 
 public interface QAndAConstants {
 
@@ -23,10 +24,12 @@ public interface QAndAConstants {
 	public final String UPDATE_ANSWER_NEG = "Update"+ANSWER+"Neg";
 	public final String USER_LAST_ASKED = "UserLastAsked"+QUESTION+"s";
 	public final String USER_LAST_ANSWERED = "UserLastAnswerd"+ANSWER+"s";
+	public final String TOPIC_BY_TPOP = "QuestionTopicsByTpop";
 	
 	public final Type QUESTION_COLLECTION = new TypeToken<Collection<Question>>() {}.getType();
 	public final Type ANSWER_COLLECTION = new TypeToken<Collection<Answer>>() {}.getType();
 	public final Type QUESTION__AND_ANS_COLLECTION = new TypeToken<Collection<QuestionAnswerPair>>() {}.getType();
+	public final Type TOPIC_AND_TPOP_COLLECTION = new TypeToken<Collection<TopicQRatingPair>>() {}.getType();
 	
 	
 	public final String INSERT_NEW_QUESTION = "INSERT INTO app.tblQuestion (QUNickName, QText) VALUES (?,?)";
@@ -40,31 +43,55 @@ public interface QAndAConstants {
 //										TODO: when you'd like to limit the rows you fetch
 //										+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY";
 	
-	public final String GET_ALL_QUESTIONS = "SELECT * FROM app.tblQuestion ORDER BY app.tblQuestion.QRating DESC";
+	public final String GET_ALL_QUESTIONS = "SELECT * FROM app.tblQuestion "
+			+ "ORDER BY app.tblQuestion.QRating DESC";
 	
 	public final String GET_ANSWERS_TO_QUESTION = "SELECT * FROM app.tblAnswer "
 											+ "WHERE app.tblAnswer.QuestionID = ? "
 											+ "ORDER BY app.tblAnswer.AVotingScore DESC";
 	
-	final public String GET_QUESTION_TOPICS = "SELECT Topic FROM app.tblQuestionTopics WHERE app.tblQuestionTopics.QID = ?";
+	final public String GET_QUESTION_TOPICS = "SELECT Topic FROM app.tblQuestionTopics "
+			+ "WHERE app.tblQuestionTopics.QID = ?";
 	
-	//final public String GET_QUESTIONS_BY_TOPICS = ""
+	final public String GET_QUESTIONS_BY_TOPIC = "SELECT app.tblQuestion.* "
+			+ "FROM app.tblQuestionTopics JOIN app.tblQuestion "
+			+ "ON app.tblQuestionTopics.QID = app.tblQuestion.QID "
+			+ "WHERE app.tblQuestionTopics.Topic = ?"
+			+ "ORDER BY app.tblQuestion.QRating DESC ";
+	
+	final public String GET_TOPICS_BY_POPULARITY = "SELECT tblQuestionTopics.Topic,  SUM(app.tblQuestion.QRating) as TPop "
+			+ "FROM app.tblQuestionTopics JOIN app.tblQuestion "
+			+ "ON app.tblQuestionTopics.QID = app.tblQuestion.QID "
+			+ "GROUP BY tblQuestionTopics.Topic "
+			+ "ORDER BY TPop DESC ";
+//			+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
+		
 	
 	public final String GET_QUESTION_SCORES = "SELECT app.tblQuestion.QVotingScore, AVG(app.tblAnswer.AVotingScore) as AVGAnswerScore"
 											+ " FROM app.tblQuestion LEFT OUTER JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID"
 											+ " WHERE app.tblQuestion.QID=?"
 											+ " GROUP BY app.tblQuestion.QVotingScore";
 	
-	public final String UPDATE_QUESTION_SCORES = "UPDATE app.tblQuestion SET app.tblQuestion.QVotingScore = ?, app.tblQuestion.QRating = ? WHERE app.tblQuestion.QID=?";
+	public final String UPDATE_QUESTION_SCORES = "UPDATE app.tblQuestion "
+			+ "SET app.tblQuestion.QVotingScore = ?, app.tblQuestion.QRating = ? "
+			+ "WHERE app.tblQuestion.QID=?";
+	
+	public final String ADD_QUESTION_VOTE = "INSERT INTO app.tblQuestionVotes VALUES(?,?)";
+	
+	public final String ADD_ANSWER_VOTE = "INSERT INTO app.tblAnswerVotes VALUES(?,?)";
 	
 	public final String VOTE_ANSWER = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID=?";
 		
-	public final String GET_USER_LAST_QUESTION = "SELECT * FROM app.tblQuestion WHERE app.tblQuestion.QUNickName = ?"
-			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC FETCH FIRST 5 ROWS ONLY ";
+	public final String GET_USER_LAST_QUESTION = "SELECT * FROM app.tblQuestion "
+			+ "WHERE app.tblQuestion.QUNickName = ?"
+			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC "
+			+ "FETCH FIRST 5 ROWS ONLY ";
 	
-	public final String GET_USER_LAST_ANSWERS = "SELECT * FROM app.tblQuestion JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID "
-			+ "WHERE app.tblAnswer.AUNickName = ?"
-			+ "ORDER BY app.tblAnswer.ASubmissionTime DESC FETCH FIRST 5 ROWS ONLY";
+	public final String GET_USER_LAST_ANSWERS = "SELECT * "
+			+ "FROM app.tblQuestion JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID "
+			+ "WHERE app.tblAnswer.AUNickName = ? "
+			+ "ORDER BY app.tblAnswer.ASubmissionTime DESC "
+			+ "FETCH FIRST 5 ROWS ONLY";
 
 	
 }
