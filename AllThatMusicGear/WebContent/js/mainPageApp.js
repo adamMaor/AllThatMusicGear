@@ -140,19 +140,15 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	{
 		checkLogin();
 		var elem = event.currentTarget;
-		$(elem).popover("destroy");
 		
 		var parameters = { params: { qId: qID, changeVS: changeScore,} };
 		$http.get("QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
 			if (response != undefined && response.failed){
-				$scope.qtitle = "Vote Failed";
-				$scope.qtext = response.error;
+				$scope.registerPopOver(false, elem, response.error);
 			}
 			else {
-				$scope.qtitle = "Success";
-				$scope.qtext = "Vote registered";
-				$(elem).addClass('active');
+				$scope.registerPopOver(true, elem, "");
 				for (var i = 0; i < $scope.questions.length; i++){
 					if ($scope.questions[i].qID == qID){
 						$scope.questions[i].qVotingScore += changeScore;
@@ -170,19 +166,15 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	{
 		checkLogin();
 		var elem = event.currentTarget;
-		$(elem).popover("destroy");
 		
 		var parameters = { params: { qId: qID ,aID: aID, changeVS: changeScore,}};
 		$http.get("QandAServlet/UpdateAnswer", parameters)
 		.success(function(response) {
 			if (response != undefined && response.failed){
-				$scope.atitle = "Vote Failed";
-				$scope.atext = response.error;
+				$scope.registerPopOver(false, elem, response.error);
 			}
 			else {
-				$scope.atitle = "Success";
-				$scope.atext = "Vote registered";
-				$(elem).addClass('active');
+				$scope.registerPopOver(true, elem, "");
 				for (var i = 0; i < $scope.questions.length; i++){
 					if ($scope.questions[i].qID == qID){
 						for (var j = 0;j < $scope.questions[i].answers.length; j++){
@@ -197,11 +189,22 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 					}
 				}
 			}
-			// show the popover with the response
-			$(elem).popover({title:$scope.atitle ,content: $scope.atext, trigger: "hover"});
-			$(elem).popover("show");
 		});
 	}
+	
+	$scope.registerPopOver = function (success, elem, errorText){		
+		if (success){
+			$scope.title = "Success";
+			$scope.text = "Vote registered";
+			$(elem).removeClass('btn-default').addClass('btn-primary');
+		}
+		else {
+			$scope.title = "Vote Failed";
+			$scope.text = errorText;			
+		}
+		$(elem).popover({title:$scope.title ,content: $scope.text, trigger: "hover"});
+		$(elem).popover("show");
+	};
 	
 	$scope.submitAnswer = function(qID, qText)
 	{
