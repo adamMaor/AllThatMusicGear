@@ -2,7 +2,7 @@ var loggedInUser = "null";
 var checkLogin = function () {
 	$.get("UserServlet/GetSessionInfo", function(data, status){
 		if (data.nickName == "null"){		
-			window.location.href = '/AllThatMusicGear/login.html';			
+			window.location.href = '/AllThatMusicGear/login.html';		
 		}
 		else{
 			loggedInUser = jQuery.parseJSON(data).nickName;
@@ -11,6 +11,10 @@ var checkLogin = function () {
 };
 
 var mainPageApp = angular.module('mainPageApp',[]);
+
+window.onhashchange = function() {
+	window.location.reload();
+};
 
 mainPageApp.directive('header', function(){
 	return {
@@ -70,10 +74,6 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
  }]);
 
 mainPageApp.controller('questions', ['$scope', '$http', '$location',function($scope, $http, $location) {
-	$(document).ready(function(){
-	    $('[data-toggle="popover"]').popover();   
-	});
-	
 	$scope.pageNum = 1;
 	$scope.maxPageNum = 1;
 	
@@ -136,59 +136,70 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		}	
 	}
 	
-	$scope.voteQuestion = function(qID, changeScore)
+	$scope.voteQuestion = function(qID, changeScore, event)
 	{
 		checkLogin();
+		var elem = event.currentTarget;
+		$(elem).popover("destroy");
+		
 		var parameters = { params: { qId: qID, changeVS: changeScore,} };
 		$http.get("QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
-			if (response[0] !== undefined){
-				alert(response);
-				return;
+			if (response != undefined && response.failed){
+				$scope.qtitle = "Vote Failed";
+				$scope.qtext = response.error;
 			}
-			for (var i = 0; i < $scope.questions.length; i++){
-				if ($scope.questions[i].qID == qID){
-					$scope.questions[i].qVotingScore += changeScore;
-					if ($scope.displayMode != "NewQuestions")
-					{
-						$scope.questions.sort(function(a,b)
-								{
-							return b.qVotingScore - a.qVotingScore;
-								});
+			else {
+				$scope.qtitle = "Success";
+				$scope.qtext = "Vote registered";
+				$(elem).addClass('active');
+				for (var i = 0; i < $scope.questions.length; i++){
+					if ($scope.questions[i].qID == qID){
+						$scope.questions[i].qVotingScore += changeScore;
 					}
-					return;
-						
-					}
+				}
 			}
-			//TODO in server	$scope.updateUserRating(userNickName);
+			
+			// show the popover with the response
+			$(elem).popover({title:$scope.qtitle ,content: $scope.qtext, trigger: "hover"});
+			$(elem).popover("show");
 		});
 	}
 	
-	$scope.voteAnswer = function(qID, aID, changeScore)
+	$scope.voteAnswer = function(qID, aID, changeScore, event)
 	{
 		checkLogin();
+		var elem = event.currentTarget;
+		$(elem).popover("destroy");
+		
 		var parameters = { params: { qId: qID ,aID: aID, changeVS: changeScore,}};
 		$http.get("QandAServlet/UpdateAnswer", parameters)
 		.success(function(response) {
-			if (response[0] !== undefined){
-				alert(response);
-				return;
+			if (response != undefined && response.failed){
+				$scope.atitle = "Vote Failed";
+				$scope.atext = response.error;
 			}
-			for (var i = 0; i < $scope.questions.length; i++){
-				if ($scope.questions[i].qID == qID){
-					for (var j = 0;j < $scope.questions[i].answers.length; j++){
-						if ($scope.questions[i].answers[j].aID == aID){
-							$scope.questions[i].answers[j].aVotingScore += changeScore;
-							$scope.questions[i].answers.sort(function(a,b)
-									{
-										return b.aVotingScore - a.aVotingScore;
-									});
-							return;
+			else {
+				$scope.atitle = "Success";
+				$scope.atext = "Vote registered";
+				$(elem).addClass('active');
+				for (var i = 0; i < $scope.questions.length; i++){
+					if ($scope.questions[i].qID == qID){
+						for (var j = 0;j < $scope.questions[i].answers.length; j++){
+							if ($scope.questions[i].answers[j].aID == aID){
+								$scope.questions[i].answers[j].aVotingScore += changeScore;
+								$scope.questions[i].answers.sort(function(a,b)
+										{
+											return b.aVotingScore - a.aVotingScore;
+										});
+							}
 						}
 					}
 				}
 			}
-			//TODO in server	$scope.updateUserRating(userNickName);
+			// show the popover with the response
+			$(elem).popover({title:$scope.atitle ,content: $scope.atext, trigger: "hover"});
+			$(elem).popover("show");
 		});
 	}
 	

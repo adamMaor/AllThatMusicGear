@@ -13,14 +13,16 @@
 			</nav>
 		</span>
 		</div>
-   	<div class="row" ng-repeat="qstn in questions">
+
+   	<div class="row" post-repeat-directive ng-repeat="qstn in questions">
 	   	<div class="col-md-10" id="Element">
 	       	<div class="col-md-1" id="votingScore"> 
-	        	<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, 1)">
-				<span class="glyphicon glyphicon-menu-up" aria-hidden="true" ></span>
+<!-- 	       	 data-toggle="popover" data-trigger="focus" data-title="{{popOverText.title}}" data-content="{{popOverText.text}}" -->
+	        	<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, 1, $event)">
+					<span class="glyphicon glyphicon-menu-up" aria-hidden="true" ></span>
 				</button>
 				<br>{{qstn.qVotingScore}}<br>
-				<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, -1)">
+				<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteQuestion(qstn.qID, -1, $event)">
 				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 				</button>
 			</div>
@@ -29,14 +31,14 @@
 		       		<p>{{qstn.qText}}</p>
 	       		</div>
 	       		<div class="row">
-		       		<p> question rating: {{qstn.qRating | number:2}}</p>
-		       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
-		       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
-		       		<div class="container">
-						<span><b>Topics:</b></span>
-			       		<span ng-repeat="topics in qstn.qTopics" id="topics">
-			       			<a ng-href="questionsbytopic.html#/#{{topics}}">{{topics}}</a>
-			       		</span>
+		       		<div class="col-md-12">
+			       		<p> question rating: {{qstn.qRating | number:2}}</p>
+			       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
+			       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
+							<span><b>Topics:</b></span>
+				       		<span ng-repeat="topics in qstn.qTopics" id="topics">
+				       			<a ng-href="questionsbytopic.html#/#{{topics}}">{{topics}}</a>
+				       		</span>
 		       		</div>
 		       	</div>
 		       	<div class="row">
@@ -61,11 +63,11 @@
 		<div class="row" id="answers" >
 			<div class ="col-md-8 col-md-offset-1" ng-repeat="anwr in qstn.answers" ng-show="$index==0 || expandAnswers">
 				<div class="col-md-1" id="votingScore"> 
-		        	<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteAnswer(qstn.qID ,anwr.aID, 1)">
+		        	<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteAnswer(qstn.qID ,anwr.aID, 1, $event)">
 					<span class="glyphicon glyphicon-menu-up" aria-hidden="true" ></span>
 					</button>
 					<br>{{anwr.aVotingScore}}<br>
-					<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteAnswer(qstn.qID ,anwr.aID, -1)">
+					<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="voteAnswer(qstn.qID ,anwr.aID, -1, $event)">
 					<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 					</button>
 				</div>
@@ -76,7 +78,7 @@
 		       		<div class="row">
 		       			<p>answerID: {{anwr.aID}}</p>
 			       		<p>nickname: <b>{{anwr.aUserNickName}}</b></p>
-			       		<p>date : {{anwr.aSubDate | date:'medium' }}</p>
+			       		<p>date : {{anwr.aSubDate | date:'dd/MM/yyyy HH:mm:ss' }}</p>
 		       		</div>
 				</div>
 			</div>

@@ -215,8 +215,8 @@ public class QandAServlet extends HttpServlet {
     					pstmt.close();    			    					
     				} catch (SQLException e) {
     					conn.rollback();
-    					if (userAlreadyVoted(e))	{
-    						response.getWriter().println("Can't vote more than once!!!");
+    					if (userAlreadyVoted(e)) {
+    						JsonRes = "{\"failed\":\"true\",\"error\":\"Cannot vote question twice\"}";
     					}
     					else {
     						getServletContext().log("Error while Updating Question", e);
@@ -374,7 +374,7 @@ public class QandAServlet extends HttpServlet {
     				}  catch (SQLException e) {
     					conn.rollback();
     					if (userAlreadyVoted(e)){
-    						response.getWriter().println("Can't vote more than once!!!");
+    						JsonRes = "{\"failed\":\"true\",\"error\":\"Cannot vote answer twice\"}";
     					}
     					else{
     						getServletContext().log("Error while Updating Pos Answer Vote", e);
