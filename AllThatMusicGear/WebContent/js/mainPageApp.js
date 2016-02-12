@@ -79,19 +79,26 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	
 	var url = window.location.pathname;
 	if (url.search("newquestions") != -1){
-		$scope.displayMode = "NewQuestions";
+		$scope.questionMode = "NewQuestions";
+		$scope.Title = "New Questions:";
+	}
+	else if (url.search("topquestions") != -1){
+		$scope.questionMode = "AllQuestions";
+		$scope.Title = "Top Questions:";
 	}
 	else {
-		$scope.displayMode = "AllQuestions";
+		$scope.Topic = $location.hash();
+		$scope.questionMode = "QuestionsByTopic";
+		$scope.Title = "Questions By Topic - " + $scope.Topic;
+		var parameter = { params: { topic: $scope.Topic,} };
 	}
 	
-	
 	$scope.updateQuestions = function(){
-		$http.get("QandAServlet/" + $scope.displayMode)
+		$http.get("QandAServlet/" + $scope.questionMode, parameter)
 		.success(function(response) {
 			$scope.questions = angular.copy(response);
 			$scope.qNewCounter = 0;
-			$scope.maxPageNum = parseInt($scope.questions.length/20) + 1;
+			$scope.maxPageNum = parseInt(($scope.questions.length-1)/20) + 1;
 			$scope.questions = $scope.questions.slice(($scope.pageNum-1)*20,$scope.pageNum*20)
 			for (var i =0;i < $scope.questions.length; i++) {
 				var parameters = {
@@ -136,7 +143,8 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$http.get("QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
 			if (response[0] !== undefined){
-			
+				alert(response);
+				return;
 			}
 			for (var i = 0; i < $scope.questions.length; i++){
 				if ($scope.questions[i].qID == qID){
@@ -273,6 +281,10 @@ mainPageApp.controller('leaderboardCtrl', ['$scope', '$http', function($scope, $
 			$scope.updateLeaderboard();
 		}	
 	}
+}]);
+
+mainPageApp.controller('questionsByTopic', ['$scope', '$http', function($scope, $http) {
+	
 }]);
 
 mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http) {

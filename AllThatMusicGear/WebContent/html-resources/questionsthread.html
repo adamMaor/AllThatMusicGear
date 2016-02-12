@@ -1,15 +1,18 @@
 <div class="container" id="questions" ng-controller="questions">
 	<div class="row">
-	<span class="col-md-4">
-		<nav>
-  			<ul class="pager">
-			    <li><a href="#" ng-click="prevPage()">Previous</a></li>
-			    <b>[{{pageNum}}/{{maxPageNum}}]</b>
-			    <li><a href="#" ng-click="nextPage()">Next</a></li>
-  			</ul>
-		</nav>
-	</span>
+		<h2>{{Title}}</h2>
 	</div>
+	<div class="row">
+		<span class="col-md-4">
+			<nav>
+	  			<ul class="pager">
+				    <li><a href="#" ng-click="prevPage()">Previous</a></li>
+				    <b>[{{pageNum}}/{{maxPageNum}}]</b>
+				    <li><a href="#" ng-click="nextPage()">Next</a></li>
+	  			</ul>
+			</nav>
+		</span>
+		</div>
    	<div class="row" ng-repeat="qstn in questions">
 	   	<div class="col-md-10" id="Element">
 	       	<div class="col-md-1" id="votingScore"> 
@@ -31,7 +34,9 @@
 		       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
 		       		<div class="container">
 						<span><b>Topics:</b></span>
-			       		<span ng-repeat="t in qstn.qTopics" id="topics">{{t}}</span>
+			       		<span ng-repeat="topics in qstn.qTopics" id="topics">
+			       			<a ng-href="questionsbytopic.html#/#{{topics}}">{{topics}}</a>
+			       		</span>
 		       		</div>
 		       	</div>
 		       	<div class="row">
