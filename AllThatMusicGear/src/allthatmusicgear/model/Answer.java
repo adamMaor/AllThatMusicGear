@@ -10,6 +10,7 @@ package allthatmusicgear.model;
  */
 public class Answer {
 		
+	
 	/**
 	 * @param aID
 	 * @param qID
@@ -18,7 +19,8 @@ public class Answer {
 	 * @param aSubDate
 	 * @param aVotingScore
 	 */
-	public Answer(int aID, int qID, String aUserNickName, String aText, long submissionTimeStamp, int aVotingScore) {
+	public Answer(int aID, int qID, String aUserNickName, String aText, long submissionTimeStamp, int aVotingScore, 
+			String usrPhoto, double usrRating, int lgdUsrVote) {
 		super();
 		this.aID = aID;
 		this.qID = qID;
@@ -26,6 +28,9 @@ public class Answer {
 		this.aText = aText;
 		this.aSubDate = submissionTimeStamp;
 		this.aVotingScore = aVotingScore;
+		this.userPhoto = usrPhoto;
+		this.userRating = usrRating;
+		this.loggedUserVote = lgdUsrVote;
 	}
 	/**
 	 * @return the aVotingScore
@@ -78,4 +83,7 @@ public class Answer {
 	private int aID, qID, aVotingScore;
 	private long aSubDate;
 	private String aUserNickName, aText;
+	private String userPhoto;
+	private double userRating;
+	private int loggedUserVote;
 }

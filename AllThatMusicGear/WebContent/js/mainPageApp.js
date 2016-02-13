@@ -76,6 +76,7 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 mainPageApp.controller('questions', ['$scope', '$http', '$location',function($scope, $http, $location) {
 	$scope.pageNum = 1;
 	$scope.maxPageNum = 1;
+	$scope.Topic = "";
 	
 	var url = window.location.pathname;
 	if (url.search("newquestions") != -1){
@@ -90,33 +91,16 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$scope.Topic = $location.hash();
 		$scope.questionMode = "QuestionsByTopic";
 		$scope.Title = "Questions By Topic - " + $scope.Topic;
-		var parameter = { params: { topic: $scope.Topic,} };
 	}
+	var parameter = { params: { topic: $scope.Topic, pageNum: $scope.pageNum,} };
 	
 	$scope.updateQuestions = function(){
 		$http.get("QandAServlet/" + $scope.questionMode, parameter)
 		.success(function(response) {
-			$scope.questions = angular.copy(response);
-			$scope.qNewCounter = 0;
-			$scope.maxPageNum = parseInt(($scope.questions.length-1)/20) + 1;
-			$scope.questions = $scope.questions.slice(($scope.pageNum-1)*20,$scope.pageNum*20)
-			for (var i =0;i < $scope.questions.length; i++) {
-				var parameters = {
-						params: {
-							qID: $scope.questions[i].qID,
-						}
-				};
-				$http.get("QandAServlet/AnswersOfQ", parameters)
-				.success(function(response) {
-					if(response[0] !== undefined){
-						for (var j =0;j < $scope.questions.length; j++){
-							if ($scope.questions[j].qID == response[0].qID){
-								$scope.questions[j].answers = angular.copy(response);
-							}
-						}
-					}
-				});
-			}
+			$scope.questions = response.questions;				
+			var totalQustions = parseInt(response.numQuestion);
+			$scope.maxPageNum = parseInt(totalQustions/20 + 1);
+			debugger;
 		});
 	};
 	
@@ -125,6 +109,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	$scope.nextPage = function(){
 		if ($scope.pageNum < $scope.maxPageNum){
 			$scope.pageNum += 1;
+			parameter = { params: { topic: $scope.Topic, pageNum: $scope.pageNum,} };
 			$scope.updateQuestions();
 		}
 	}
@@ -132,6 +117,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	$scope.prevPage = function(){
 		if ($scope.pageNum > 1){
 			$scope.pageNum -= 1;
+			parameter = { params: { topic: $scope.Topic, pageNum: $scope.pageNum,} };
 			$scope.updateQuestions();
 		}	
 	}
@@ -150,8 +136,8 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 			else {
 				$scope.registerPopOver(true, elem, "");
 				for (var i = 0; i < $scope.questions.length; i++){
-					if ($scope.questions[i].qID == qID){
-						$scope.questions[i].qVotingScore += changeScore;
+					if ($scope.questions[i].qst,qID == qID){
+						$scope.questions[i].qst.qVotingScore += changeScore;
 					}
 				}
 			}
@@ -176,11 +162,11 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 			else {
 				$scope.registerPopOver(true, elem, "");
 				for (var i = 0; i < $scope.questions.length; i++){
-					if ($scope.questions[i].qID == qID){
-						for (var j = 0;j < $scope.questions[i].answers.length; j++){
-							if ($scope.questions[i].answers[j].aID == aID){
-								$scope.questions[i].answers[j].aVotingScore += changeScore;
-								$scope.questions[i].answers.sort(function(a,b)
+					if ($scope.questions[i].qst.qID == qID){
+						for (var j = 0;j < $scope.questions[i].ans.length; j++){
+							if ($scope.questions[i].ans[j].aID == aID){
+								$scope.questions[i].ans[j].aVotingScore += changeScore;
+								$scope.questions[i].ans.sort(function(a,b)
 										{
 											return b.aVotingScore - a.aVotingScore;
 										});
@@ -217,10 +203,6 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		};
 		$http.get("QandAServlet/InsertAnswer", parameters)
 		.success(function(response) {
-			//First of all updating the questing Rating
-			// TODO-server should be done on server $scope.updateQuestionDueToAnswerChange($scope.qToAnser);
-			//now updated the answer submiter Rating 
-			// TODO-server $scope.updateUserRating($scope.logedInUser);
 			var parameters = {
 					params: {
 						qID: qID,
@@ -230,8 +212,8 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 			.success(function(response) {
 				if(response[0] !== undefined){
 					for (var i = 0; i < $scope.questions.length; i++){
-						if ($scope.questions[i].qID == qID){
-							$scope.questions[i].answers = response;
+						if ($scope.questions[i].qst.qID == qID){
+							$scope.questions[i].ans = response;
 						}
 					}
 				}

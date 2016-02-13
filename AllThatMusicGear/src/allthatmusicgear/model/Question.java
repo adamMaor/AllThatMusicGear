@@ -15,7 +15,7 @@ public class Question {
 	 * @param qTopics
 	 */
 	public Question(int qID, String qUserNickName, String qText, long submissionTimeStamp, int qVotingScore, double qRating,
-			List<String> qTopics) {
+			List<String> qTopics, String usrPhoto, double usrRating, int lgdUsrVote) {
 		super();
 		this.qID = qID;
 		this.qUserNickName = qUserNickName;
@@ -24,6 +24,9 @@ public class Question {
 		this.qVotingScore = qVotingScore;
 		this.qRating = qRating;
 		this.qTopics = qTopics;
+		this.userPhoto = usrPhoto;
+		this.userRating = usrRating;
+		this.loggedUserVote = lgdUsrVote;
 	}
 	/**
 	 * @return the qVotingScore
@@ -106,5 +109,9 @@ public class Question {
 	private String qUserNickName, qText;
 	private double qRating;
 	private List<String> qTopics;
+	private String userPhoto;
+	private double userRating;
+	private int loggedUserVote;
+	
 	
 }

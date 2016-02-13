@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -29,6 +31,7 @@ import allthatmusicgear.constants.UserConstants;
 import allthatmusicgear.model.Answer;
 import allthatmusicgear.model.Question;
 import allthatmusicgear.model.QuestionAnswerPair;
+import allthatmusicgear.model.QuestionWithAnswers;
 import allthatmusicgear.model.TopicQRatingPair;
 
 /**
@@ -68,6 +71,77 @@ public class QandAServlet extends HttpServlet {
 		TopicRS.close();
 		pstmt.close();
 		return qTopicList;
+	}
+	
+	private int getUserVote(String qOrAUserNickName, String loggedUserNickName, Map<Integer, Integer> userAnsOrQstMap, int ID) throws SQLException
+	{
+		// if doesn't exist - 0
+		int currUserVoteForAns = 0;
+		// if belongs to current logged user - -2
+		if (qOrAUserNickName.equals(loggedUserNickName)){
+			currUserVoteForAns = -2;
+		}
+		// if voted - what value did he vote
+		else if (userAnsOrQstMap.containsKey(ID))
+		{
+			currUserVoteForAns = userAnsOrQstMap.get(ID);
+		}
+		return currUserVoteForAns;
+	}
+	
+	private List<Answer> getQuestionAnswers(int qID, Connection conn, String LoggedUserNickName) throws SQLException
+	{
+		List<Answer> qAnswerList = new ArrayList<Answer>();
+		PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(QAndAConstants.GET_ANSWERS_TO_QUESTION); 
+		pstmt.setInt(1, qID);		
+		Map<Integer, Integer> userAnsMap = getCurrUserAnsVoteMap(LoggedUserNickName, conn);
+
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()){
+			int aID = rs.getInt(1);
+			String answerUserNickName = getUserNickNameFromAid(aID, conn);
+			int currUserVoteForAns = getUserVote(answerUserNickName, LoggedUserNickName, userAnsMap, aID);
+
+			qAnswerList.add(new Answer(rs.getInt(1), 
+	    								rs.getInt(2), 
+	    								rs.getString(3), 
+	    								rs.getString(4), 
+	    								rs.getTimestamp(5).getTime(), 
+	    								rs.getInt(6),
+										rs.getString(7),
+										rs.getDouble(8),
+										currUserVoteForAns));
+		}
+		rs.close();
+		pstmt.close();		
+		return qAnswerList;
+	}
+	
+	private Map<Integer, Integer> getCurrUserQstVoteMap(String userNickName, Connection conn) throws SQLException
+	{
+		Map<Integer, Integer> resMap = new HashMap<Integer, Integer>();
+		PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(UserConstants.GET_USER_QST_VOTE);
+		pstmt.setString(1, userNickName);
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()){
+			resMap.put(rs.getInt(1), rs.getInt(2));
+		}
+		return resMap;
+	}
+	
+	private Map<Integer, Integer> getCurrUserAnsVoteMap(String userNickName, Connection conn) throws SQLException
+	{
+		Map<Integer, Integer> resMap = new HashMap<Integer, Integer>();
+		PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(UserConstants.GET_USER_ANS_VOTE);
+		pstmt.setString(1, userNickName);
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()){
+			resMap.put(rs.getInt(1), rs.getInt(2));
+		}
+		return resMap;
 	}
 	
 	private void updateUserRating(String userNickName, Connection conn) throws SQLException
@@ -172,6 +246,7 @@ public class QandAServlet extends HttpServlet {
     		BasicDataSource ds = (BasicDataSource)context.lookup(DBConstants.DB_DATASOURCE);
     		Connection conn = ds.getConnection();
     		String uri = request.getRequestURI();
+    		String loggedUserNickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
     		Gson gson = new Gson();
     		String JsonRes = null;  		
     		
@@ -181,26 +256,48 @@ public class QandAServlet extends HttpServlet {
     			/* First Question case - get New submitted questions */
     			if (uri.indexOf(QAndAConstants.NEW_QUESTIONS) != -1)
     			{
-    				Statement stmt;
     				try {
-    					stmt = conn.createStatement();
-    					ResultSet QuestionRS = stmt.executeQuery(QAndAConstants.GET_NEW_QUESTIONS);
-    					Collection<Question> questCollection = new ArrayList<Question>();
+    					Integer totalQuestionCount = 0;
+    					Statement countQuestions = conn.createStatement();
+    					ResultSet questionCountRs = countQuestions.executeQuery(QAndAConstants.COUNT_NEW_QUESTIONS);
+    					if (questionCountRs.next()){
+    						totalQuestionCount = questionCountRs.getInt(1);
+    					}
+    					
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.GET_NEW_QUESTIONS);
+    					int offset = 20 * (Integer.parseInt(request.getParameter("pageNum")) - 1);
+    					pstmt.setInt(1, offset);
+    					ResultSet QuestionRS = pstmt.executeQuery();
+    					Map<Integer, Integer> userQstVoteMap = getCurrUserQstVoteMap(loggedUserNickName, conn); 
+    					
+    					Collection<QuestionWithAnswers> questCollection = new ArrayList<QuestionWithAnswers>();
     					while (QuestionRS.next())
     					{
     						int qID = QuestionRS.getInt(1);
+    						String questionUserNickName = QuestionRS.getString(2);
+    						int currUserVoted = getUserVote(questionUserNickName, loggedUserNickName, userQstVoteMap, qID);
     						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
-    						questCollection.add(new Question(QuestionRS.getInt(1), 
-						    								QuestionRS.getString(2), 
+    						Question newQuestion = new Question(qID, 
+    														questionUserNickName, 
 						    								QuestionRS.getString(3), 
 						    								QuestionRS.getTimestamp(4).getTime(), 
 						    								QuestionRS.getInt(5), 
 						    								QuestionRS.getDouble(6), 
-						    								qTopicList));
+						    								qTopicList,
+						    								QuestionRS.getString(7),
+						    								QuestionRS.getDouble(8),
+						    								currUserVoted);
+    						// no answers here
+    						List<Answer> qAnswers = new ArrayList<Answer>();
+    						questCollection.add(new QuestionWithAnswers(newQuestion, qAnswers));
     					}
     					QuestionRS.close();
-    					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION); 
-    					stmt.close();
+    					pstmt.close();
+
+    					JsonRes = "{\"numQuestion\":" + totalQuestionCount.toString() + ", \"questions\":";
+    					JsonRes += gson.toJson(questCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
+    					JsonRes += "}";
     				} catch (SQLException e) {
     					getServletContext().log("Error while querying for New Questions", e);
     					response.sendError(500);//internal server error
@@ -209,28 +306,48 @@ public class QandAServlet extends HttpServlet {
     			
     			else if (uri.indexOf(QAndAConstants.ALL_QUESTIONS) != -1)
     			{
-    				Statement stmt;
     				try {
-    					stmt = conn.createStatement();
-    					ResultSet QuestionRS = stmt.executeQuery(QAndAConstants.GET_ALL_QUESTIONS);
-    					Collection<Question> questCollection = new ArrayList<Question>();
+    					Integer totalQuestionCount = 0;
+    					Statement countQuestions = conn.createStatement();
+    					ResultSet questionCountRs = countQuestions.executeQuery(QAndAConstants.COUNT_ALL_QUESTIONS);
+    					if (questionCountRs.next()){
+    						totalQuestionCount = questionCountRs.getInt(1);
+    					}
+    					
+    					PreparedStatement pstmt;
+    					pstmt = conn.prepareStatement(QAndAConstants.GET_ALL_QUESTIONS);
+    					int offset = 20 * (Integer.parseInt(request.getParameter("pageNum")) - 1);
+    					pstmt.setInt(1, offset);
+    					Map<Integer, Integer> userQstVoteMap = getCurrUserQstVoteMap(loggedUserNickName, conn); 
+    					Collection<QuestionWithAnswers> questCollection = new ArrayList<QuestionWithAnswers>();
+    					ResultSet QuestionRS = pstmt.executeQuery();
 
     					while (QuestionRS.next())
     					{
     						int qID = QuestionRS.getInt(1);
-    						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
-    						questCollection.add(new Question(QuestionRS.getInt(1), 
-						    								QuestionRS.getString(2), 
+    						String questionUserNickName = QuestionRS.getString(2);
+    						int currUserVoted = getUserVote(questionUserNickName, loggedUserNickName, userQstVoteMap, qID);
+    						List<String> qTopicList = getQuestionTopics(qID, conn); 
+    						Question newQuestion = new Question(qID, 
+    														questionUserNickName, 
 						    								QuestionRS.getString(3), 
 						    								QuestionRS.getTimestamp(4).getTime(), 
 						    								QuestionRS.getInt(5), 
 						    								QuestionRS.getDouble(6), 
-						    								qTopicList));
+						    								qTopicList,
+						    								QuestionRS.getString(7),
+						    								QuestionRS.getDouble(8),
+						    								currUserVoted);
+    						List<Answer> qAnswers = getQuestionAnswers(qID, conn, loggedUserNickName);
+    						questCollection.add(new QuestionWithAnswers(newQuestion, qAnswers));
     					}
     					QuestionRS.close();
-    					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION); 
+    					pstmt.close();
 
-    					stmt.close();
+    					JsonRes = "{\"numQuestion\":" + totalQuestionCount.toString() + ", \"questions\":";
+    					JsonRes += gson.toJson(questCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
+    					JsonRes += "}";
+
     				} catch (SQLException e) {
     					getServletContext().log("Error while querying for All Questions", e);
     					response.sendError(500);//internal server error
@@ -276,14 +393,14 @@ public class QandAServlet extends HttpServlet {
     					// first: user has voted and we need to save the vote
     					PreparedStatement saveVoteStmt;
     					int qId = Integer.parseInt(request.getParameter("qId"));
-    					String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
+    					int votingScoreChange = Integer.parseInt(request.getParameter("changeVS"));
     					saveVoteStmt = conn.prepareStatement(QAndAConstants.ADD_QUESTION_VOTE);
     					saveVoteStmt.setInt(1, qId);
-    					saveVoteStmt.setString(2, nickName);
+    					saveVoteStmt.setString(2, loggedUserNickName);
+    					saveVoteStmt.setInt(3, votingScoreChange);
     					saveVoteStmt.executeUpdate();
     					// commit is here - if failed will roll back!!!
     					saveVoteStmt.close();
-    					int votingScoreChange = Integer.parseInt(request.getParameter("changeVS"));
     					
     					// now update the question scores
     					updateQuestionScores(qId, votingScoreChange, conn);    					 
@@ -311,23 +428,29 @@ public class QandAServlet extends HttpServlet {
     					String strUserName =  request.getParameter("userNickName");
         				pstmt = conn.prepareStatement(QAndAConstants.GET_USER_LAST_QUESTION); 
         				pstmt.setString(1, strUserName);
-        				ResultSet rs = pstmt.executeQuery();
-    					Collection<Question> questCollection = new ArrayList<Question>();
+        				Collection<Question> questCollection = new ArrayList<Question>();
+        				Map<Integer, Integer> userQstVoteMap = getCurrUserQstVoteMap(loggedUserNickName, conn);
+        				ResultSet QuestionRS = pstmt.executeQuery();
 
-    					while (rs.next())
+    					while (QuestionRS.next())
     					{
-    						int qID = rs.getInt(1);
+    						int qID = QuestionRS.getInt(1);
+    						String questionUserNickName = QuestionRS.getString(2);
+    						int currUserVoted = getUserVote(questionUserNickName, loggedUserNickName, userQstVoteMap, qID);
     						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
     						questCollection.add(new Question(qID, 
-						    								rs.getString(2), 
-						    								rs.getString(3), 
-						    								rs.getTimestamp(4).getTime(), 
-						    								rs.getInt(5), 
-						    								rs.getDouble(6), 
-						    								qTopicList));
+    														questionUserNickName, 
+						    								QuestionRS.getString(3), 
+						    								QuestionRS.getTimestamp(4).getTime(), 
+						    								QuestionRS.getInt(5), 
+						    								QuestionRS.getDouble(6), 
+						    								qTopicList,
+						    								QuestionRS.getString(7),
+						    								QuestionRS.getDouble(8),
+						    								currUserVoted));
     						
     					}
-    					rs.close();
+    					QuestionRS.close();
     					pstmt.close();
     					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION); 
 
@@ -359,20 +482,27 @@ public class QandAServlet extends HttpServlet {
     					PreparedStatement pstmt;
         				pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTIONS_BY_TOPIC);
         				pstmt.setString(1, request.getParameter("topic"));
-        				Collection<Question> questCollection = new ArrayList<Question>();        				ResultSet rs = pstmt.executeQuery();
-    					while (rs.next())
+        				Collection<Question> questCollection = new ArrayList<Question>();
+        				Map<Integer, Integer> userQstVoteMap = getCurrUserQstVoteMap(loggedUserNickName, conn);
+        				ResultSet QuestionRS = pstmt.executeQuery();
+    					while (QuestionRS.next())
     					{
-    						int qID = rs.getInt(1);
+    						int qID = QuestionRS.getInt(1);
+    						String questionUserNickName = QuestionRS.getString(2);
+    						int currUserVoted = getUserVote(questionUserNickName, loggedUserNickName, userQstVoteMap, qID);
     						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
     						questCollection.add(new Question(qID, 
-						    								rs.getString(2), 
-						    								rs.getString(3), 
-						    								rs.getTimestamp(4).getTime(), 
-						    								rs.getInt(5), 
-						    								rs.getDouble(6), 
-						    								qTopicList));   						
+    														questionUserNickName, 
+						    								QuestionRS.getString(3), 
+						    								QuestionRS.getTimestamp(4).getTime(), 
+						    								QuestionRS.getInt(5), 
+						    								QuestionRS.getDouble(6), 
+						    								qTopicList,
+						    								QuestionRS.getString(7),
+						    								QuestionRS.getDouble(8),
+						    								currUserVoted));
     					}
-    					rs.close();
+    					QuestionRS.close();
     					pstmt.close();	
     					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION);  
     					} catch (SQLException e) {
@@ -386,22 +516,8 @@ public class QandAServlet extends HttpServlet {
     		{
     			if (uri.indexOf(QAndAConstants.QUESTION_ANS) != -1) {    				    				
     				try{
-    					PreparedStatement pstmt;
-    					pstmt = conn.prepareStatement(QAndAConstants.GET_ANSWERS_TO_QUESTION); 
-    					pstmt.setInt(1, Integer.parseInt(request.getParameter("qID")));
-    		    		Collection<Answer> ansCollection = new ArrayList<Answer>();
-
-    					ResultSet rs = pstmt.executeQuery();
-    					while (rs.next()){
-    						ansCollection.add(new Answer(rs.getInt(1), 
-					    								rs.getInt(2), 
-					    								rs.getString(3), 
-					    								rs.getString(4), 
-					    								rs.getTimestamp(5).getTime(), 
-					    								rs.getInt(6)));
-    					}
-    					rs.close();
-    					pstmt.close();
+    					int qID = Integer.parseInt(request.getParameter("qID"));
+    					Collection<Answer> ansCollection = getQuestionAnswers(qID, conn, loggedUserNickName);
     	    			JsonRes = gson.toJson(ansCollection, QAndAConstants.ANSWER_COLLECTION);
 
     				}  catch (SQLException e) {
@@ -411,7 +527,7 @@ public class QandAServlet extends HttpServlet {
     			}
     			
     			
-    			else if (uri.indexOf(QAndAConstants.INSERT_ANSWER) != -1){
+    			if (uri.indexOf(QAndAConstants.INSERT_ANSWER) != -1){
     				try{
     					PreparedStatement pstmt;
     					String loggedInUser = (String)request.getSession().getAttribute("LoggedInUserNickName");
@@ -449,16 +565,17 @@ public class QandAServlet extends HttpServlet {
     					PreparedStatement saveVoteStmt;
     					int aId = Integer.parseInt(request.getParameter("aID"));
     					int qId = Integer.parseInt(request.getParameter("qID"));
-    					String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
+    					int newVote = Integer.parseInt(request.getParameter("changeVS"));
     					saveVoteStmt = conn.prepareStatement(QAndAConstants.ADD_ANSWER_VOTE);
     					saveVoteStmt.setInt(1, aId);
-    					saveVoteStmt.setString(2, nickName);
+    					saveVoteStmt.setString(2, loggedUserNickName);
+    					saveVoteStmt.setInt(3, newVote);
     					saveVoteStmt.executeUpdate();
     					saveVoteStmt.close();
     					
     					PreparedStatement pstmt;
     					pstmt = conn.prepareStatement(QAndAConstants.VOTE_ANSWER); 
-    					pstmt.setInt(1, Integer.parseInt(request.getParameter("changeVS")));
+    					pstmt.setInt(1, newVote);
     					pstmt.setInt(2, aId);
     					pstmt.executeUpdate();
     					//close statements
@@ -494,25 +611,37 @@ public class QandAServlet extends HttpServlet {
     						String strUserName =  request.getParameter("userNickName");
     						pstmt = conn.prepareStatement(QAndAConstants.GET_USER_LAST_ANSWERS); 
     						pstmt.setString(1, strUserName);
-    						ResultSet rs = pstmt.executeQuery();
     			    		Collection<QuestionAnswerPair> questAndAnsPairCollection = new ArrayList<QuestionAnswerPair>();
+    			    		Map<Integer, Integer> userQstVoteMap = getCurrUserQstVoteMap(loggedUserNickName, conn);
+    			    		Map<Integer, Integer> userAnsVoteMap = getCurrUserQstVoteMap(loggedUserNickName, conn);
+    			    		ResultSet rs = pstmt.executeQuery();
 
     						while (rs.next()){
     							int qID = rs.getInt(1);
+    							int aID = rs.getInt(9);
+    							String UserNickName = rs.getString(2); 
+    							int currUserQstVoted = getUserVote(UserNickName, loggedUserNickName, userQstVoteMap, qID);
+    							int currUserAnsVoted = getUserVote(UserNickName, loggedUserNickName, userAnsVoteMap, aID);
         						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
-        						Question qst = new Question(	rs.getInt(1), 
+        						Question qst = new Question(	qID, 
     						    								rs.getString(2), 
     						    								rs.getString(3), 
     						    								rs.getTimestamp(4).getTime(), 
     						    								rs.getInt(5), 
     						    								rs.getDouble(6), 
-    						    								qTopicList);
-        						Answer ans = new Answer(	rs.getInt(7), 
-    					    								rs.getInt(8), 
-    					    								rs.getString(9), 
-    					    								rs.getString(10), 
-    					    								rs.getTimestamp(11).getTime(), 
-    					    								rs.getInt(12));
+    						    								qTopicList,
+    						    								rs.getString(7),
+    						    								rs.getDouble(8),
+    						    								currUserQstVoted);
+        						Answer ans = new Answer(	aID, 
+    					    								rs.getInt(10), 
+    					    								rs.getString(11), 
+    					    								rs.getString(12), 
+    					    								rs.getTimestamp(13).getTime(), 
+    					    								rs.getInt(14),
+    					    								rs.getString(15),
+						    								rs.getDouble(16),
+						    								currUserAnsVoted);
         						questAndAnsPairCollection.add(new QuestionAnswerPair(qst, ans));
         					}
     						rs.close();

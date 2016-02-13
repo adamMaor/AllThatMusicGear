@@ -37,13 +37,13 @@ public interface CreateTablesConstants {
 	+ "FOREIGN KEY(AUNickName) REFERENCES app.tblUser(NickName))";
 	
 	public final String CREATE_QUESTION_VOTES_TABLE = "CREATE TABLE app.tblQuestionVotes"
-			+ "(QID INT, UNickName VARCHAR(20),"
+			+ "(QID INT, UNickName VARCHAR(20), Vote INT, "
 			+ "PRIMARY KEY (QID, UNickName),"
 			+ "FOREIGN KEY(QID) REFERENCES app.tblQuestion(QID),"
 			+ "FOREIGN KEY(UNickName) REFERENCES app.tblUser(NickName))";
 
 	public final String CREATE_ANSWER_VOTES_TABLE = "CREATE TABLE app.tblAnswerVotes"
-			+ "(AID INT, UNickName VARCHAR(20),"
+			+ "(AID INT, UNickName VARCHAR(20), Vote INT, "
 			+ "PRIMARY KEY (AID, UNickName),"
 			+ "FOREIGN KEY(AID) REFERENCES app.tblAnswer(AID),"
 			+ "FOREIGN KEY(UNickName) REFERENCES app.tblUser(NickName))";
