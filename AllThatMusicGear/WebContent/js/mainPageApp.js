@@ -78,12 +78,12 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	$scope.maxPageNum = 1;
 	$scope.Topic = "";
 	
-	var url = window.location.pathname;
-	if (url.search("newquestions") != -1){
+	var url = $location.path();
+	if (url == "/newquestions"){
 		$scope.questionMode = "NewQuestions";
 		$scope.Title = "New Questions:";
 	}
-	else if (url.search("topquestions") != -1){
+	else if (url == "/topquestions"){
 		$scope.questionMode = "AllQuestions";
 		$scope.Title = "Top Questions:";
 	}

@@ -55,9 +55,10 @@ public class LogAndRegServlet extends HttpServlet {
 	    			if (rs.next()){
 	    				request.getSession().setAttribute("LoggedInUserNickName", rs.getString(1));
 		    			request.getSession().setAttribute("LoggedInUserPhotoURL", rs.getString(2));
+		    			response.getWriter().println("{\"success\":\"true\"}");
 	    			}
 	    			else {
-	    				response.getWriter().println("Invalid username/password combination");
+	    				response.getWriter().println("{\"success\":\"false\", \"errorMsg\":\"Invalid username/password combination\"}");
 	    			}
  					rs.close();
  					pstmt.close();
@@ -82,7 +83,7 @@ public class LogAndRegServlet extends HttpServlet {
 	    			pstmt.setString(2, request.getParameter("nickName"));
 	    			ResultSet rs = pstmt.executeQuery();
 	    			if (rs.next()){
-	    				response.getWriter().println("Existing username or nickname");
+	    				response.getWriter().println("{\"success\":\"false\", \"errorMsg\":\"Existing username or nickname\"}");
 	    				rs.close();
 	 					pstmt.close();
 	 					return;
@@ -102,7 +103,8 @@ public class LogAndRegServlet extends HttpServlet {
 	    			//commit update
 	    			conn.commit();
 	    			//close statements
-	    			pstmt2.close();    			
+	    			pstmt2.close();
+	    			response.getWriter().println("{\"success\":\"true\"}");
 	    			request.getSession().setAttribute("LoggedInUserNickName", nickName);
 	    			request.getSession().setAttribute("LoggedInUserPhotoURL", photo);
 
