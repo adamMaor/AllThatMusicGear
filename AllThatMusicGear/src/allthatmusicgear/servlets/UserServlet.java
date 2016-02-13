@@ -155,10 +155,10 @@ public class UserServlet extends HttpServlet {
 					response.sendError(500);//internal server error
     			}
     		}
-    		else if (uri.indexOf(UserConstants.GET_ALL_USER_INFO) != -1) {
+    		else if (uri.indexOf(UserConstants.GET_ALL_USERS_INFO) != -1) {
     			try {
     				Statement stmt = conn.createStatement();
-					ResultSet allUsersRS = stmt.executeQuery(UserConstants.GET_ALL_USER_INFO_QUERY);
+					ResultSet allUsersRS = stmt.executeQuery(UserConstants.GET_ALL_USERS_INFO_QUERY);
 					Collection<User> userCollection = new ArrayList<User>();
 					while (allUsersRS.next())
 					{

@@ -6,7 +6,7 @@ body{
 	background-color: #f5f5f5;
 }
 .row{
-	margin-bottom: 20px;	
+	margin-bottom: 10px;	
 }
 
 #votingScore {
@@ -14,9 +14,12 @@ body{
 /* 	width:70px; */
 }
 #topics{
-	padding:5px;
-	margin:5px;
+	padding:2px;
+	margin: 5px;
+	margin-top: 0px;
+	margin-bottom: 7px;
 	background-color: #e5ecff;
+	display: inline-block;
 }
 
 .pager {

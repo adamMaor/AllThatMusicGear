@@ -6,15 +6,15 @@
 		<span class="col-md-4">
 			<nav>
 	  			<ul class="pager">
-				    <li><a href="#" ng-click="prevPage()">Previous</a></li>
+				    <li><a href="" ng-click="prevPage()">Previous</a></li>
 				    <b>[{{pageNum}}/{{maxPageNum}}]</b>
-				    <li><a href="#" ng-click="nextPage()">Next</a></li>
+				    <li><a href="" ng-click="nextPage()">Next</a></li>
 	  			</ul>
 			</nav>
 		</span>
 		</div>
 
-   	<div class="row" post-repeat-directive ng-repeat="qstn in questions">
+   	<div class="row" ng-repeat="qstn in questions">
 	   	<div class="col-md-10" id="Element">
 	       	<div class="col-md-1" id="votingScore"> 
 <!-- 	       	 data-toggle="popover" data-trigger="focus" data-title="{{popOverText.title}}" data-content="{{popOverText.text}}" -->

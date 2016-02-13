@@ -15,16 +15,15 @@ public interface QAndAConstants {
 
 	public final String QUESTION = "Question";
 	public final String ANSWER = "Answer";
-	public final String NEW_QUESTIONS = "New"+QUESTION+"s";
-	public final String ALL_QUESTIONS = "All"+QUESTION+"s";
-	public final String INSERT_QUESTION = "Insert"+QUESTION;
-	public final String INSERT_ANSWER = "Insert"+ANSWER;
-	public final String UPDATE_QUESTION = "Update"+QUESTION;
-	public final String UPDATE_ANSWER = "Update"+ANSWER;
-	public final String QUESTION_ANS = ANSWER+"sOfQ";
-	public final String UPDATE_ANSWER_NEG = "Update"+ANSWER+"Neg";
-	public final String USER_LAST_ASKED = "UserLastAsked"+QUESTION+"s";
-	public final String USER_LAST_ANSWERED = "UserLastAnswerd"+ANSWER+"s";
+	public final String NEW_QUESTIONS = "NewQuestions";
+	public final String ALL_QUESTIONS = "AllQuestions";
+	public final String INSERT_QUESTION = "InsertQuestion";
+	public final String INSERT_ANSWER = "InsertAnswer";
+	public final String UPDATE_QUESTION = "UpdateQuestion";
+	public final String UPDATE_ANSWER = "UpdateAnswer";
+	public final String QUESTION_ANS = "AnswersOfQ";
+	public final String USER_LAST_ASKED = "UserLastAskedQuestions";
+	public final String USER_LAST_ANSWERED = "UserLastAnswerdAnswers";
 	public final String TOPIC_BY_TPOP = "QuestionTopicsByTpop";
 	public final String QUESTIONS_BY_TOPIC = "QuestionsByTopic";
 	

@@ -234,17 +234,15 @@ mainPageApp.controller('userProfile', ['$scope', '$http', '$location', function(
 	
 	$http.get("UserServlet/GetUserInfo", parameters)
 	.success(function(response) {
-		$scope.userInfo = angular.copy(response);
-//		alert(response);
+		$scope.user = angular.copy(response);
 	});
-//	TODO: EXPERTISE doesn't work
-//	$http.get("http://localhost:8080/AllThatMusicGear/UserServlet/UserExpertise", parameters)
-//	.success(function(response) {
-//		$scope.userInfo = response;
-//	});
+	$http.get("QandAServlet/UserLastAskedQuestions", parameters)
+	.success(function(response) {
+		$scope.user.lastAsked = angular.copy(response);
+	});
 	$http.get("QandAServlet/UserLastAnswerdAnswers", parameters)
 	.success(function(response) {
-		$scope.userInfo.lastAnswered = angular.copy(response);
+		$scope.user.lastAnswered = angular.copy(response);
 	});
 	
 }]);
@@ -254,7 +252,7 @@ mainPageApp.controller('leaderboardCtrl', ['$scope', '$http', function($scope, $
 	$scope.maxPageNum = 1;
 	
 	$scope.updateLeaderboard = function(){
-		$http.get("UserServlet/GetAllUserInfo")
+		$http.get("UserServlet/GetAllUsersInfo")
 		.success(function(response){
 			$scope.allUsers = response;
 			$scope.maxPageNum = parseInt($scope.allUsers.length/20) + 1;
@@ -279,9 +277,6 @@ mainPageApp.controller('leaderboardCtrl', ['$scope', '$http', function($scope, $
 	}
 }]);
 
-mainPageApp.controller('questionsByTopic', ['$scope', '$http', function($scope, $http) {
-	
-}]);
 
 mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http) {
 	

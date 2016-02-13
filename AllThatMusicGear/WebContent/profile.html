@@ -7,6 +7,10 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>All That Music Gear</title>
    	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <!-- 	MainPage JS App -->
 	<script type="text/javascript" src="js/mainPageApp.js"></script>
 
@@ -16,29 +20,93 @@
 
 </head>
 <body ng-app="mainPageApp">
-	<!-- header directive -->
+<!-- 	header directive -->
 	<header></header>
 	
 	<div class="container" ng-controller="userProfile">
 		<div class="row">
-			<h2>User profile for: {{userNickname}}</h2>
+			<h2><b>User Profile:</b></h2>
 		</div>
 		<div class="row">
-			<p>user nickname:{{userInfo.nickName}}</p>
-			<p>user description:{{userInfo.descreption}}</p>
-			<p>user photoURL:{{userInfo.photoURL}}</p>
-			<p>user Rating:{{userInfo.userRating}}</p>
-			<p>user Expertise:{{userInfo.expertise}}</p>
+			<a ng-href="profile.html#/user#{{user.nickName}}">
+				<img src="{{user.photoURL}}" class="img-circle" id="leaderboardPhoto" alt="Missing Photo">
+				<b>{{user.nickName}}</b>
+ 			</a>
+		</div>
+		<div class="row" ng-show='user.descreption!=""'>
+			<p><b>User description:</b></p>
+			<blockquote>
+				<p>{{user.descreption}}</p>
+			</blockquote>
+		</div>
+		<div class="row">
+			<p><b>Rating: </b>{{user.userRating | number:2}}</p>
+		</div>
+		<div class="row" ng-show="user.expertise.length!=0">
+			<b>User expertise:</b>
+       		<span ng-repeat="topic in user.expertise" id="topics">
+       			<a ng-href="questions.html#/bytopic#{{topic}}">{{topic}}</a>
+       		</span>
+		</div>
+		<div class="row">
+			<h3>User last asked questions:</h3>
+			<div class="row" ng-repeat="qstn in user.lastAsked">
+				<div class="col-md-9" id="elementBody">
+		     		<div class="row">
+				       		<p>{{qstn.qText}}</p>
+		       		</div>
+		       		<div class="row">
+			       		<div class="col-md-12">
+				       		<p> question rating: {{qstn.qRating | number:2}}</p>
+				       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
+				       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
+							<span><b>Topics:</b></span>
+				       		<span ng-repeat="topics in qstn.qTopics" id="topics">
+				       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
+				       		</span>
+			       		</div>
+			       	</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+		<h3>User last answered answers:</h3>
+		<div class="row" ng-repeat="qstn in user.lastAnswered">
+			<div class="col-md-9" id="elementBody">
+	     		<div class="row">
+			       		<p>{{qstn.qText}}</p>
+	       		</div>
+	       		<div class="row">
+		       		<div class="col-md-12">
+			       		<p> question rating: {{qstn.qRating | number:2}}</p>
+			       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
+			       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
+						<span><b>Topics:</b></span>
+			       		<span ng-repeat="topics in qstn.qTopics" id="topics">
+			       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
+			       		</span>
+		       		</div>
+		       	</div>
+			</div>
+			<div class="row" id="answers" >
+				<div class ="col-md-8 col-md-offset-1" ng-repeat="anwr in qstn.answers">
+					<div class="col-md-9" id="elementBody">
+			       		<div class="row">
+				       		<p>{{anwr.aText}}</p>
+			       		</div>
+			       		<div class="row">
+			       			<p>answerID: {{anwr.aID}}</p>
+				       		<p>nickname: <b>{{anwr.aUserNickName}}</b></p>
+				       		<p>date : {{anwr.aSubDate | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+			       		</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+	</div>
 	
-	
-	<!-- footer directive -->
-	<footer></footer>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    
+<!-- 	<!-- footer directive -->
+<!-- 	<footer></footer> -->
   </body>
 </html>

@@ -23,7 +23,7 @@ public interface UserConstants {
 	public final String GET_SESSION_INFO = "GetSessionInfo";
 	public final String LOGOUT = "LogOut";
 	public final String GET_USER_INFO = "GetUserInfo";
-	public final String GET_ALL_USER_INFO = "GetAllUserInfo";
+	public final String GET_ALL_USERS_INFO = "GetAllUsersInfo";
 	
 	
 	public final Type TOPIC_LIST = new TypeToken<Collection<String>>() {}.getType();
@@ -52,11 +52,12 @@ public interface UserConstants {
 			+ "ON app.tblAnswer.QuestionID = app.tblQuestionTopics.QID "
 			+ "WHERE app.tblAnswer.AUNickName = ? "
 			+ "GROUP BY app.tblQuestionTopics.topic "
-			+ "ORDER BY TotalVotes DESC ";
+			+ "ORDER BY TotalVotes DESC "
+			+ "FETCH FIRST 5 ROWS ONLY ";
 	
 	public final String GET_USER_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " +
 			"FROM app.tblUser WHERE app.tblUser.NickName=?";
-	public final String GET_ALL_USER_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " +
+	public final String GET_ALL_USERS_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " +
 			"FROM app.tblUser ORDER BY USERRATING DESC";
 
 
