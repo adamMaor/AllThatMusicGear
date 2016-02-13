@@ -68,7 +68,7 @@ public interface QAndAConstants {
 //			+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 		
 	
-	public final String GET_QUESTION_SCORES = "SELECT app.tblQuestion.QVotingScore, AVG(app.tblAnswer.AVotingScore) as AVGAnswerScore"
+	public final String GET_QUESTION_SCORES = "SELECT app.tblQuestion.QVotingScore, AVG(Cast(app.tblAnswer.AVotingScore as Float)) as AVGAnswerScore"
 											+ " FROM app.tblQuestion LEFT OUTER JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID"
 											+ " WHERE app.tblQuestion.QID=?"
 											+ " GROUP BY app.tblQuestion.QVotingScore";

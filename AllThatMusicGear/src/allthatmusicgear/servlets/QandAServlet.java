@@ -133,6 +133,32 @@ public class QandAServlet extends HttpServlet {
 		}
 		return userNickName;
 	}
+	
+	private void updateQuestionScores(int qID, int votingScoreChange, Connection conn) throws SQLException
+	{
+		PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTION_SCORES); 
+		pstmt.setInt(1, qID);
+		ResultSet QuestionRS = pstmt.executeQuery();
+		
+		while (QuestionRS.next())
+		{
+			int votingScore = QuestionRS.getInt(1);
+			votingScore += votingScoreChange;
+			double answersAVGScore = QuestionRS.getObject(2) == null ? 0 : QuestionRS.getDouble(2);
+			PreparedStatement updatePstmt;
+			updatePstmt = conn.prepareStatement(QAndAConstants.UPDATE_QUESTION_SCORES);
+			updatePstmt.setInt(1, votingScore);
+			updatePstmt.setDouble(2, answersAVGScore*0.8 + votingScore*0.2);
+			updatePstmt.setInt(3, qID);
+			updatePstmt.executeUpdate();
+			updatePstmt.close();
+		}
+		conn.commit();
+		QuestionRS.close();   					
+		//close statements
+		pstmt.close();
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -257,31 +283,12 @@ public class QandAServlet extends HttpServlet {
     					saveVoteStmt.executeUpdate();
     					// commit is here - if failed will roll back!!!
     					saveVoteStmt.close();
-    					 
-    					PreparedStatement pstmt;
-    					pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTION_SCORES); 
-    					pstmt.setInt(1, qId);
     					int votingScoreChange = Integer.parseInt(request.getParameter("changeVS"));
-    					ResultSet QuestionRS = pstmt.executeQuery();
     					
-    					while (QuestionRS.next())
-    					{
-    						int votingScore = QuestionRS.getInt(1);
-    						votingScore += votingScoreChange;
-    						double answersAVGScore = QuestionRS.getObject(2) == null ? 0 : QuestionRS.getDouble(2);
-    						PreparedStatement updatePstmt;
-    						updatePstmt = conn.prepareStatement(QAndAConstants.UPDATE_QUESTION_SCORES);
-    						updatePstmt.setInt(1, votingScore);
-    						updatePstmt.setDouble(2, answersAVGScore*0.8 + votingScore*0.2);
-    						updatePstmt.setInt(3, Integer.parseInt(request.getParameter("qId")));
-    						updatePstmt.executeUpdate();
-    						updatePstmt.close();
-    					}
+    					// now update the question scores
+    					updateQuestionScores(qId, votingScoreChange, conn);    					 
     					conn.commit(); 								
-    					QuestionRS.close();   					
-    					//close statements
-    					pstmt.close();
-    					
+    					 					
     					// now to update user rating
     					String questionSubmitter = getUserNickNameFromQid(qId, conn);
     					updateUserRating(questionSubmitter, conn);
@@ -424,7 +431,8 @@ public class QandAServlet extends HttpServlet {
     					// answer user
     					updateUserRating(loggedInUser, conn);
     					
-    					// question user
+    					// question and question user
+    					updateQuestionScores(qId, 0, conn);
     					String questionUser = getUserNickNameFromQid(qId, conn);
     					updateUserRating(questionUser, conn);
     					
@@ -457,12 +465,14 @@ public class QandAServlet extends HttpServlet {
     					pstmt.close();
     					conn.commit();
     					
-    					// now we need to update both users - question submitter and answer submitter 
-    					String answerUser = getUserNickNameFromAid(aId, conn);
-    					updateUserRating(answerUser, conn);
+    					// now we need to update answer submitter User Rating and the question rating and user rating  					
+    					updateQuestionScores(qId, 0, conn);
     					String questionUser = getUserNickNameFromQid(qId, conn);
+						updateUserRating(questionUser, conn);    						
+			
+    					String answerUser = getUserNickNameFromAid(aId, conn);
     					if (!answerUser.equals(questionUser)){
-    						updateUserRating(questionUser, conn);    						
+    						updateUserRating(answerUser, conn);
     					}
     				   					  					
     				}  catch (SQLException e) {

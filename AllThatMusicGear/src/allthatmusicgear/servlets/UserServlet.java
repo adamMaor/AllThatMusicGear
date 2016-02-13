@@ -44,20 +44,25 @@ public class UserServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    /**
+     * A service method for getting user expertise
+     * @param nickName - The User
+     * @param conn - the current connection
+     * @return
+     * @throws SQLException - will throw the exception
+     */
     private List<String> getUserExp(String nickName, Connection conn) throws SQLException
     {
-    	List<String> resArray = new ArrayList<String>();
+    	List<String> resList = new ArrayList<String>();
     	PreparedStatement pstmt;
     	pstmt = conn.prepareStatement(UserConstants.GET_USER_EXPERTISE);
     	pstmt.setString(1, nickName);
     	ResultSet rs = pstmt.executeQuery();
     	while (rs.next()){
-    		resArray.add(rs.getString(1));
+    		resList.add(rs.getString(1));
     	}  	
-    	return resArray;
-    }
-    
-    
+    	return resList;
+    }    
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

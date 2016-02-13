@@ -65,12 +65,12 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
  
 //    		If you want to remove all the tables uncomment this and comment the next 4 Lines - remeber to comment them again
     		
+//    		dmlList.add("DROP TABLE app.tblQuestionVotes");
+//    		dmlList.add("DROP TABLE app.tblAnswerVotes");
 //    		dmlList.add("DROP TABLE app.tblAnswer");
 //    		dmlList.add("DROP TABLE app.tblQuestionTopics");
 //    		dmlList.add("DROP TABLE app.tblQuestion");
 //    		dmlList.add("DROP TABLE app.tblUser");
-//    		dmlList.add("DROP TABLE app.tblQuestionVotes");
-//    		dmlList.add("DROP TABLE app.tblAnswerVotes");
     		
     		
     		dmlList.add(CreateTablesConstants.CREATE_USER_TABLE);
