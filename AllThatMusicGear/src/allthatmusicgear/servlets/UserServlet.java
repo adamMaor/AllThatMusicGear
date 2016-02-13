@@ -50,13 +50,14 @@ public class UserServlet extends HttpServlet {
     	PreparedStatement pstmt;
     	pstmt = conn.prepareStatement(UserConstants.GET_USER_EXPERTISE);
     	pstmt.setString(1, nickName);
-    	System.out.println(nickName);
     	ResultSet rs = pstmt.executeQuery();
     	while (rs.next()){
     		resArray.add(rs.getString(1));
     	}  	
     	return resArray;
     }
+    
+    
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -70,50 +71,7 @@ public class UserServlet extends HttpServlet {
     		String uri = request.getRequestURI();
     		
     		/* First Case - It deals with Updating User Ration */
-    		if (uri.indexOf(UserConstants.UPDATE_UR) != -1)
-    		{
-				try {
-					PreparedStatement pstmt;
-					String strUserName =  request.getParameter("userNickName");
-    				pstmt = conn.prepareStatement(UserConstants.GET_USER_AVG_Q_SCORES); 
-    				pstmt.setString(1, strUserName);
-    				double avgQRating = 0;
-    				ResultSet rs = pstmt.executeQuery();
-					while (rs.next())
-					{
-						avgQRating = rs.getObject(1) == null ? 0 : rs.getDouble(1);
-						
-					}
-					rs.close();
-					pstmt.close();
-					
-					PreparedStatement pstmt2;
-					pstmt2 = conn.prepareStatement(UserConstants.GET_USER_AVG_A_SCORES); 
-    				pstmt2.setString(1, strUserName);
-    				double avgARating = 0;
-    				ResultSet rs2 = pstmt2.executeQuery();
-					while (rs2.next())
-					{
-						avgARating = rs2.getObject(1) == null ? 0 : rs2.getDouble(1);
-						
-					}
-					rs2.close();
-					pstmt2.close();
-					
-					double newRatingScore = 0.2 * avgQRating + 0.8 * avgARating;
-					PreparedStatement updateUserPstmt;
-					updateUserPstmt = conn.prepareStatement(UserConstants.UPDATE_UR_QUERY);
-					updateUserPstmt.setDouble(1, newRatingScore);
-					updateUserPstmt.setString(2, strUserName);
-					updateUserPstmt.executeUpdate();
-					conn.commit();
-					updateUserPstmt.close();
-				} catch (SQLException e) {
-					getServletContext().log("Error while updating User Rating", e);
-					response.sendError(500);//internal server error
-				}		
-    		}
-    		else if (uri.indexOf(UserConstants.USER_EXPERTISE) != -1)
+    		if (uri.indexOf(UserConstants.USER_EXPERTISE) != -1)
     		{
     			List<String> topicList = new ArrayList<String>();
     			try {

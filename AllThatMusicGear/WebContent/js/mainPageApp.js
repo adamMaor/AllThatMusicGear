@@ -167,7 +167,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		checkLogin();
 		var elem = event.currentTarget;
 		
-		var parameters = { params: { qId: qID ,aID: aID, changeVS: changeScore,}};
+		var parameters = { params: { qID: qID ,aID: aID, changeVS: changeScore,}};
 		$http.get("QandAServlet/UpdateAnswer", parameters)
 		.success(function(response) {
 			if (response != undefined && response.failed){
@@ -206,13 +206,13 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$(elem).popover("show");
 	};
 	
-	$scope.submitAnswer = function(qID, qText)
+	$scope.submitAnswer = function(qID, aText)
 	{
 		checkLogin();
 		var parameters = {
 				params: {
 					qID: qID,
-					aText: qText,
+					aText: aText,
 				}
 		};
 		$http.get("QandAServlet/InsertAnswer", parameters)

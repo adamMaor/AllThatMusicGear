@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 
 import allthatmusicgear.constants.DBConstants;
 import allthatmusicgear.constants.QAndAConstants;
+import allthatmusicgear.constants.UserConstants;
 import allthatmusicgear.model.Answer;
 import allthatmusicgear.model.Question;
 import allthatmusicgear.model.QuestionAnswerPair;
@@ -67,6 +68,70 @@ public class QandAServlet extends HttpServlet {
 		TopicRS.close();
 		pstmt.close();
 		return qTopicList;
+	}
+	
+	private void updateUserRating(String userNickName, Connection conn) throws SQLException
+    {
+    	PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(UserConstants.GET_USER_AVG_Q_SCORES); 
+		pstmt.setString(1, userNickName);
+		double avgQRating = 0;
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next())
+		{
+			avgQRating = rs.getObject(1) == null ? 0 : rs.getDouble(1);
+			
+		}
+		rs.close();
+		pstmt.close();
+		
+		PreparedStatement pstmt2;
+		pstmt2 = conn.prepareStatement(UserConstants.GET_USER_AVG_A_SCORES); 
+		pstmt2.setString(1, userNickName);
+		double avgARating = 0;
+		ResultSet rs2 = pstmt2.executeQuery();
+		while (rs2.next())
+		{
+			avgARating = rs2.getObject(1) == null ? 0 : rs2.getDouble(1);
+			
+		}
+		rs2.close();
+		pstmt2.close();
+		
+		double newRatingScore = 0.2 * avgQRating + 0.8 * avgARating;
+		PreparedStatement updateUserPstmt;
+		updateUserPstmt = conn.prepareStatement(UserConstants.UPDATE_UR_QUERY);
+		updateUserPstmt.setDouble(1, newRatingScore);
+		updateUserPstmt.setString(2, userNickName);
+		updateUserPstmt.executeUpdate();
+		conn.commit();
+		updateUserPstmt.close();
+    }
+	
+	private String getUserNickNameFromQid(int qID, Connection conn) throws SQLException
+	{
+		String userNickName = null;
+		PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(UserConstants.GET_USER_NICK_FROM_QUESTION);
+		pstmt.setInt(1, qID);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()){
+			userNickName = rs.getString(1);
+		}
+		return userNickName;
+	}
+	
+	private String getUserNickNameFromAid(int aID, Connection conn) throws SQLException
+	{
+		String userNickName = null;
+		PreparedStatement pstmt;
+		pstmt = conn.prepareStatement(UserConstants.GET_USER_NICK_FROM_ANSWER);
+		pstmt.setInt(1, aID);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()){
+			userNickName = rs.getString(1);
+		}
+		return userNickName;
 	}
 
 	/**
@@ -170,7 +235,10 @@ public class QandAServlet extends HttpServlet {
     						conn.commit();
     						//close statements
     						topicPstmt.close();
-    					}		    					
+    					}	
+    					// now to update user rating
+    					updateUserRating(nickName, conn);
+    					
     				}  catch (SQLException e) {
     					getServletContext().log("Error while Inserting a New Question", e);
     					response.sendError(500);//internal server error
@@ -212,7 +280,12 @@ public class QandAServlet extends HttpServlet {
     					conn.commit(); 								
     					QuestionRS.close();   					
     					//close statements
-    					pstmt.close();    			    					
+    					pstmt.close();
+    					
+    					// now to update user rating
+    					String questionSubmitter = getUserNickNameFromQid(qId, conn);
+    					updateUserRating(questionSubmitter, conn);
+    					
     				} catch (SQLException e) {
     					conn.rollback();
     					if (userAlreadyVoted(e)) {
@@ -334,16 +407,28 @@ public class QandAServlet extends HttpServlet {
     			else if (uri.indexOf(QAndAConstants.INSERT_ANSWER) != -1){
     				try{
     					PreparedStatement pstmt;
+    					String loggedInUser = (String)request.getSession().getAttribute("LoggedInUserNickName");
+    					int qId = Integer.parseInt(request.getParameter("qID"));
     					pstmt = conn.prepareStatement(QAndAConstants.INSERT_NEW_ANSWER); 
-    					pstmt.setInt(1, Integer.parseInt(request.getParameter("qID")));
-    					pstmt.setString(2, (String)request.getSession().getAttribute("LoggedInUserNickName"));
+    					pstmt.setInt(1, qId);
+    					pstmt.setString(2, loggedInUser);
     					pstmt.setString(3, request.getParameter("aText"));
     					pstmt.executeUpdate();
     					
     					//commit update
     					conn.commit();
     					//close statements
-    					pstmt.close();	    				   					
+    					pstmt.close();
+    					
+    					// now we need to update both users - question submitter and answer submitter 
+    					// answer user
+    					updateUserRating(loggedInUser, conn);
+    					
+    					// question user
+    					String questionUser = getUserNickNameFromQid(qId, conn);
+    					updateUserRating(questionUser, conn);
+    					
+    					
     				}  catch (SQLException e) {
     					getServletContext().log("Error while Inserting a New Answer", e);
     					response.sendError(500);//internal server error
@@ -355,6 +440,7 @@ public class QandAServlet extends HttpServlet {
     					// Save Vote
     					PreparedStatement saveVoteStmt;
     					int aId = Integer.parseInt(request.getParameter("aID"));
+    					int qId = Integer.parseInt(request.getParameter("qID"));
     					String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
     					saveVoteStmt = conn.prepareStatement(QAndAConstants.ADD_ANSWER_VOTE);
     					saveVoteStmt.setInt(1, aId);
@@ -370,6 +456,14 @@ public class QandAServlet extends HttpServlet {
     					//close statements
     					pstmt.close();
     					conn.commit();
+    					
+    					// now we need to update both users - question submitter and answer submitter 
+    					String answerUser = getUserNickNameFromAid(aId, conn);
+    					updateUserRating(answerUser, conn);
+    					String questionUser = getUserNickNameFromQid(qId, conn);
+    					if (!answerUser.equals(questionUser)){
+    						updateUserRating(questionUser, conn);    						
+    					}
     				   					  					
     				}  catch (SQLException e) {
     					conn.rollback();

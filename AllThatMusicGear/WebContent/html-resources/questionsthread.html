@@ -52,7 +52,7 @@
 			</div>
 			<div class="row" ng-show="showAnswerBox">
 				<div class ="col-md-5 col-md-offset-1">
-					<form ng-submit='submitAnswer(qstn.qID, aText); showAnswerBox=!showAnswerBox; aText=""'>
+					<form ng-submit='submitAnswer(qstn.qID, qstn.qUserNickName, aText); showAnswerBox=!showAnswerBox; aText=""'>
 						<textarea class="form-control" rows="5" id="question" maxlength="300" ng-model="aText" name="answerText" placeholder="Your answer" title="Answer can't be blank" required autofocus></textarea>
 						<button type="submit" class="btn btn-primary" value="Submit">Submit</button>
 						<button type="button" class="btn btn-default" ng-click='aText=""' value="Reset">Reset</button>
