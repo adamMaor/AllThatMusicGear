@@ -39,7 +39,7 @@
 						   			<input type="password" class="form-control" title="Password is required" maxlength="8" id="pwd" placeholder="Password" ng-model="logPassword" ng-change="clearLogInError()" required/>
 					   			</div>
 						   	</div>
-						    <p class="errors">{{logInError}}</p>
+						    <p class="errors hidden" id="logInError">{{logInError}}</p>
 						    <p class="buttons">
 						   	<button type="submit" class="btn btn-primary" value="Log In">Log In</button>
  							<button type="button" class="btn btn-default" ng-click="resetLogFields()" value="Reset">Reset</button>
@@ -87,11 +87,11 @@
 						    		<input type="url" class="form-control" id="rphoto" placeholder="http://www.example.com/myphoto.jpg" ng-model="regPhoto">
 					    		</div>
 						   	</div>
-						    <p class=errors>{{registerError}}</p>
-						    <p class=buttons>
+						    <p class="errors hidden" id="regError">{{registerError}}</p>
+						    <p class="buttons">
 						   	<button type="submit" class="btn btn-primary" value="Register">Register</button>
  							<button type="button" class="btn btn-default" ng-click="resetRegFields()" value="Reset">Reset</button>
- 							<p class=buttons>Already a member? <a href="#" ng-click="showLogin()">Log In</a> </p>
+ 							<p class="buttons">Already a member? <a href="#" ng-click="showLogin()">Log In</a> </p>
  							<span  style="color:red">*</span> - Required Fields<br>
 						</form>
 					</div>

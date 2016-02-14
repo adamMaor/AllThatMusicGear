@@ -49,6 +49,28 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	}
 	$scope.loggedInUserInfo();
 	
+	var location = window.location.pathname;
+	if (location.toLocaleString().indexOf("leaderboard", 16) != -1){
+		$("#leaderNav").addClass( "active" );
+	}
+	else if (location.toLocaleString().indexOf("profile", 16) != -1){
+		$("#profileNav").addClass( "active" );
+	}
+	else{
+		var hash = window.location.hash;
+		if (location.toLocaleString().indexOf("topic", 16) != -1 || hash.toLocaleString().indexOf("topic", 0) != -1){
+			$("#topicsNav").addClass( "active" );
+		}
+		else if(hash.toLocaleString().indexOf("newquestions", 0) != -1){
+			$("#newQNav").addClass( "active" );
+		}
+		else if(hash.toLocaleString().indexOf("topquestions", 0) != -1){
+			$("#allQNav").addClass( "active" );
+		}
+		
+	}
+	
+	
 	$scope.submitQuestion = function()
 		{
 			checkLogin();
@@ -71,7 +93,11 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	$scope.logOut = function(){
 		$http.post("UserServlet/LogOut");
 	}
+	
+	
  }]);
+
+
 
 mainPageApp.controller('questions', ['$scope', '$http', '$location',function($scope, $http, $location) {
 	$scope.pageNum = 1;

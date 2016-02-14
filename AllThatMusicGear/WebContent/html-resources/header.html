@@ -14,11 +14,11 @@
 				<li><p class="btn btn-default navbar-btn btn-md" href="#askQuestionModal" data-toggle="modal">Ask Question</p></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="questions.html#/newquestions">New Questions</a></li>
-				<li><a href="questions.html#/topquestions">Top Questions</a></li>
-				<li><a href="topics.html#">Topics</a></li>
-				<li><a href="leaderboard.html#">Leader Board</a></li>
-				<li>
+				<li id="newQNav"><a href="questions.html#/newquestions">New Questions</a></li>
+				<li id="allQNav"><a href="questions.html#/topquestions">Top Questions</a></li>
+				<li id="topicsNav"><a href="topics.html#">Topics</a></li>
+				<li id="leaderNav"><a href="leaderboard.html#">Leader Board</a></li>
+				<li id="profileNav">
 					<a ng-href="profile.html#/user#{{loggedInUserNickName}}">
 						<img src="{{loggedInUserPhotoURL}}" class="img-circle" id="profilePic" alt="missing profile" alt="Missing Photo">
 						<b>{{loggedInUserNickName}} </b>

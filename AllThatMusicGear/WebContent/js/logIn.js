@@ -16,6 +16,7 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 			}
 			else {
 				$scope.logInError = response.errorMsg;
+				$("#logInError").removeClass("hidden");
 			}
 		})						
 	}
@@ -36,6 +37,7 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 			}
 			else {
 				$scope.registerError = response.errorMsg;
+				$("#regError").removeClass("hidden");
 			}
 		})
 	}
@@ -51,10 +53,12 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 	
 	$scope.clearLogInError = function(){
 		$scope.logInError = "";
+		$("#logInError").addClass("hidden");
 	}
 	
 	$scope.clearRegisterError = function(){
 		$scope.registerError = "";
+		$("#regError").addClass("hidden");
 	}
 	
 	$scope.resetLogFields = function() {

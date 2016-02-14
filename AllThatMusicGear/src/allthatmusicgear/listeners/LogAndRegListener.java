@@ -115,11 +115,17 @@ public class LogAndRegListener implements ServletContextListener, ServletContext
      */
     public void contextDestroyed(ServletContextEvent event)  { 
          // TODO Auto-generated method stub
-    	 try {
- 			DriverManager.getConnection(DBConstants.PROTOCOL + DBConstants.DB_NAME +";shutdown=true");
+    	 try { 
+			DriverManager.getConnection(DBConstants.PROTOCOL + DBConstants.DB_NAME +";shutdown=true");
  		} catch (SQLException e) {
- 			ServletContext cntx = event.getServletContext();
- 			cntx.log("Error shutting down database",e);
+ 			if (e.getSQLState().equals("XJ015")){
+ 				System.gc();
+ 				System.out.println("Shut down success");
+ 			}
+ 			else {
+ 				ServletContext cntx = event.getServletContext();
+ 				cntx.log("Error shutting down database",e); 				
+ 			}
  		}
     }
 

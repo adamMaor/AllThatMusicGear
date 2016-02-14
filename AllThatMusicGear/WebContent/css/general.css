@@ -13,6 +13,17 @@ body{
     color: white;
 }
 
+.navbar-default .navbar-nav > .active a{
+    color: rgb(150, 0, 254)!important;
+   	background: white;
+ }
+
+.navbar-default .navbar-nav > .active > a:hover, 
+.navbar-default .navbar-nav > .active > a:focus {
+	color: black;
+	background: white;
+ }
+
 #navBar {
 	width: 100%;
 	background-color: rgb(150, 0, 254);
