@@ -35,3 +35,40 @@ body{
 	width:50px;
 	height:50px;
 }
+
+#profilePhoto{
+	display: inline-block;
+}
+
+#idBlock {
+	width: auto;
+	display: inline-block;
+}
+
+#questionThreadProfilePhoto{
+	width:50px;
+	height:50px;
+}
+
+#profileUserInfo{
+	vertical-align: middle;
+	padding-top: 0px;
+	display: inline-block;
+}
+
+
+#questionTextBody{
+	min-height: 100px;
+}
+#answerTextBody{
+	min-height: 40px;
+}
+
+#textParagraph{
+	min-height: 40px;
+}
+
+#questionTopics {
+	margin-top: 20px;
+}
+

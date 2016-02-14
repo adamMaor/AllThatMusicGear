@@ -39,10 +39,10 @@ public interface UserConstants {
 	public final String GET_USER_AVG_A_SCORES = "SELECT AVG(app.tblAnswer.AVotingScore) FROM app.tblAnswer WHERE app.tblAnswer.AUNickName = ? ";
 	public final String UPDATE_UR_QUERY = "UPDATE app.tblUser SET app.tblUser.UserRating = ? WHERE app.tblUser.NickName=?";
 	
-	public final String GET_USER_ANS_VOTE = "SELECT app.tblQuestionVotes.QID, app.tblQuestionVotes.Vote "
+	public final String GET_USER_QST_VOTE = "SELECT app.tblQuestionVotes.QID, app.tblQuestionVotes.Vote "
 										+ "FROM app.tblQuestionVotes "
 										+ "WHERE app.tblQuestionVotes.UNickName = ? ";
-	public final String GET_USER_QST_VOTE = "SELECT app.tblAnswerVotes.AID, app.tblAnswerVotes.Vote "
+	public final String GET_USER_ANS_VOTE = "SELECT app.tblAnswerVotes.AID, app.tblAnswerVotes.Vote "
 										+ "FROM app.tblAnswerVotes "
 										+ "WHERE app.tblAnswerVotes.UNickName = ? ";
 	

@@ -100,7 +100,6 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 			$scope.questions = response.questions;				
 			var totalQustions = parseInt(response.numQuestion);
 			$scope.maxPageNum = parseInt(totalQustions/20 + 1);
-			debugger;
 		});
 	};
 	
@@ -131,20 +130,16 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$http.get("QandAServlet/UpdateQuestion", parameters)
 		.success(function(response) {
 			if (response != undefined && response.failed){
-				$scope.registerPopOver(false, elem, response.error);
+				$scope.registerPopOver(false, elem, response.error, changeScore);
 			}
 			else {
-				$scope.registerPopOver(true, elem, "");
+				$scope.registerPopOver(true, elem, "", changeScore);
 				for (var i = 0; i < $scope.questions.length; i++){
-					if ($scope.questions[i].qst,qID == qID){
+					if ($scope.questions[i].qst.qID == qID){
 						$scope.questions[i].qst.qVotingScore += changeScore;
 					}
 				}
 			}
-			
-			// show the popover with the response
-			$(elem).popover({title:$scope.qtitle ,content: $scope.qtext, trigger: "hover"});
-			$(elem).popover("show");
 		});
 	}
 	
@@ -157,10 +152,10 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$http.get("QandAServlet/UpdateAnswer", parameters)
 		.success(function(response) {
 			if (response != undefined && response.failed){
-				$scope.registerPopOver(false, elem, response.error);
+				$scope.registerPopOver(false, elem, response.error, changeScore);
 			}
 			else {
-				$scope.registerPopOver(true, elem, "");
+				$scope.registerPopOver(true, elem, "", changeScore);
 				for (var i = 0; i < $scope.questions.length; i++){
 					if ($scope.questions[i].qst.qID == qID){
 						for (var j = 0;j < $scope.questions[i].ans.length; j++){
@@ -178,11 +173,16 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		});
 	}
 	
-	$scope.registerPopOver = function (success, elem, errorText){		
+	$scope.registerPopOver = function (success, elem, errorText, VS){		
 		if (success){
 			$scope.title = "Success";
 			$scope.text = "Vote registered";
-			$(elem).removeClass('btn-default').addClass('btn-primary');
+			if (VS > 0){
+				$(elem).removeClass('btn-default').addClass('btn-primary');				
+			}
+			else{
+				$(elem).removeClass('btn-default').addClass('btn-danger');
+			}
 		}
 		else {
 			$scope.title = "Vote Failed";
@@ -191,6 +191,34 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$(elem).popover({title:$scope.title ,content: $scope.text, trigger: "hover"});
 		$(elem).popover("show");
 	};
+	
+	// decide on the class of button each button will get
+	$scope.buttonClass = function (voteVal, upVoteButton){
+		switch(voteVal){
+			case -2:
+				return 'btn btn-disabled';
+			break;
+			case -1:
+				if (upVoteButton){
+					return 'btn btn-disabled';
+				}
+				else{
+					return 'btn btn-danger';					
+				}
+				break;
+			case 0:
+				return 'btn btn-default';
+				break;
+			case 1:
+				if (upVoteButton){
+					return 'btn btn-primary';
+				}
+				else{
+					return 'btn btn-disabled';					
+				}
+			break;
+		}
+	}
 	
 	$scope.submitAnswer = function(qID, aText)
 	{
@@ -223,6 +251,27 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	}
 	
 }]);
+
+mainPageApp.directive('voteButton', function ($compile) {
+    return function (scope, element, attrs) {
+    	var id = element[0].id;
+    	var buttonClass;
+    	if (id =="voteQuestionUp"){
+    		buttonClass = scope.buttonClass(scope.qstn.qst.loggedUserVote, true);
+    	}
+    	else if(id == "voteQuestionDown"){
+    		buttonClass = scope.buttonClass(scope.qstn.qst.loggedUserVote, false);
+    	}
+    	else if (id == "voteAnswerUp"){
+    		buttonClass = scope.buttonClass(scope.anwr.loggedUserVote, true);
+    	}
+    	else if (id == "voteAnswerDown"){
+    		buttonClass = scope.buttonClass(scope.anwr.loggedUserVote, false);
+    	}
+    	
+    	$(element).addClass(buttonClass);
+    };
+});
 
 mainPageApp.controller('userProfile', ['$scope', '$http', '$location', function($scope, $http, $location) {
 	$scope.userNickname = $location.hash();
