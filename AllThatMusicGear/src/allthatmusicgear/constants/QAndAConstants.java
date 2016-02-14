@@ -31,12 +31,14 @@ public interface QAndAConstants {
 	public final Type ANSWER_COLLECTION = new TypeToken<Collection<Answer>>() {}.getType();
 	public final Type QUESTION__AND_ANS_COLLECTION = new TypeToken<Collection<QuestionWithAnswers>>() {}.getType();
 	public final Type TOPIC_AND_TPOP_COLLECTION = new TypeToken<Collection<TopicQRatingPair>>() {}.getType();
+	public final Type QUESTION_AND_ANS_PAIR_COLLECTION = new TypeToken<Collection<QuestionAnswerPair>>() {}.getType();
 	
 	
 	public final String COUNT_NEW_QUESTIONS = "SELECT COUNT(*) FROM app.tblQuestion "
 			+ "WHERE app.tblQuestion.QID NOT IN	(SELECT DISTINCT QuestionID FROM app.tblAnswer)";
 	public final String COUNT_ALL_QUESTIONS = "SELECT COUNT(*) FROM app.tblQuestion";
 	public final String COUNT_ALL_TOPICS = "SELECT COUNT(DISTINCT app.tblQuestionTopics.Topic) FROM app.tblQuestionTopics";
+	public final String COUNT_ALL_TOPIC_QUESTIONS = "SELECT COUNT(app.tblQuestionTopics.QID) FROM app.tblQuestionTopics WHERE app.tblQuestionTopics.Topic = ? ";
 	
 	
 	
@@ -67,9 +69,10 @@ public interface QAndAConstants {
 	final public String GET_QUESTIONS_BY_TOPIC = "SELECT app.tblQuestion.*, app.tblUser.PhotoURL, app.tblUser.UserRating "
 			+ "FROM app.tblQuestionTopics "
 			+ "JOIN app.tblQuestion ON app.tblQuestionTopics.QID = app.tblQuestion.QID "
-			+ "JOIN app.tblUser ON app.tblAnswer.QANickName = app.tblUser.NickName "
+			+ "JOIN app.tblUser ON app.tblQuestion.QUNickName = app.tblUser.NickName "
 			+ "WHERE app.tblQuestionTopics.Topic = ? "
-			+ "ORDER BY app.tblQuestion.QRating DESC ";
+			+ "ORDER BY app.tblQuestion.QRating DESC "
+			+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 	
 	final public String GET_TOPICS_BY_POPULARITY = "SELECT tblQuestionTopics.Topic,  SUM(app.tblQuestion.QRating) as TPop "
 			+ "FROM app.tblQuestionTopics JOIN app.tblQuestion "
@@ -94,7 +97,7 @@ public interface QAndAConstants {
 	
 	public final String VOTE_ANSWER = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID=?";
 		
-	public final String GET_USER_LAST_QUESTION = "SELECT app.tblQuestion.* app.tblUser.PhotoURL, app.tblUser.UserRating "
+	public final String GET_USER_LAST_QUESTION = "SELECT app.tblQuestion.*, app.tblUser.PhotoURL, app.tblUser.UserRating "
 			+ "FROM app.tblQuestion JOIN app.tblUser ON app.tblQuestion.QUNickName = app.tblUser.NickName "
 			+ "WHERE app.tblQuestion.QUNickName = ? "
 			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC "

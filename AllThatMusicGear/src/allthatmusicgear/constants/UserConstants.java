@@ -47,18 +47,19 @@ public interface UserConstants {
 										+ "WHERE app.tblAnswerVotes.UNickName = ? ";
 	
 	public final String GET_USER_EXPERTISE = "SELECT app.tblQuestionTopics.topic as Topic, "
-			+ "SUM(app.tblAnswer.AVotingScore) as TotalVotes "
-			+ "FROM app.tblAnswer JOIN app.tblQuestionTopics "
-			+ "ON app.tblAnswer.QuestionID = app.tblQuestionTopics.QID "
-			+ "WHERE app.tblAnswer.AUNickName = ? "
-			+ "GROUP BY app.tblQuestionTopics.topic "
-			+ "ORDER BY TotalVotes DESC "
-			+ "FETCH FIRST 5 ROWS ONLY ";
+											+ "SUM(app.tblAnswer.AVotingScore) as TotalVotes "
+											+ "FROM app.tblAnswer JOIN app.tblQuestionTopics "
+											+ "ON app.tblAnswer.QuestionID = app.tblQuestionTopics.QID "
+											+ "WHERE app.tblAnswer.AUNickName = ? "
+											+ "GROUP BY app.tblQuestionTopics.topic "
+											+ "ORDER BY TotalVotes DESC "
+											+ "FETCH FIRST 5 ROWS ONLY ";
 	
 	public final String GET_USER_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " +
 			"FROM app.tblUser WHERE app.tblUser.NickName=?";
-	public final String GET_ALL_USERS_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " +
-			"FROM app.tblUser ORDER BY USERRATING DESC";
+	public final String GET_ALL_USERS_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " 
+												+ "FROM app.tblUser ORDER BY USERRATING DESC "
+												+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 
 
 }

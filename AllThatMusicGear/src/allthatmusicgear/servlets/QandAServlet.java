@@ -479,10 +479,27 @@ public class QandAServlet extends HttpServlet {
     			}
     			else if (uri.indexOf(QAndAConstants.QUESTIONS_BY_TOPIC) != 1){
     				try {
+    					int offset = 20 * (Integer.parseInt(request.getParameter("pageNum")) -1);
+    					String topic = request.getParameter("topic");
+
+    					/* first Count all for pages */
+    					Integer totalQuestionsForTopic = 0;
+    					PreparedStatement countStmt;
+    					countStmt = conn.prepareStatement(QAndAConstants.COUNT_ALL_TOPIC_QUESTIONS);
+    					countStmt.setString(1, topic);
+    					ResultSet rs = countStmt.executeQuery();
+    					if (rs.next()){
+    						totalQuestionsForTopic = rs.getInt(1);
+    					}
+    					rs.close();
+    					countStmt.close();
+    					
+    					/* now get the questions and answers */
     					PreparedStatement pstmt;
         				pstmt = conn.prepareStatement(QAndAConstants.GET_QUESTIONS_BY_TOPIC);
-        				pstmt.setString(1, request.getParameter("topic"));
-        				Collection<Question> questCollection = new ArrayList<Question>();
+        				pstmt.setString(1, topic);
+        				pstmt.setInt(2, offset);
+    					Collection<QuestionWithAnswers> questCollection = new ArrayList<QuestionWithAnswers>();
         				Map<Integer, Integer> userQstVoteMap = getCurrUserQstVoteMap(loggedUserNickName, conn);
         				ResultSet QuestionRS = pstmt.executeQuery();
     					while (QuestionRS.next())
@@ -491,7 +508,7 @@ public class QandAServlet extends HttpServlet {
     						String questionUserNickName = QuestionRS.getString(2);
     						int currUserVoted = getUserVote(questionUserNickName, loggedUserNickName, userQstVoteMap, qID);
     						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
-    						questCollection.add(new Question(qID, 
+    						Question newQuestion = new Question(qID, 
     														questionUserNickName, 
 						    								QuestionRS.getString(3), 
 						    								QuestionRS.getTimestamp(4).getTime(), 
@@ -500,12 +517,15 @@ public class QandAServlet extends HttpServlet {
 						    								qTopicList,
 						    								QuestionRS.getString(7),
 						    								QuestionRS.getDouble(8),
-						    								currUserVoted));
+						    								currUserVoted);
+    						List<Answer> qAnswers = getQuestionAnswers(qID, conn, loggedUserNickName);
+    						questCollection.add(new QuestionWithAnswers(newQuestion, qAnswers));
     					}
-    					QuestionRS.close();
-    					pstmt.close();	
-    					JsonRes = gson.toJson(questCollection, QAndAConstants.QUESTION_COLLECTION);  
-    					} catch (SQLException e) {
+    					  					
+    					JsonRes = "{\"numQuestion\":" + totalQuestionsForTopic.toString() + ", \"questions\":";
+    					JsonRes += gson.toJson(questCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
+    					JsonRes += "}";
+       					} catch (SQLException e) {
     					getServletContext().log("Error while fetching User last questions", e);
     					response.sendError(500);//internal server error
     				}
@@ -646,7 +666,7 @@ public class QandAServlet extends HttpServlet {
         					}
     						rs.close();
     						pstmt.close();
-    		    			JsonRes = gson.toJson(questAndAnsPairCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
+    		    			JsonRes = gson.toJson(questAndAnsPairCollection, QAndAConstants.QUESTION_AND_ANS_PAIR_COLLECTION);
 
     					} catch (SQLException e) {
     						getServletContext().log("Error while fetching User's last answers", e);

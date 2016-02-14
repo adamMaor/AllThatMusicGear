@@ -74,30 +74,30 @@
 		<div class="row" ng-repeat="qstn in user.lastAnswered">
 			<div class="col-md-9" id="elementBody">
 	     		<div class="row">
-			       		<p>{{qstn.qText}}</p>
+			       		<p>{{qstn.qst.qText}}</p>
 	       		</div>
 	       		<div class="row">
 		       		<div class="col-md-12">
-			       		<p> question rating: {{qstn.qRating | number:2}}</p>
-			       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
-			       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
+			       		<p> question rating: {{qstn.qst.qRating | number:2}}</p>
+			       		<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}">{{qstn.qst.qUserNickName}}</a>
+			       		<p>date : {{qstn.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
 						<span><b>Topics:</b></span>
-			       		<span ng-repeat="topics in qstn.qTopics" id="topics">
+			       		<span ng-repeat="topics in qstn.qst.qTopics" id="topics">
 			       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
 			       		</span>
 		       		</div>
 		       	</div>
 			</div>
 			<div class="row" id="answers" >
-				<div class ="col-md-8 col-md-offset-1" ng-repeat="anwr in qstn.answers">
+				<div class ="col-md-8 col-md-offset-1" >
 					<div class="col-md-9" id="elementBody">
 			       		<div class="row">
-				       		<p>{{anwr.aText}}</p>
+				       		<p>{{qstn.ans.aText}}</p>
 			       		</div>
 			       		<div class="row">
-			       			<p>answerID: {{anwr.aID}}</p>
-				       		<p>nickname: <b>{{anwr.aUserNickName}}</b></p>
-				       		<p>date : {{anwr.aSubDate | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+			       			<p>answerID: {{qstn.ans.aID}}</p>
+				       		<p>nickname: <b>{{qstn.ans.aUserNickName}}</b></p>
+				       		<p>date : {{qstn.ans.aSubDate | date:'dd/MM/yyyy HH:mm:ss' }}</p>
 			       		</div>
 					</div>
 				</div>

@@ -62,7 +62,18 @@ public class UserServlet extends HttpServlet {
     		resList.add(rs.getString(1));
     	}  	
     	return resList;
-    }    
+    }  
+    
+    private int countUsers(Connection conn) throws SQLException
+    {
+    	int count = 0;
+    	Statement stmt = conn.createStatement();
+ 		ResultSet rs = stmt.executeQuery(UserConstants.COUNT_ALL_USERS);
+ 		if (rs.next()){
+ 			count = rs.getInt(1);
+ 		}
+    	return count;
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -157,9 +168,14 @@ public class UserServlet extends HttpServlet {
     		}
     		else if (uri.indexOf(UserConstants.GET_ALL_USERS_INFO) != -1) {
     			try {
-    				Statement stmt = conn.createStatement();
-					ResultSet allUsersRS = stmt.executeQuery(UserConstants.GET_ALL_USERS_INFO_QUERY);
-					Collection<User> userCollection = new ArrayList<User>();
+    				Integer allUsersCount = countUsers(conn);
+    				int offset = 20 * (Integer.parseInt(request.getParameter("pageNum")) -1);
+    				Collection<User> userCollection = new ArrayList<User>();
+
+    				PreparedStatement pstmt;
+    				pstmt = conn.prepareStatement(UserConstants.GET_ALL_USERS_INFO_QUERY); 
+    				pstmt.setInt(1, offset);
+					ResultSet allUsersRS = pstmt.executeQuery();
 					while (allUsersRS.next())
 					{
 						List<String> expertise = getUserExp(allUsersRS.getString(1), conn);
@@ -170,10 +186,14 @@ public class UserServlet extends HttpServlet {
 						    						expertise));
 					}
 					allUsersRS.close();
-					stmt.close();
-    				
+					pstmt.close();
+					
     	    		Gson gson = new Gson();
-    	    		String JsonRes = gson.toJson(userCollection, UserConstants.USER_COLLECTION);  
+    	    		String JsonRes;  
+    	    		JsonRes = "{\"numUsers\":" + allUsersCount.toString() + ", \"users\":";
+					JsonRes += gson.toJson(userCollection, UserConstants.USER_COLLECTION);
+					JsonRes += "}";
+					
     	    		PrintWriter writer = response.getWriter();
     	    		writer.println(JsonRes);
     	    		writer.close();
