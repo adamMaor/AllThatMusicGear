@@ -1,6 +1,8 @@
 var logIn = angular.module('logIn',[]);
 logIn.controller('logInController', ['$scope', '$http','$window', function($scope, $http, $window) {
-	 		 	
+	 	
+	$scope.logInError = "";
+	
 	$scope.logIn = function() {
 		$http({
 			method : "POST",
@@ -38,6 +40,15 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 		})
 	}
 	
+	$scope.showReg = function(){
+		$("#logInForm").addClass('hidden');
+		$("#registerForm").removeClass('hidden');
+	}
+	$scope.showLogin = function(){
+		$("#logInForm").removeClass('hidden');
+		$("#registerForm").addClass('hidden');
+	}
+	
 	$scope.clearLogInError = function(){
 		$scope.logInError = "";
 	}
@@ -62,7 +73,6 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 		$scope.clearRegisterError();
 	}
 	
-	$scope.resetLogFields();
-	$scope.resetRegFields();
+	
 
  }]);

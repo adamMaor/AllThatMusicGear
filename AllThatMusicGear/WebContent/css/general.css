@@ -1,6 +1,28 @@
 body{
  	margin-top:60px;
 }
+.navbar-brand {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 175%;
+	text-indent: 50px;
+	margin: auto;
+	color: white!important;
+}
+
+.nav.navbar-nav.navbar-right li a {
+    color: white;
+}
+
+#navBar {
+	width: 100%;
+	background-color: rgb(150, 0, 254);
+}
+
+#logOut {
+	color: white;
+	background-color: black;
+	
+}
 
 #Element:hover {
 	background-color: #f5f5f5;

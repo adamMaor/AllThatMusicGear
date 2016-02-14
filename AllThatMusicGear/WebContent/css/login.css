@@ -2,7 +2,23 @@ body {
 	padding-top: 70px;
 	padding-bottom: 40px;
 	vertical-align: middle;
+	background-color: black;
+	background-image: url("../media/backGround.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+	background-size: cover;
 }
+
+h1 {
+	color: white;
+	text-align: center;
+	text-decoration: underline;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 350%;
+}
+
+textarea { resize:none; }
 
 .center {
     margin-left: auto;
@@ -12,7 +28,55 @@ body {
     
 }
 
-.col-md-4{
+.col-md-4 {
 	padding-top:20px;
-	width: 400px;
+	width: 400px;	
+}
+
+.col-center {
+	float: none;
+    margin: 0 auto;
+}
+
+.panel {
+	border-style: none;
+}
+
+.panel-title {
+	text-align: center;
+}
+
+.panel-heading {
+	color: black!important;
+  	background-color: rgb(193, 185, 255)!important;
+  	text-decoration: underline;
+  	border-style: none;
+}
+
+.btn {
+	border-style: none;
+	color: black;
+	background-color: rgb(234, 243, 228);
+}
+
+.btn-primary{
+	color: purple;
+	background-color: rgb(193, 185, 255);
+  	vertical-align: middle;
+  	border-style: none;
+}
+.btn-primary:hover{
+	color: white;
+	background-color: rgb(152, 96, 255);
+  	vertical-align: middle;
+}		
+
+
+.buttons {
+	text-align: center;
+}
+
+.errors {
+	text-align: center;
+	color: red;
 }

@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">AllThatMusicGear</a>			
+			<a class="navbar-brand" href="questions.html#/newquestions">AllThatMusicGear.com</a>			
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-left">
@@ -17,14 +17,14 @@
 				<li><a href="questions.html#/newquestions">New Questions</a></li>
 				<li><a href="questions.html#/topquestions">Top Questions</a></li>
 				<li><a href="topics.html#">Topics</a></li>
-				<li><a href="leaderboard.html#">Leaderboard</a></li>
+				<li><a href="leaderboard.html#">Leader Board</a></li>
 				<li>
 					<a ng-href="profile.html#/user#{{loggedInUserNickName}}">
 						<img src="{{loggedInUserPhotoURL}}" class="img-circle" id="profilePic" alt="missing profile" alt="Missing Photo">
 						<b>{{loggedInUserNickName}} </b>
 					</a>
 				</li>
-				<li><a href="login.html" ng-click="logOut()">Log out</a></li>
+				<li ><a  href="login.html" ng-click="logOut()"><span id="logOut">Log out</span></a></li>
 			</ul>
 		</div>
 	</div>
