@@ -13,6 +13,10 @@ body{
     color: white;
 }
 
+.nav.navbar-nav.navbar-right a:hover {
+    color: black;
+}
+
 .navbar-default .navbar-nav > .active a{
     color: rgb(150, 0, 254)!important;
    	background: white;
@@ -20,13 +24,13 @@ body{
 
 .navbar-default .navbar-nav > .active > a:hover, 
 .navbar-default .navbar-nav > .active > a:focus {
-	color: black;
+	color: black!important;
 	background: white;
  }
 
 #navBar {
 	width: 100%;
-	background-color: rgb(150, 0, 254);
+	background-color: rgb(170, 0, 254);
 }
 
 #logOut {
@@ -40,6 +44,10 @@ body{
 }
 .row{
 	margin-bottom: 10px;	
+}
+.QATitle {
+	color: purple;
+	text-decoration: underline;
 }
 
 #votingScore {
@@ -78,9 +86,20 @@ body{
 	display: inline-block;
 }
 
+#answerBlock {
+	background-color: #FFF0F5;
+	padding:5px;
+	margin-top: 10px;
+}
+
+#questionBlock {
+	padding:2px;
+	margin-top: 10px;
+}
+
 #questionThreadProfilePhoto{
-	width:50px;
-	height:50px;
+	width:40px;
+	height:40px;
 }
 
 #profileUserInfo{
