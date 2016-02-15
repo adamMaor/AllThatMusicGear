@@ -296,6 +296,9 @@ mainPageApp.directive('voteButton', function ($compile) {
     	}
     	
     	$(element).addClass(buttonClass);
+    	if (buttonClass.indexOf("disabled") > -1){
+    		element.attr("disabled", "disabled");
+    	}
     };
 });
 
