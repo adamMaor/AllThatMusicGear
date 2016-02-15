@@ -1,9 +1,19 @@
 body{
  	margin-top:60px;
 }
+.navbar {
+	background-color: #008B8B;
+	border-top: 5px solid transparent;
+}
+#navBar {
+	width: 75%;
+	min-width: 1000px;
+}
+
+
 .navbar-brand {
 	font-family: "Courier New", Courier, monospace;
-	font-size: 175%;
+	font-size: 150%;
 	text-indent: 50px;
 	margin: auto;
 	color: white!important;
@@ -11,6 +21,8 @@ body{
 
 .nav.navbar-nav.navbar-right li a {
     color: white;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .nav.navbar-nav.navbar-right a:hover {
@@ -18,20 +30,17 @@ body{
 }
 
 .navbar-default .navbar-nav > .active a{
-    color: rgb(150, 0, 254)!important;
-   	background: white;
+    color: #008B8B!important;
+   	background: #E0FFFF;
  }
 
 .navbar-default .navbar-nav > .active > a:hover, 
 .navbar-default .navbar-nav > .active > a:focus {
 	color: black!important;
-	background: white;
+	background: #E0FFFF!important;
  }
 
-#navBar {
-	width: 100%;
-	background-color: rgb(170, 0, 254);
-}
+
 
 #logOut {
 	color: white;
@@ -40,11 +49,36 @@ body{
 }
 
 #Element:hover {
-	background-color: #f5f5f5;
+	background-color: #E0FFFF;
 }
 .row{
 	margin-bottom: 10px;	
 }
+
+.btn {
+	border-style: none;
+	color: #008B8B;
+	background-color: rgb(234, 243, 228);
+}
+
+.btn:hover {
+	border-style: none;
+	color: white;
+	background-color: black;
+}
+
+.btn-primary{
+	color: #008B8B;
+	background-color: #E0FFFF!;
+  	vertical-align: middle;
+  	border-style: none;
+}
+.btn-primary:hover{
+	color: white;
+	background-color: #008B8B;
+  	vertical-align: middle;
+}	
+
 .QATitle {
 	color: purple;
 	text-decoration: underline;
@@ -59,12 +93,29 @@ body{
 	margin: 5px;
 	margin-top: 0px;
 	margin-bottom: 7px;
-	background-color: #e5ecff;
+	background-color: #E0FFFF;
 	display: inline-block;
 }
 
 .pager {
 	float:left;
+}
+
+.pager li a{
+	border-style: none;
+	color: black;
+	background-color: #E0FFFF
+}
+
+.pager li a:hover{
+	border-style: none;
+	color: white;
+	background-color: black;
+}
+
+.col-center {
+	float: none;
+    margin: 0 auto;
 }
 
 #profilePic{
@@ -87,7 +138,7 @@ body{
 }
 
 #answerBlock {
-	background-color: #FFF0F5;
+	background-color: #f2ffff;
 	padding:5px;
 	margin-top: 10px;
 }

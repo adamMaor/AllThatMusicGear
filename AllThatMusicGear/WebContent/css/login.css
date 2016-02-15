@@ -48,7 +48,7 @@ textarea { resize:none; }
 
 .panel-heading {
 	color: black!important;
-  	background-color: rgb(193, 185, 255)!important;
+  	background-color: #E0FFFF!important;
   	text-decoration: underline;
   	border-style: none;
 }
