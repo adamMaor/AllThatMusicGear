@@ -74,12 +74,12 @@ public interface QAndAConstants {
 			+ "ORDER BY app.tblQuestion.QRating DESC "
 			+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 	
-	final public String GET_TOPICS_BY_POPULARITY = "SELECT tblQuestionTopics.Topic,  SUM(app.tblQuestion.QRating) as TPop "
+	final public String GET_TOPICS_BY_POPULARITY = "SELECT app.tblQuestionTopics.Topic, SUM(app.tblQuestion.QRating) as TPop "
 			+ "FROM app.tblQuestionTopics JOIN app.tblQuestion "
 			+ "ON app.tblQuestionTopics.QID = app.tblQuestion.QID "
-			+ "GROUP BY tblQuestionTopics.Topic "
+			+ "GROUP BY app.tblQuestionTopics.Topic "
 			+ "ORDER BY TPop DESC "
-			+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
+			+ "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ";
 		
 	
 	public final String GET_QUESTION_SCORES = "SELECT app.tblQuestion.QVotingScore, AVG(Cast(app.tblAnswer.AVotingScore as Float)) as AVGAnswerScore"

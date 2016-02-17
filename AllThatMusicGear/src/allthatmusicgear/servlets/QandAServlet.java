@@ -461,8 +461,17 @@ public class QandAServlet extends HttpServlet {
         		}
     			else if (uri.indexOf(QAndAConstants.TOPIC_BY_TPOP) != -1){
     				try {
+    					Integer totalTopics = 0;
+    					Statement getTopicCount = conn.createStatement();
+    					ResultSet topicRs = getTopicCount.executeQuery(QAndAConstants.COUNT_ALL_TOPICS);
+    					if (topicRs.next()){
+    						totalTopics = topicRs.getInt(1);
+    					}
     					PreparedStatement pstmt;
         				pstmt = conn.prepareStatement(QAndAConstants.GET_TOPICS_BY_POPULARITY);
+        				pstmt.setInt(1, Integer.parseInt(request.getParameter("offset")));
+        				pstmt.setInt(2, Integer.parseInt(request.getParameter("listSize")));
+        				
         				List<TopicQRatingPair> topicList = new ArrayList<TopicQRatingPair>();
         				ResultSet rs = pstmt.executeQuery();
     					while (rs.next())
@@ -471,9 +480,13 @@ public class QandAServlet extends HttpServlet {
     					}
     					rs.close();
     					pstmt.close();	
-    					JsonRes = gson.toJson(topicList, QAndAConstants.TOPIC_AND_TPOP_COLLECTION);
+    					
+    					JsonRes = "{\"numTopics\":" + totalTopics.toString() + ", \"topics\":";
+    					JsonRes += gson.toJson(topicList, QAndAConstants.TOPIC_AND_TPOP_COLLECTION);
+    					JsonRes += "}";
+    					
     				} catch (SQLException e) {
-    					getServletContext().log("Error while fetching User last questions", e);
+    					getServletContext().log("Error while fetching Topics", e);
     					response.sendError(500);//internal server error
     				}
     			}
