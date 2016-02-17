@@ -112,6 +112,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	if (url == "/newquestions"){
 		$scope.questionMode = "NewQuestions";
 		$scope.Title = "New Questions:";
+		setInterval(function(){$scope.updateQuestions();}, 5000);
 	}
 	else if (url == "/topquestions"){
 		$scope.questionMode = "AllQuestions";
@@ -123,10 +124,16 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		$scope.Title = "Questions By Topic - " + $scope.Topic;
 	}
 	var parameter = { params: { topic: $scope.Topic, pageNum: $scope.pageNum,} };
+	$scope.questions = [];
 	
 	$scope.updateQuestions = function(){
 		$http.get("QandAServlet/" + $scope.questionMode, parameter)
 		.success(function(response) {
+			if($scope.questions.length != 0){
+				if($scope.questions[0].qst.qID == response.questions[0].qst.qID){
+					return;
+				}
+			}
 			$scope.questions = response.questions;				
 			var totalQustions = parseInt(response.numQuestion);
 			$scope.maxPageNum = parseInt((totalQustions-1)/20) + 1;
