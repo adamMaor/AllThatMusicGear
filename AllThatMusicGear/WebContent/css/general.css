@@ -9,6 +9,18 @@ body{
 	
 }
 
+.topicDiv {
+	margin-top: 20px;
+}
+
+.topic {
+	padding:2px;
+	margin: 5px;
+	margin-top: 0px;
+	margin-bottom: 7px;
+	background-color: #E0FFFF;
+	display: inline-block;
+}
 
 .navbar-brand {
 	font-family: "Courier New", Courier, monospace;

@@ -26,6 +26,22 @@
 	
 	<div class="container" ng-controller="topicsCtrl">
 		<h2>Topics:</h2>
+		<div class="row">
+			<nav>
+	  			<ul class="pager">
+				    <li><a href="" ng-click="prevPage()">Previous</a></li>
+				    <li><b>[ {{pageNum}} / {{maxPageNum}} ]</b></li>
+				    <li><a href="" ng-click="nextPage()">Next</a></li>
+	  			</ul>
+			</nav>
+		</div>
+		<div class="row">
+			<div class="topicDiv">
+	     		<span ng-repeat="topic in topics" class="topic" ng-style="topicCloudStyle(topic.tPop)">
+	     			<a ng-href="questions.html#/bytopic#{{topic.topic}}">{{topic.topic}}</a>
+	     		</span>
+			</div>
+		</div>
 	</div>
 	
 	<!-- footer directive -->
