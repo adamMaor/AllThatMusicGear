@@ -7,24 +7,32 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="questions.html#/newquestions">AllThatMusicGear.com</a>			
+			<a class="navbar-brand" href="questions.html#/newquestions">ATMG</a>			
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-left">
-				<li><p class="btn btn-default navbar-btn btn-md" href="#askQuestionModal" data-toggle="modal">Ask Question</p></li>
+				<li data-toggle="popover" data-trigger="hover" data-content="Submit a New Question" title="Ask..." data-placement="bottom">
+				<p class="btn btn-default navbar-btn btn-md nav-btn" href="#askQuestionModal" data-toggle="modal" >
+					<span class="glyphicon glyphicon-edit nav-icon" aria-hidden="true" ></span>
+
+				</p></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li id="newQNav"><a href="questions.html#/newquestions">New Questions</a></li>
-				<li id="allQNav"><a href="questions.html#/topquestions">Top Questions</a></li>
-				<li id="topicsNav"><a href="topics.html#">Topics</a></li>
-				<li id="leaderNav"><a href="leaderboard.html#">Leader Board</a></li>
-				<li id="profileNav">
+				<li id="newQNav" data-toggle="popover" data-trigger="hover" data-content="View questions that still weren't answered ordered by their submittion date" title="New Questions" data-placement="bottom">
+					<a href="questions.html#/newquestions">New Questions</a></li>
+				<li id="allQNav" data-toggle="popover" data-trigger="hover" data-content="View questions ordered by their ratings" title="Top Questions" data-placement="bottom">
+					<a href="questions.html#/topquestions">Top Questions</a></li>
+				<li id="topicsNav" data-toggle="popover" data-trigger="hover" data-content="View questions by topics" title="Topics" data-placement="bottom">
+					<a href="topics.html#">Topics</a></li>
+				<li id="leaderNav" data-toggle="popover" data-trigger="hover" data-content="View users' leaderBoard" title="LeaderBoard" data-placement="bottom">
+					<a href="leaderboard.html#">Leaderboard</a></li>
+				<li id="profileNav" data-toggle="popover" data-trigger="hover" data-content="View user's profile" title="Logged in User" data-placement="bottom">
 					<a ng-href="profile.html#/user#{{loggedInUserNickName}}">
 						<img src="{{loggedInUserPhotoURL}}" class="img-circle" id="profilePic" alt="missing profile" alt="Missing Photo">
-						<b>{{loggedInUserNickName}} </b>
+						<u>{{loggedInUserNickName}} </u>
 					</a>
 				</li>
-				<li ><a  href="login.html" ng-click="logOut()"><span id="logOut">Log out</span></a></li>
+				<li data-toggle="popover" data-trigger="hover" data-content="Log out and go to login page" title="Log Out" data-placement="bottom"><a  href="login.html" ng-click="logOut()"><span class="glyphicon glyphicon-log-out nav-icon" ></span></a></li>
 			</ul>
 		</div>
 	</div>

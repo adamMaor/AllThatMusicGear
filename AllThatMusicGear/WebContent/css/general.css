@@ -6,15 +6,13 @@ body{
 	border-top: 5px solid transparent;
 }
 #navBar {
-	width: 75%;
-	min-width: 1000px;
+	
 }
 
 
 .navbar-brand {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 150%;
-	text-indent: 50px;
 	margin: auto;
 	color: white!important;
 }
@@ -23,10 +21,19 @@ body{
     color: white;
     padding-left: 8px;
     padding-right: 8px;
+    text-align: center;
+}
+
+.nav.navbar-nav.navbar-left li {
+	color: white;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center;
 }
 
 .nav.navbar-nav.navbar-right a:hover {
     color: black;
+    text-align: center;
 }
 
 .navbar-default .navbar-nav > .active a{
@@ -41,10 +48,8 @@ body{
  }
 
 
-
-#logOut {
-	color: white;
-	background-color: black;
+.nav-icon {
+	font-size: 120%;
 	
 }
 
@@ -55,25 +60,25 @@ body{
 	margin-bottom: 10px;	
 }
 
-.btn {
+.nav-btn {
 	border-style: none;
 	color: #008B8B;
 	background-color: rgb(234, 243, 228);
 }
 
-.btn:hover {
+.nav-btn:hover {
 	border-style: none;
 	color: white;
 	background-color: black;
 }
 
-.btn-primary{
+.nav-btn-primary{
 	color: #008B8B;
 	background-color: #E0FFFF!;
   	vertical-align: middle;
   	border-style: none;
 }
-.btn-primary:hover{
+.nav-btn-primary:hover{
 	color: white;
 	background-color: #008B8B;
   	vertical-align: middle;
@@ -132,10 +137,6 @@ body{
 	display: inline-block;
 }
 
-#idBlock {
-	width: auto;
-	display: inline-block;
-}
 
 #answerBlock {
 	background-color: #f2ffff;
@@ -160,14 +161,7 @@ body{
 }
 
 
-#questionTextBody{
-	min-height: 100px;
-}
 #answerTextBody{
-	min-height: 40px;
-}
-
-#textParagraph{
 	min-height: 40px;
 }
 

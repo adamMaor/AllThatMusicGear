@@ -49,6 +49,10 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	}
 	$scope.loggedInUserInfo();
 	
+	$(document).ready(function(){
+	    $('[data-toggle="popover"]').popover(); 
+	});
+	
 	var location = window.location.pathname;
 	if (location.toLocaleString().indexOf("leaderboard", 16) != -1){
 		$("#leaderNav").addClass( "active" );
@@ -296,7 +300,9 @@ mainPageApp.directive('voteButton', function ($compile) {
     	}
     	
     	$(element).addClass(buttonClass);
-    	if (buttonClass.indexOf("disabled") > -1){
+    	if (buttonClass.indexOf("disabled") > -1 
+    			|| buttonClass.indexOf("primary") > -1 
+    			|| buttonClass.indexOf("danger") > -1){
     		element.attr("disabled", "disabled");
     	}
     };
