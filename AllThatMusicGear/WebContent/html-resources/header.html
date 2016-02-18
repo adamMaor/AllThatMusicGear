@@ -12,10 +12,10 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-left">
 				<li data-toggle="popover" data-trigger="hover" data-content="Submit a New Question" title="Ask..." data-placement="bottom">
-				<p class="btn btn-default navbar-btn btn-md nav-btn" href="#askQuestionModal" data-toggle="modal" >
-					<span class="glyphicon glyphicon-edit nav-icon" aria-hidden="true" ></span>
-
-				</p></li>
+					<p class="btn btn-default navbar-btn btn-md nav-btn" href="#askQuestionModal" data-toggle="modal" >
+						<span class="glyphicon glyphicon-edit nav-icon" aria-hidden="true" ></span>
+					</p>
+				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li id="newQNav" data-toggle="popover" data-trigger="hover" data-content="View questions that still weren't answered ordered by their submittion date" title="New Questions" data-placement="bottom">
@@ -52,10 +52,10 @@
 					</div>
 					<div class="form-group">
 						<label for="topics">Topics:</label>
-						<input class="form-control" ng-model="qTopic" name="questionTopics" ng-change="checkQuestionTopic()" placeholder="Seperate topics with comma">
+						<input class="form-control" ng-model="qTopic" maxlength="51" name="questionTopics" ng-change="checkQuestionTopic()" placeholder="Seperate topics with comma">
 					</div>
-					<div class="row">
-						<span ng-repeat="topic in qTopics" class="label label-info">{{topic}}</span>
+					<div>
+						<span ng-repeat="topic in qTopics track by $index" id="topics">{{topic}}</span>
 					</div>
 					<button type="submit" class="btn btn-primary" value="Submit Question">Submit</button>
 					<button type="button" class="btn btn-default" ng-click="resetQFields()" value="Reset">Reset</button>

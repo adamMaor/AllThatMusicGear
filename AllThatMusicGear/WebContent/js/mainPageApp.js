@@ -78,10 +78,15 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	
 	$scope.submitQuestion = function(){
 		checkLogin();
+		var topicString = "";
+		//prepare a ',' delimited string for the server 
+		for (var i =0; i < $scope.qTopics.length; i++){
+			topicString += $scope.qTopics[i] + ",";
+		}
 		var parameters = {
 				params: {
 					qText: $scope.qText,
-					topicList: $scope.qTopics,						
+					topicList: topicString,						
 				}
 		};
 		$http.get("QandAServlet/InsertQuestion", parameters);
@@ -91,7 +96,14 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	
 	$scope.checkQuestionTopic = function(){
 		if($scope.qTopic[$scope.qTopic.length-1] == ','){
-			$scope.qTopics.push($scope.qTopic.trim().slice(0,-1));
+			if ($scope.qTopic.length>1){
+				// remove trailing ',' then trim whitespaces
+				$scope.qTopic = $scope.qTopic.slice(0,-1).trim();
+				// check if topic exists in topic list
+				if ($scope.qTopics.indexOf($scope.qTopic) == -1){
+					$scope.qTopics.push($scope.qTopic);				
+				}
+			}	
 			$scope.qTopic = "";
 		}
 	}
@@ -115,11 +127,19 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	$scope.maxPageNum = 1;
 	$scope.Topic = "";
 	
+	$scope.answerBoxOpen = 0;
+	
+	$scope.callbackNewquestions = function (){
+		if ($scope.answerBoxOpen == 0){
+			$scope.updateQuestions();
+		}
+	}
+	
 	var url = $location.path();
 	if (url == "/newquestions"){
 		$scope.questionMode = "NewQuestions";
 		$scope.Title = "New Questions:";
-		setInterval(function(){$scope.updateQuestions();}, 5000);
+		setInterval($scope.callbackNewquestions, 5000);
 	}
 	else if (url == "/topquestions"){
 		$scope.questionMode = "AllQuestions";
@@ -136,11 +156,6 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 	$scope.updateQuestions = function(){
 		$http.get("QandAServlet/" + $scope.questionMode, parameter)
 		.success(function(response) {
-			if($scope.questions.length != 0){
-				if($scope.questions[0].qst.qID == response.questions[0].qst.qID){
-					return;
-				}
-			}
 			$scope.questions = response.questions;				
 			var totalQustions = parseInt(response.numQuestion);
 			$scope.maxPageNum = parseInt((totalQustions-1)/20) + 1;
@@ -396,6 +411,12 @@ mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http)
 				$scope.tPopAvg += $scope.topics[i].tPop;
 			}
 			$scope.tPopAvg /= $scope.topics.length;
+			if ($scope.tPopAvg < 0){
+				$scope.tPopAvg = -$scope.tPopAvg;
+			}
+			if($scope.tPopAvg == 0){
+				$scope.tPopAvg = 1;
+			}
 		});
 	};
 	
