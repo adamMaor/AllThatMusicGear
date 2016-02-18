@@ -55,7 +55,7 @@
 						<input class="form-control" ng-model="qTopic" maxlength="51" name="questionTopics" ng-change="checkQuestionTopic()" placeholder="Seperate topics with comma">
 					</div>
 					<div>
-						<span ng-repeat="topic in qTopics track by $index" id="topics">{{topic}}</span>
+						<span class="topic" ng-repeat="topic in qTopics">{{topic}}</span>
 					</div>
 					<button type="submit" class="btn btn-primary" value="Submit Question">Submit</button>
 					<button type="button" class="btn btn-default" ng-click="resetQFields()" value="Reset">Reset</button>
