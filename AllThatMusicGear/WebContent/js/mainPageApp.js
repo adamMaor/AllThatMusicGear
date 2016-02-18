@@ -10,11 +10,11 @@ var checkLogin = function () {
 	});
 };
 
-var mainPageApp = angular.module('mainPageApp',[]);
-
 window.onhashchange = function() {
 	window.location.reload();
 };
+
+var mainPageApp = angular.module('mainPageApp',[]);
 
 mainPageApp.directive('header', function(){
 	return {
@@ -120,32 +120,33 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 	
  }]);
 
-
-
 mainPageApp.controller('questions', ['$scope', '$http', '$location',function($scope, $http, $location) {
 	$scope.pageNum = 1;
 	$scope.maxPageNum = 1;
-	$scope.Topic = "";
-	
-	$scope.answerBoxOpen = 0;
-	
-	$scope.callbackNewquestions = function (){
-		if ($scope.answerBoxOpen == 0){
-			$scope.updateQuestions();
-		}
-	}
 	
 	var url = $location.path();
 	if (url == "/newquestions"){
 		$scope.questionMode = "NewQuestions";
 		$scope.Title = "New Questions:";
-		setInterval($scope.callbackNewquestions, 5000);
+		
+		// answerBoxOpen - will be used as an indicator user isn't answering any questions at the moment
+		// and new questions page can be refreshed
+		$scope.answerBoxOpen = 0;
+		
+		$scope.callbackNewquestions = function (){
+			if ($scope.answerBoxOpen == 0){
+				$scope.updateQuestions();
+			}
+		}
+		
+		setInterval($scope.callbackNewquestions, 3000);
 	}
 	else if (url == "/topquestions"){
 		$scope.questionMode = "AllQuestions";
 		$scope.Title = "Top Questions:";
 	}
 	else {
+		$scope.Topic = "";
 		$scope.Topic = $location.hash();
 		$scope.questionMode = "QuestionsByTopic";
 		$scope.Title = "Questions By Topic - " + $scope.Topic;
@@ -280,6 +281,16 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 		}
 	}
 	
+	$scope.toggleAnswerBox = function(){
+		if (this.showAnswerBox){
+			$scope.answerBoxOpen--;			
+		}
+		else {
+			$scope.answerBoxOpen++;
+		}
+		this.showAnswerBox = !this.showAnswerBox;
+	}
+	
 	$scope.submitAnswer = function(qID, aText)
 	{
 		checkLogin();
@@ -289,6 +300,11 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 					aText: aText,
 				}
 		};
+		
+		$scope.answerBoxOpen--;
+		this.aText = ""
+		this.showAnswerBox = false;
+		
 		$http.get("QandAServlet/InsertAnswer", parameters)
 		.success(function(response) {
 			var parameters = {
@@ -393,7 +409,6 @@ mainPageApp.controller('leaderboardCtrl', ['$scope', '$http', function($scope, $
 		}	
 	}
 }]);
-
 
 mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.pageNum = 1;
