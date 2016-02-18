@@ -35,6 +35,8 @@ mainPageApp.directive('questionsthread', function(){
 });
 
 mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, $http) {
+	$scope.qTopics = [];
+	
 	$scope.loggedInUserInfo = function(){
 		$http.get("UserServlet/GetSessionInfo")
 		.success(function(response) {
@@ -74,24 +76,29 @@ mainPageApp.controller('navBarController', ['$scope', '$http', function($scope, 
 		
 	}
 	
+	$scope.submitQuestion = function(){
+		checkLogin();
+		var parameters = {
+				params: {
+					qText: $scope.qText,
+					topicList: $scope.qTopics,						
+				}
+		};
+		$http.get("QandAServlet/InsertQuestion", parameters);
+		$scope.resetQFields();
+		$('#askQuestionModal').modal('hide');
+	}
 	
-	$scope.submitQuestion = function()
-		{
-			checkLogin();
-			var parameters = {
-					params: {
-						qText: $scope.qText,
-						topicList: $scope.qTopics,						
-					}
-			};
-			$http.get("QandAServlet/InsertQuestion", parameters);
-			$scope.resetQFields();
-			$('#askQuestionModal').modal('hide');
+	$scope.checkQuestionTopic = function(){
+		if($scope.qTopic[$scope.qTopic.length-1] == ','){
+			$scope.qTopics.push($scope.qTopic.trim().slice(0,-1));
+			$scope.qTopic = "";
 		}
+	}
 	
 	$scope.resetQFields = function(){
 		$scope.qText = "";
-		$scope.qTopics = "";
+		$scope.qTopics = [];
 	}
 	
 	$scope.logOut = function(){
@@ -423,7 +430,7 @@ mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http)
 	
 	$scope.topicCloudStyle = function(topicPop){
 		var minFontSize = 100;
-		var maxFontSize = 600;
+		var maxFontSize = 400;
 		var topicPopAboveAvgPer = (topicPop / $scope.tPopAvg) * 100;
 		if (topicPopAboveAvgPer > maxFontSize){
 			topicPopAboveAvgPer = maxFontSize;
@@ -431,6 +438,8 @@ mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http)
 		if (topicPopAboveAvgPer < minFontSize){
 			topicPopAboveAvgPer = minFontSize;
 		}
-		return {"font-size" : topicPopAboveAvgPer+"%"};
+		
+		return {"font-size" : topicPopAboveAvgPer+"%",
+		};
 	};
 }]);
