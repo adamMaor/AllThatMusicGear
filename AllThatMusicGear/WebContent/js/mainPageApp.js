@@ -159,6 +159,7 @@ mainPageApp.controller('questions', ['$scope', '$http', '$location',function($sc
 			$scope.questions = response.questions;				
 			var totalQustions = parseInt(response.numQuestion);
 			$scope.maxPageNum = parseInt((totalQustions-1)/20) + 1;
+			$scope.questionCount = totalQustions;
 		});
 	};
 	
@@ -370,6 +371,7 @@ mainPageApp.controller('leaderboardCtrl', ['$scope', '$http', function($scope, $
 			$scope.allUsers = response.users;
 			var totalUsers = parseInt(response.numUsers);
 			$scope.maxPageNum = parseInt((totalUsers-1)/20) + 1;
+			$scope.userCount = totalUsers;
 		});
 	};
 	
@@ -403,6 +405,7 @@ mainPageApp.controller('topicsCtrl', ['$scope', '$http', function($scope, $http)
 		$http.get("QandAServlet/QuestionTopicsByTpop", parameter)
 		.success(function(response){
 			$scope.topics = response.topics;
+			$scope.topicCount = response.numTopics;
 			$scope.maxPageNum = parseInt((response.numTopics-1)/$scope.tagsOnPage) + 1;
 			$scope.shuffleArray($scope.topics);
 			// calculate average popularity score for the tag cloud

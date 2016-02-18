@@ -29,7 +29,7 @@
 		</div>
 		<div class="row">
 			<a ng-href="profile.html#/user#{{user.nickName}}">
-				<img src="{{user.photoURL}}" class="img-circle" id="leaderboardPhoto" alt="Missing Photo">
+				<img src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
 				<b>{{user.nickName}}</b>
  			</a>
 		</div>
@@ -44,7 +44,7 @@
 		</div>
 		<div class="row" ng-show="user.expertise.length!=0">
 			<b>User expertise:</b>
-       		<span ng-repeat="topic in user.expertise" id="topics">
+       		<span ng-repeat="topic in user.expertise" class="topic">
        			<a ng-href="questions.html#/bytopic#{{topic}}">{{topic}}</a>
        		</span>
 		</div>
@@ -61,7 +61,7 @@
 				       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
 				       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
 							<span><b>Topics:</b></span>
-				       		<span ng-repeat="topics in qstn.qTopics" id="topics">
+				       		<span ng-repeat="topics in qstn.qTopics" class="topic">
 				       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
 				       		</span>
 			       		</div>
@@ -82,7 +82,7 @@
 			       		<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}">{{qstn.qst.qUserNickName}}</a>
 			       		<p>date : {{qstn.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
 						<span><b>Topics:</b></span>
-			       		<span ng-repeat="topics in qstn.qst.qTopics" id="topics">
+			       		<span ng-repeat="topics in qstn.qst.qTopics" class="topic">
 			       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
 			       		</span>
 		       		</div>

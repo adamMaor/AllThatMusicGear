@@ -1,20 +1,21 @@
 <div class="container" id="questions" ng-controller="questions">
 	<div class="row">
-		<h2>{{Title}}</h2>
+		<h2> {{Title}}</h2>
+		<b>Total of {{questionCount}} questions</b>
 	</div>
 	<div class="row">
 		<nav>
-  			<ul class="pager">
-			    <li><a href="" ng-click="prevPage()">Previous</a></li>
+  			<ul class="pager"> 				
+			    <li><a href="" ng-click="prevPage()" title="Show previous 20 questions">Previous</a></li>
 			    <b>[ {{pageNum}} / {{maxPageNum}} ]</b>
-			    <li><a href="" ng-click="nextPage()">Next</a></li>
+			    <li><a href="" ng-click="nextPage()" title="Show next 20 questions">Next</a></li>
   			</ul>
 		</nav>
 	</div>
-   	<div class="row" ng-repeat="qstn in questions" id="questionBlock"> 							
+   	<div class="row questionBlock" ng-repeat="qstn in questions"> 							
    		<div class="col-sm-9">
    			<div class="row">
-		       	<div id="votingScore" class="col-xs-1" style="display:inline-block;"> 
+		       	<div class="col-xs-1 votingScore" > 
 		        	<button type="button" vote-button id="voteQuestionUp" aria-label="Left Align" ng-click="voteQuestion(qstn.qst.qID, 1, $event)">
 						<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>
 					</button>
@@ -23,41 +24,41 @@
 						<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 					</button>
 				</div>
-		       	<div id="elementBody" class="col-xs-10" style="display:inline-block; ">
+		       	<div class="col-xs-10" >
 		       		<div>
 		       			<p id="textParagraph"><span class="QATitle">Question:</span><br>{{qstn.qst.qText}}</p>
-			       		<div id="questionTopics">Topics:
-				       		<span ng-repeat="topics in qstn.qst.qTopics" id="topics">
-				       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
+			       		<div class="questionTopics">Topics:
+				       		<span ng-repeat="topics in qstn.qst.qTopics" class="topic">
+				       			<a ng-href="questions.html#/bytopic#{{topics}}" title="See all questions related to this topic">{{topics}}</a>
 				       		</span>
 			       		</div>
 		       		</div>
 	       		</div>
    			</div>
    		</div>
-      		<div class="col-sm-3" id="elementBody">
+   		<div class="col-sm-3">
 	       	<div class="row">
 	     	  	<div id="idBlock">
-	       			<div id="profilePhoto">by: 
-	       			<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}">
-	       				<img src="{{qstn.qst.userPhoto}}"  class="img-circle" id="questionThreadProfilePhoto" alt="Missing Photo">
+	       			<div class="profilePhoto"> 
+	       			<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}" title="See user's profile">
+	       				<img src="{{qstn.qst.userPhoto}}"  class="img-circle questionThreadProfilePhoto" alt="Missing Photo">
 	       			</a>
 	       			</div>
-	       			<div id="profileUserInfo">
+	       			<div class="profileUserInfo">
 	       				<div>
-	       					<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}">{{qstn.qst.qUserNickName}}</a>
+	       					<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}" title="See user's profile">{{qstn.qst.qUserNickName}}</a>
 	       				</div>
 	       				<div>UR:{{qstn.qst.userRating | number:1}}</div>
 	       			</div>
 	       		</div>
 	       		<div>
-	       			<span style="font-size:80%;">{{qstn.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>				
+	       			<span class="xsSpan">{{qstn.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>				
 	       		</div>
-       			<div style="margin-top:15px;">	
-	       			<button type="button" class="btn btn-default" ng-click="showAnswerBox=!showAnswerBox" aria-label="Left Align">
+       			<div class="answerBTns">	
+	       			<button type="button" class="btn btn-default ansBtn" ng-click="showAnswerBox=!showAnswerBox" aria-label="Left Align" title="Answer this question">
 						<span class="glyphicon glyphicon-plus" aria-hidden="true">Answer</span>
 					</button>
-		       		<button type="button"  class="btn btn-default" ng-show="qstn.ans.length > 1" ng-click="expandAnswers=!expandAnswers" aria-label="Left Align">
+		       		<button type="button"  class="btn btn-default ansBtn" ng-show="qstn.ans.length > 1" ng-click="expandAnswers=!expandAnswers" aria-label="Left Align" title="Show all answers">
 						<span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
 					</button>
 				</div>
@@ -72,9 +73,9 @@
 				</form>
 			</div>
 		</div>
-		<div class="row" id="answers" >
-			<div class="col-sm-10 col-xs-offset-1" id="answerBlock" ng-repeat="anwr in qstn.ans" ng-show="$index==0 || expandAnswers">
-				<div class="col-xs-1" id="votingScore"> 
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-1 answerBlock"  ng-repeat="anwr in qstn.ans" ng-show="$index==0 || expandAnswers">
+				<div class="col-xs-1 votingScore"> 
 		        	<button type="button" vote-button id="voteAnswerUp" aria-label="Left Align" ng-click="voteAnswer(qstn.qst.qID ,anwr.aID, 1, $event)">
 					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>
 					</button>
@@ -83,33 +84,42 @@
 					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 					</button>
 				</div>
-				<div class="col-xs-8" id="elementBody">		       		
-		       		<div class="row">
-			       		<div id="answerTextBody">
-			       			<p id="textParagraph"><span class="QATitle">Answer:</span><br>{{anwr.aText}}</p>
-			       		</div>
+				<div class="col-xs-10">		       		
+		       		<div class="row answerTextBody">
+		       			<p id="textParagraph">
+		       				<span class="QATitle">Answered:</span>
+		       				<span class="smSpan">
+		       				<a ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">
+		       				<img src="{{anwr.userPhoto}}" class="img-circle questionThreadProfilePhotoSM" alt="Missing Photo">
+			       			</a>
+			       			<a ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">{{anwr.aUserNickName}}</a>
+			       			UR:{{anwr.userRating | number:1}} 
+			       			<span class="smSpan">{{anwr.aSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>
+			       			</span>
+		       			</p>
+		       			<p id="textParagraph">{{anwr.aText}}</p>
 	       			</div>
        			</div>
-       			<div class="col-xs-3 " id="elementBody">
-		       		<div class="row">	
-			       		<div id="idBlock">
-			       			<div id="profilePhoto">by: 
-			       			<a ng-href="profile.html#/#{{anwr.aUserNickName}}">
-			       				<img src="{{anwr.userPhoto}}"  class="img-circle" id="questionThreadProfilePhoto" alt="Missing Photo">
-			       			</a>
-			       			</div>
-			       			<div id="profileUserInfo">
-			       				<div>
-			       					<a ng-href="profile.html#/#{{anwr.aUserNickName}}">{{anwr.aUserNickName}}</a>
-			       				</div>
-			       				<div>UR:{{anwr.userRating | number:1}}</div>
-			       			</div>
-			       		</div>
-			       		<div>
-		       				<span style="font-size:80%;">{{anwr.aSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>				
-		       			</div>
-		       		</div>
-	       		</div>
+<!--        			<div class="col-xs-3"> -->
+<!-- 		       		<div class="row">	 -->
+<!-- 			       		<div id="idBlock"> -->
+<!-- 			       			<div class="profilePhoto">by:  -->
+<!-- 			       			<a ng-href="profile.html#/#{{anwr.aUserNickName}}"> -->
+<!-- 			       				<img src="{{anwr.userPhoto}}"  class="img-circle questionThreadProfilePhoto" alt="Missing Photo"> -->
+<!-- 			       			</a> -->
+<!-- 			       			</div> -->
+<!-- 			       			<div class="profileUserInfo"> -->
+<!-- 			       				<div> -->
+<!-- 			       					<a ng-href="profile.html#/#{{anwr.aUserNickName}}">{{anwr.aUserNickName}}</a> -->
+<!-- 			       				</div> -->
+<!-- 			       				<div>UR:{{anwr.userRating | number:1}}</div> -->
+<!-- 			       			</div> -->
+<!-- 			       		</div> -->
+<!-- 			       		<div> -->
+<!-- 		       				<span class="timeSpan">{{anwr.aSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>				 -->
+<!-- 		       			</div> -->
+<!-- 		       		</div> -->
+<!-- 	       		</div> -->
 			</div>
 		</div>
 		<hr>

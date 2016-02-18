@@ -26,6 +26,7 @@
 	
 	<div class="container" ng-controller="topicsCtrl">
 		<h2>Topics:</h2>
+		<b>Total of {{topicCount}} topics</b>
 		<div class="row">
 			<nav>
 	  			<ul class="pager">
@@ -38,7 +39,7 @@
 		<div class="row">
 			<div class="topicDiv">
 	     		<span ng-repeat="topic in topics" class="topic" ng-style="topicCloudStyle(topic.tPop)">
-	     			<a ng-href="questions.html#/bytopic#{{topic.topic}}">{{topic.topic}}</a>
+	     			<a ng-href="questions.html#/bytopic#{{topic.topic}}" title="See all questions related to this topic">{{topic.topic}}</a>
 	     		</span>
 			</div>
 		</div>
