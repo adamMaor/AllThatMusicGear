@@ -8,9 +8,7 @@ import java.util.Collection;
 
 import com.google.gson.reflect.TypeToken;
 
-import allthatmusicgear.model.Question;
 import allthatmusicgear.model.User;
-import allthatmusicgear.model.QuestionAnswerPair;
 
 /**
  * @author Adam
