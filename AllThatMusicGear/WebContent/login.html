@@ -17,32 +17,41 @@
 </head>
 
 <body ng-app ="logIn" ng-controller="logInController">
-	<a href="login.html"><h1>AllThatMusicGear.com</h1></a><br>
 	<div class ="container" id="content">
 		<div id="logInForm" class="row">
-			<div class = "col-md-4 col-center">
+			<div class = "col-md-5 col-center">
 				<div class="panel panel-info" >
 					  <div class="panel-heading">
+					    <div class="logoDiv">
+					   		 <a href="login.html">
+						    	<img class="logoImg" align="top" src="media/ATMG_logo2.png">
+					    	</a>
 					    <h3 class="panel-title"><strong>Log in</strong></h3>
+						    
+						</div>
 					  </div>
 					  <div class="panel-body">
 					    <form class="form-horizontal" role="form" ng-submit="logIn()">
 						    <div class="form-group">
 						    	<label class="control-label col-sm-4" for="username">User Name:</label>
-						    	<div class="col-sm-8">
+						    	<div class="col-sm-6">
 						    		<input type="text" class="form-control" title="Username is required" maxlength="10" id="username" placeholder="Username" ng-model="logUserName" ng-change="clearLogInError()" required autofocus>
 						    	</div>
 						   	</div>
 						   	<div class="form-group">
 						   		<label class="control-label col-sm-4" for="pwd" class="control-label">Password:</label>
-						   		<div class="col-sm-8">
+						   		<div class="col-sm-6">
 						   			<input type="password" class="form-control" title="Password is required" maxlength="8" id="pwd" placeholder="Password" ng-model="logPassword" ng-change="clearLogInError()" required/>
 					   			</div>
 						   	</div>
 						    <p class="errors hidden" id="logInError">{{logInError}}</p>
 						    <p class="buttons">
-						   	<button type="submit" class="btn btn-primary" value="Log In">Log In</button>
- 							<button type="button" class="btn btn-default" ng-click="resetLogFields()" value="Reset">Reset</button>
+						   	<button type="submit" class="btn btn-primary form-btn-primary" value="Log In">
+						   		<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+						   	Log In</button>
+ 							<button type="button" class="btn btn-default form-btn" ng-click="resetLogFields()" value="Reset">
+ 								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+ 							Reset</button>
  							<p class="buttons">New here? <a href="#" ng-click="showReg()">Create a User profile</a> </p>
 						</form>
 					  </div>
@@ -50,47 +59,56 @@
 			</div>
 		</div>
 		<div id="registerForm" class="row hidden">
-			<div class = "col-md-6 col-center">
+			<div class = "col-md-5 col-center">
 				<div class="panel panel-success" >
 					  <div class="panel-heading">
-					    <h3 class="panel-title"><strong>New User Registration</strong></h3>
+						  <div class="logoDiv">
+						    <a href="login.html">
+							    	<img class="logoImg" align="top" src="media/ATMG_logo2.png">
+						    	</a>
+						    <h3 class="panel-title"><strong>New User Registration</strong></h3>
+						  </div>
 					  </div>
 					  <div class="panel-body">
 					    <form class="form-horizontal" role="form" ng-submit="register()">
 						    <div class="form-group">
 						    	<label class="control-label col-sm-4" for="rusername"><span style="color:red">*</span> User Name:</label>
-						    	<div class="col-sm-8">
+						    	<div class="col-sm-6">
 						    		<input type="text" class="form-control" id="rusername" placeholder="Username" title="Username is required" maxlength="10" ng-model="regUserName" ng-change="validateUserName()" required autofocus>
 					    		</div>
 						   	</div>
 						   	<div class="form-group">
 						   		<label class="control-label col-sm-4" for="rpwd"><span style="color:red">*</span> Password:</label>
-						   		<div class="col-sm-8">
+						   		<div class="col-sm-6">
 						   			<input type="password" class="form-control" id="rpwd" placeholder="Password" title="Password is required" maxlength="8" ng-model="regPassword" required>
 					   			</div>
 						   	</div>
 						   	<div class="form-group">
 						    	<label class="control-label col-sm-4" for="rnickname"><span style="color:red">*</span> Nickname:</label>
-						    	<div class="col-sm-8">
+						    	<div class="col-sm-6">
 						    		<input type="text" class="form-control" id="rnickname" placeholder="Nickname" title="Nickname is required" maxlength="20" ng-model="regNickName" ng-change="validateNickName()" required>
 					    		</div>
 						   	</div>
 						   	<div class="form-group">
 						    	<label class="control-label col-sm-4" for="rdescription">Description:</label>
-						    	<div class="col-sm-8">
+						    	<div class="col-sm-6">
 						    		<textarea class="form-control" rows="4" id="rdescription" placeholder="Description" maxlength="50" ng-model="regDesc"></textarea>
 					    		</div>
 						   	</div>
 						   	<div class="form-group">
 						    	<label class="control-label col-sm-4" for="rphoto">Profile Picture URL:</label>
-						    	<div class="col-sm-8">
+						    	<div class="col-sm-6">
 						    		<input type="url" class="form-control" id="rphoto" placeholder="http://www.example.com/myphoto.jpg" ng-model="regPhoto">
 					    		</div>
 						   	</div>
 						    <p class="errors hidden" id="regError">{{registerError}}</p>
 						    <p class="buttons">
-						   	<button type="submit" class="btn btn-primary" value="Register">Register</button>
- 							<button type="button" class="btn btn-default" ng-click="resetRegFields()" value="Reset">Reset</button>
+						   	<button type="submit" class="btn btn-primary form-btn-primary" value="Register">
+						   		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						   	Register and login</button>
+ 							<button type="button" class="btn btn-default form-btn" ng-click="resetRegFields()" value="Reset">
+ 								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+ 							Reset</button>
  							<p class="buttons">Already a member? <a href="#" ng-click="showLogin()">Log In</a> </p>
  							<span  style="color:red">*</span> - Required Fields<br>
 						</form>
@@ -99,6 +117,7 @@
 			</div>
 		</div>
 	</div>
+	
 	
 	
 <!-- 	<footer class="footer"> -->

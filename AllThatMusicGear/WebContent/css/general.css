@@ -1,5 +1,10 @@
 body{
  	margin-top:60px;
+ 	background-image: url("../media/ATMG_logo_faded_complete.png");
+ 	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+	background-size: contain;
 }
 .navbar {
 	background-color: #008B8B;
@@ -13,15 +18,8 @@ body{
 	color: white!important;
 }
 
-.nav.navbar-nav.navbar-right li a {
+.nav.navbar-nav.navbar-right li a ,.nav.navbar-nav.navbar-left li a {
     color: white;
-    padding-left: 8px;
-    padding-right: 8px;
-    text-align: center;
-}
-
-.nav.navbar-nav.navbar-left li {
-	color: white;
     padding-left: 8px;
     padding-right: 8px;
     text-align: center;
@@ -35,12 +33,14 @@ body{
 .navbar-default .navbar-nav > .active a{
     color: #008B8B!important;
    	background: #E0FFFF;
+   	border-radius: 5px;
  }
 
 .navbar-default .navbar-nav > .active > a:hover, 
 .navbar-default .navbar-nav > .active > a:focus {
 	color: black!important;
 	background: #E0FFFF!important;
+	border-radius: 5px;
  }
 
 
@@ -48,36 +48,45 @@ body{
 	font-size: 130%;	
 }
 
-#Element:hover {
-	background-color: #E0FFFF;
-}
 .row{
 	margin-bottom: 10px;	
 }
 
-.nav-btn, .ansBtn {
+.nav-btn, .ansBtn, .form-btn, .nav-btn:focus, .ansBtn:focus, .form-btn:focus  {
 	border-style: none;
 	color: #008B8B;
 	background-color: rgb(234, 243, 228);
+	outline: 0 !important;
 }
 
-.nav-btn:hover, .ansBtn:hover {
+.nav-btn:hover, .ansBtn:hover, .form-btn:hover {
 	border-style: none;
 	color: white;
 	background-color: black;
 }
 
-.nav-btn-primary{
-	color: #008B8B;
-	background-color: #E0FFFF!;
+.nav-btn-primary, .form-btn-primary{
+	color: black;
+	background-color: #00FFFF;
   	vertical-align: middle;
   	border-style: none;
 }
-.nav-btn-primary:hover{
+.nav-btn-primary:hover, .form-btn-primary:hover{
 	color: white;
-	background-color: #008B8B;
+	background-color: purple!important;
   	vertical-align: middle;
-}	
+}
+
+.panel-heading, .modal-header {
+	color: black!important;
+  	background-color: #E0FFFF!important;
+  	text-decoration: underline;
+  	border-style: none;
+}
+
+.buttons {
+	text-align: center;
+}
 
 .QATitle {
 	color: purple;
@@ -97,6 +106,12 @@ body{
 	margin-bottom: 7px;
 	background-color: #E0FFFF;
 	display: inline-block;
+	border-radius: 5px;
+}
+
+.topicLink:hover, .topic:hover a, .topic:hover{
+	color: white!important;
+	background-color: #008B8B;
 }
 
 .topicDiv {
@@ -126,13 +141,17 @@ body{
 }
 
 .profilePic{
-	width:25px;
-	height:25px;
+	width:18px;
+	height:18px;
 }
 
 .leaderboardPhoto{
 	width:50px;
 	height:50px;
+}
+
+.table.tr.th {
+	text-align: right!important;
 }
 
 .profilePhoto{
@@ -146,6 +165,7 @@ body{
 	padding-top: 7px;
 	padding-buttom: 7px;
 	margin-top: 5px;
+	border-radius: 5px;
 }
 
 .questionBlock {
@@ -163,6 +183,14 @@ body{
 
 .answerBTns {
 	margin-top:15px;
+}
+
+.userProfileLink {
+	color: #008B8B;
+}
+
+.userProfileLink:hover {
+	color: purple;
 }
 
 .questionThreadProfilePhoto{

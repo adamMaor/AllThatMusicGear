@@ -1,6 +1,6 @@
 <div class="container" id="questions" ng-controller="questions">
 	<div class="row">
-		<h2> {{Title}}</h2>
+		<h2><b>{{Title}}</b></h2>
 		<b>Total of {{questionCount}} questions</b>
 	</div>
 	<div class="row">
@@ -27,9 +27,9 @@
 		       	<div class="col-xs-10" >
 		       		<div>
 		       			<p id="textParagraph">{{qstn.qst.qText}}</p>
-			       		<div class="questionTopics">Topics:
+			       		<div class="questionTopics"><span class="glyphicon glyphicon-tags"></span>
 				       		<span ng-repeat="topics in qstn.qst.qTopics" class="topic">
-				       			<a ng-href="questions.html#/bytopic#{{topics}}" title="See all questions related to this topic">{{topics}}</a>
+				       			<a class="topicLink" ng-href="questions.html#/bytopic#{{topics}}" title="See all questions related to this topic">{{topics}}</a>
 				       		</span>
 			       		</div>
 		       		</div>
@@ -46,7 +46,7 @@
 	       			</div>
 	       			<div class="profileUserInfo">
 	       				<div>
-	       					<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}" title="See user's profile">{{qstn.qst.qUserNickName}}</a>
+	       					<a class="userProfileLink" ng-href="profile.html#/#{{qstn.qst.qUserNickName}}" title="See user's profile">{{qstn.qst.qUserNickName}}</a>
 	       				</div>
 	       				<div>UR:{{qstn.qst.userRating | number:1}}</div>
 	       			</div>
@@ -65,11 +65,15 @@
        		</div>
 		</div>
 		<div class="row" ng-show="showAnswerBox">
-			<div class ="col-md-5 col-md-offset-1">
+			<div class ="col-sm-6 col-md-offset-1">
 				<form ng-submit='submitAnswer(qstn.qst.qID, aText)'>
 					<textarea class="form-control" rows="5" id="question" maxlength="300" ng-model="aText" name="answerText" placeholder="Your answer" title="Answer can't be blank" required autofocus></textarea>
-					<button type="submit" class="btn btn-primary" value="Submit">Submit</button>
-					<button type="button" class="btn btn-default" ng-click='aText=""' value="Reset">Reset</button>
+					<button type="submit" class="btn btn-primary form-btn-primary" value="Submit">
+						<span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit
+					</button>
+					<button type="button" class="btn btn-default form-btn" ng-click='aText=""' value="Reset">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Reset
+					</button>
 				</form>
 			</div>
 		</div>
@@ -89,11 +93,11 @@
 		       			<div id="textParagraph">
 		       				<span class="smSpan">
 			       				<div class="profilePhoto"> 
-				       				<a ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">
+				       				<a class="userProfileLink" ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">
 				       					<img src="{{anwr.userPhoto}}" class="img-circle questionThreadProfilePhotoSM" alt="Missing Photo">
 					       			</a>
 			       				</div>
-				       			<a ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">{{anwr.aUserNickName}}</a>
+				       			<a class="userProfileLink" ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">{{anwr.aUserNickName}}</a>
 				       			<span>UR:{{anwr.userRating | number:1}}</span> 
 				       			<span class="smSpan">{{anwr.aSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>
 			       			</span>
