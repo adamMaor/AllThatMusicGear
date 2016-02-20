@@ -77,6 +77,4 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 		$scope.clearRegisterError();
 	}
 	
-	
-
  }]);

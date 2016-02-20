@@ -1,24 +1,24 @@
-/**
- * 
- */
 package allthatmusicgear.model;
 
 import java.util.Collection;
 
 /**
- * @author Adam
+ * this model class is used to return a Question with all it's answers
+ * @author Adam & Vadim
  *
  */
 public class QuestionWithAnswers {
 	/**
-	 * @param qst
-	 * @param ans
+	 * @param qst - the Question
+	 * @param ans - a List of Answers sorted by Rating (votes)
 	 */
 	public QuestionWithAnswers(Question qst, Collection<Answer> ans) {
 		super();
 		this.qst = qst;
 		this.ans = ans;
 	}
+	@SuppressWarnings("unused")
 	private Question qst;
+	@SuppressWarnings("unused")
 	private Collection<Answer> ans;
 }

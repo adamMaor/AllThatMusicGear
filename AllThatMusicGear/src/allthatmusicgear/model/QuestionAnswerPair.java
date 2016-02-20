@@ -1,17 +1,15 @@
-/**
- * 
- */
+
 package allthatmusicgear.model;
 
 /**
- * @author Laptop
- *	This class is implemented because we need to get a question with and attached answer more than once
+ * @author  Adam & Vadim
+ *	This model class is implemented because we need to get a question with and a single attached answer 
  */
 public class QuestionAnswerPair {
 	
 	/**
-	 * @param qst
-	 * @param ans
+	 * @param qst - the Question
+	 * @param ans - the Answer
 	 */
 	public QuestionAnswerPair(Question qst, Answer ans) {
 		this.qst = qst;

@@ -67,7 +67,7 @@
 		<div class="row" ng-show="showAnswerBox">
 			<div class ="col-sm-6 col-md-offset-1">
 				<form ng-submit='submitAnswer(qstn.qst.qID, aText)'>
-					<textarea class="form-control" rows="5" id="question" maxlength="300" ng-model="aText" name="answerText" placeholder="Your answer" title="Answer can't be blank" required autofocus></textarea>
+					<textarea class="form-control" rows="5" maxlength="300" ng-model="aText" name="answerText" placeholder="Your answer" title="Answer can't be blank" required autofocus></textarea>
 					<button type="submit" class="btn btn-primary form-btn-primary" value="Submit">
 						<span class="glyphicon glyphicon-send" aria-hidden="true"></span> Submit
 					</button>

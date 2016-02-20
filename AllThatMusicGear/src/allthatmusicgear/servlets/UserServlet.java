@@ -24,10 +24,7 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import com.google.gson.Gson;
 
 import allthatmusicgear.constants.DBConstants;
-import allthatmusicgear.constants.LogAndRegConstants;
-import allthatmusicgear.constants.QAndAConstants;
 import allthatmusicgear.constants.UserConstants;
-import allthatmusicgear.model.Question;
 import allthatmusicgear.model.User;
 
 

@@ -1,18 +1,22 @@
 package allthatmusicgear.model;
 
-import java.sql.Date;
 import java.util.List;
 
+/**
+ *  this model class represents a Question.
+ * @author Adam & Vadim
+ *
+ */
 public class Question {
 
 	/**
-	 * @param qID
-	 * @param qUserNickName
-	 * @param qText
-	 * @param l
-	 * @param qVotingScore
-	 * @param qRating
-	 * @param qTopics
+	 * @param qID - the auto generating Question ID
+	 * @param qUserNickName - submitter's nickName
+	 * @param qText - the actual question
+	 * @param submissionTimeStamp - Auto-generated submission date and time
+	 * @param qVotingScore - Question Voting score
+	 * @param qRating - Question Rating
+	 * @param qTopics - a list of topic related to this question
 	 */
 	public Question(int qID, String qUserNickName, String qText, long submissionTimeStamp, int qVotingScore, double qRating,
 			List<String> qTopics, String usrPhoto, double usrRating, int lgdUsrVote) {
@@ -28,89 +32,32 @@ public class Question {
 		this.userRating = usrRating;
 		this.loggedUserVote = lgdUsrVote;
 	}
+	
 	/**
-	 * @return the qVotingScore
-	 */
-	public int getqVotingScore() {
-		return qVotingScore;
-	}
-	/**
-	 * @param qVotingScore the qVotingScore to set
-	 */
-	public void setqVotingScore(int qVotingScore) {
-		this.qVotingScore = qVotingScore;
-	}
-	/**
-	 * @return the qText
-	 */
-	public String getqText() {
-		return qText;
-	}
-	/**
-	 * @param qText the qText to set
-	 */
-	public void setqText(String qText) {
-		this.qText = qText;
-	}
-	/**
-	 * @return the qRating
-	 */
-	public double getqRating() {
-		return qRating;
-	}
-	/**
-	 * @param qRating the qRating to set
-	 */
-	public void setqRating(double qRating) {
-		this.qRating = qRating;
-	}
-	/**
-	 * @return the qTopics
-	 */
-	public List<String> getqTopics() {
-		return qTopics;
-	}
-	/**
-	 * @param qTopics the qTopics to set
-	 */
-	public void setqTopics(List<String> qTopics) {
-		this.qTopics = qTopics;
-	}
-	/**
-	 * @return the qID
-	 */
-	public int getqID() {
-		return qID;
-	}
-	/**
-	 * @return the qSubDate
-	 */
-	public long getqSubDate() {
-		return qSubDate;
-	}
-	/**
-	 * @return the qUserNickName
-	 */
-	public String getqUserNickName() {
-		return qUserNickName;
-	}
-	/**
-	 * @param qID
-	 * @param qRating
-	 * @param qSubDate
-	 * @param qUserNickName
-	 * @param qText
-	 * @param qVotingScore
-	 * @param qTopics
+	 * @param qID - the auto generating Question ID
+	 * @param qRating - Question's Rating
+	 * @param qSubDate - Auto-generated submission date and time
+	 * @param qUserNickName - submitter's nickName
+	 * @param qText - the actual question
+	 * @param qVotingScore - Question Voting score
+	 * @param qTopics - a list of topic related to this question
 	 */
 
+	@SuppressWarnings("unused")
 	private int qID, qVotingScore;
+	@SuppressWarnings("unused")
 	private long qSubDate;
+	@SuppressWarnings("unused")
 	private String qUserNickName, qText;
+	@SuppressWarnings("unused")
 	private double qRating;
+	@SuppressWarnings("unused")
 	private List<String> qTopics;
+	@SuppressWarnings("unused")
 	private String userPhoto;
+	@SuppressWarnings("unused")
 	private double userRating;
+	@SuppressWarnings("unused")
 	private int loggedUserVote;
 	
 	
