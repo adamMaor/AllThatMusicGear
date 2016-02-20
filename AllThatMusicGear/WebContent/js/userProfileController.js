@@ -3,6 +3,7 @@
  */
 
 angular.module('mainPageApp').controller('userProfile', ['$scope', '$http', '$location', function($scope, $http, $location) {
+	
 	$scope.userNickname = $location.hash();
 	
 	var parameters = {
@@ -16,11 +17,11 @@ angular.module('mainPageApp').controller('userProfile', ['$scope', '$http', '$lo
 	});
 	$http.get("QandAServlet/UserLastAskedQuestions", parameters)
 	.success(function(response) {
-		$scope.user.lastAsked = angular.copy(response);
+		$scope.lastAsked = angular.copy(response);
 	});
 	$http.get("QandAServlet/UserLastAnswerdAnswers", parameters)
 	.success(function(response) {
-		$scope.user.lastAnswered = angular.copy(response);
+		$scope.lastAnswered = angular.copy(response);
 	});
 	
 }]);

@@ -484,7 +484,7 @@ public class QandAServlet extends HttpServlet {
 				}
 			}
 			
-			else if (uri.indexOf(QAndAConstants.QUESTIONS_BY_TOPIC) != 1) {
+			else if (uri.indexOf(QAndAConstants.QUESTIONS_BY_TOPIC) != -1) {
 				try {
 					int offset = 20 * (Integer.parseInt(request.getParameter("pageNum")) -1);
 					String topic = request.getParameter("topic");
@@ -670,6 +670,7 @@ public class QandAServlet extends HttpServlet {
 					rs.close();
 					pstmt.close();
 	    			JsonRes = gson.toJson(questAndAnsPairCollection, QAndAConstants.QUESTION_AND_ANS_PAIR_COLLECTION);
+	    			
 
 				} catch (SQLException e) {
 					getServletContext().log("Error while fetching User's last answers", e);

@@ -52,7 +52,7 @@
 		</div>
 		<div class="row">
 			<h3>User last asked questions:</h3>
-			<div class="row" ng-repeat="qstn in user.lastAsked">
+			<div class="row" ng-repeat="qstn in lastAsked">
 				<div class="col-md-9" id="elementBody">
 		     		<div class="row">
 				       		<p>{{qstn.qText}}</p>
@@ -73,7 +73,7 @@
 		</div>
 		<div class="row">
 		<h3>User last answered answers:</h3>
-		<div class="row" ng-repeat="qstn in user.lastAnswered">
+		<div class="row" ng-repeat="qstn in lastAnswered">
 			<div class="col-md-9" id="elementBody">
 	     		<div class="row">
 			       		<p>{{qstn.qst.qText}}</p>
