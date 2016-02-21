@@ -60,16 +60,22 @@ body{
 	outline: 0 !important;
 }
 
-.nav-btn:focus, .ansBtn:focus, .form-btn:focus{
+.ansBtn:focus, .form-btn:focus{
 	border-style: solid;
 	color: #008B8B;
 	background-color: rgb(234, 243, 228);	
 }
 
-.nav-btn:hover, .ansBtn:hover, .form-btn:hover {
+.ansBtn:hover, .form-btn:hover {
 	border-style: none;
 	color: rgb(234, 243, 228);
 	background-color: #008B8B;
+}
+
+.nav-btn:hover, .nav-btn:focus {
+	border-style: none;
+	color: rgb(234, 243, 228);
+	background-color: black;
 }	
 
 .nav-btn-primary, .form-btn-primary{
