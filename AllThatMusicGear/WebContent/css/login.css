@@ -1,7 +1,6 @@
 body {
-	padding-top: 40px;
+	padding-top: 10px;
 	padding-bottom: 40px;
-	vertical-align: middle;
 	background-color: black;
 	background-image: url("../media/backGround.png")!important;
 	background-repeat: no-repeat;
@@ -41,6 +40,10 @@ textarea { resize:none; }
 .col-md-4 {
 	padding-top:20px;
 	width: 400px;	
+}
+
+.redSpan {
+	color: red;
 }
 
 .col-center {
