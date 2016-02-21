@@ -13,7 +13,7 @@ public interface CreateTablesConstants {
 			+ "Password VARCHAR(8) NOT NULL,"
 			+ "NickName VARCHAR(20) UNIQUE NOT NULL,"
 			+ "Descreption	VARCHAR(50) DEFAULT '',"
-			+ "PhotoURL VARCHAR(100) DEFAULT '', "
+			+ "PhotoURL VARCHAR(300) DEFAULT '', "
 			+ "UserRating DOUBLE DEFAULT 0 )" ;
 		
 	public final String CREATE_QUESTION_TABLE = "CREATE TABLE app.tblQuestion"

@@ -39,7 +39,6 @@ public class UserServlet extends HttpServlet {
      */
     public UserServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
     /**
      * A service method for getting user expertise
@@ -50,67 +49,109 @@ public class UserServlet extends HttpServlet {
      */
     private List<String> getUserExp(String nickName, Connection conn) throws SQLException
     {
-    	List<String> resList = new ArrayList<String>();
-    	PreparedStatement pstmt;
-    	pstmt = conn.prepareStatement(UserConstants.GET_USER_EXPERTISE);
-    	pstmt.setString(1, nickName);
-    	ResultSet rs = pstmt.executeQuery();
-    	while (rs.next()){
-    		resList.add(rs.getString(1));
-    	}  	
-    	return resList;
+    	PreparedStatement pstmt = null;
+    	ResultSet rs = null;
+    	try {
+    		List<String> resList = new ArrayList<String>();
+        	pstmt = conn.prepareStatement(UserConstants.GET_USER_EXPERTISE);
+        	pstmt.setString(1, nickName);
+        	rs = pstmt.executeQuery();
+        	while (rs.next()){
+        		resList.add(rs.getString(1));
+        	}  	
+        	return resList;
+    	} catch (SQLException e) {
+    		throw e;
+    	} finally {
+    		if (pstmt != null){    			
+    			pstmt.close();
+    		}
+    		if (rs != null){    			
+    			rs.close();
+    		}
+    	}
     }  
     
+    /**
+     * This assist method is used to count all the users in the system
+     * @param conn - the current connection
+     * @return int - the number of total users in the system
+     * @throws SQLException
+     */
     private int countUsers(Connection conn) throws SQLException
     {
-    	int count = 0;
-    	Statement stmt = conn.createStatement();
- 		ResultSet rs = stmt.executeQuery(UserConstants.COUNT_ALL_USERS);
- 		if (rs.next()){
- 			count = rs.getInt(1);
- 		}
-    	return count;
+    	Statement stmt = null;
+    	ResultSet rs = null;
+    	try {
+    		int count = 0;
+    		stmt = conn.createStatement();
+    		rs = stmt.executeQuery(UserConstants.COUNT_ALL_USERS);
+    		if (rs.next()){
+    			count = rs.getInt(1);
+    		}
+    		return count;    		
+    	} catch (SQLException e) {
+    		throw e;
+    	} finally {
+    		if (stmt != null){    			
+    			stmt.close();
+    		}
+    		if (rs != null){    			
+    			rs.close();
+    		}
+    	}
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		Connection conn = null;
+		PrintWriter writer = null;
 		try {			
 			Context context = new InitialContext();
     		BasicDataSource ds = (BasicDataSource)context.lookup(DBConstants.DB_DATASOURCE);
-    		Connection conn = ds.getConnection();
+    		conn = ds.getConnection();
+    		Gson gson = new Gson();
+    		String JsonRes = ""; 
     		String uri = request.getRequestURI();
     		
-    		/* First Case - It deals with Updating User Ration */
+    		/* Get user's expertise */
     		if (uri.indexOf(UserConstants.USER_EXPERTISE) != -1)
     		{
+    			PreparedStatement pstmt = null;
+    			ResultSet rs = null;
     			List<String> topicList = new ArrayList<String>();
     			try {
-					PreparedStatement pstmt;
 					String strUserName =  request.getParameter("userNickName");
     				pstmt = conn.prepareStatement(UserConstants.GET_USER_EXPERTISE); 
     				pstmt.setString(1, strUserName);
-    				ResultSet rs = pstmt.executeQuery();
+    				rs = pstmt.executeQuery();
 					while (rs.next())
 					{
-						topicList.add(rs.getString(1));
-						
+						topicList.add(rs.getString(1));	
 					}
-					rs.close();
-					pstmt.close();
-		    		Gson gson = new Gson();
-		    		String userJsonRes = gson.toJson(topicList, UserConstants.TOPIC_LIST);
 		    		
-		    		PrintWriter writer = response.getWriter();
-		    		writer.println(userJsonRes);
-		    		writer.close();					
+					JsonRes = gson.toJson(topicList, UserConstants.TOPIC_LIST);
+			
 				} catch (SQLException e) {
 					getServletContext().log("Error while fetching User topics", e);
 					response.sendError(500);//internal server error
+				} finally {
+					try {
+						if (rs != null){
+							rs.close();
+						}
+						if (pstmt != null){
+							pstmt.close();
+						}
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
     		}
+    		/* Get session info - logged user nickname and photo */
     		else if (uri.indexOf(UserConstants.GET_SESSION_INFO) != -1) {
     			try {
 	    			String nickName = (String) request.getSession().getAttribute("LoggedInUserNickName");
@@ -122,6 +163,8 @@ public class UserServlet extends HttpServlet {
 					response.sendError(500);//internal server error
     			}
     		}
+    		
+    		/* LogOut - simply invalidates the session */
     		else if (uri.indexOf(UserConstants.LOGOUT) != -1) {
     			try {
     				request.getSession().invalidate();
@@ -132,13 +175,15 @@ public class UserServlet extends HttpServlet {
     			}
     		}
     		
+    		/* get user info (model) by nickname */
     		else if (uri.indexOf(UserConstants.GET_USER_INFO) != -1) {
+    			PreparedStatement pstmt = null;
+    			ResultSet rs = null;
     			try {
 	    			String nickName = request.getParameter("userNickName");
-	    			PreparedStatement pstmt;
     				pstmt = conn.prepareStatement(UserConstants.GET_USER_INFO_QUERY); 
     				pstmt.setString(1, nickName);
-    				ResultSet rs = pstmt.executeQuery();
+    				rs = pstmt.executeQuery();
     				User user = null ;
     				if (rs.next()){
     					List<String> expertise = getUserExp(rs.getString(1), conn);
@@ -148,31 +193,40 @@ public class UserServlet extends HttpServlet {
 							rs.getDouble(4),
 							expertise
 							);				
-    				}
-    				rs.close();
-    				pstmt.close();
-    				
-    	    		Gson gson = new Gson();
-    	    		String JsonRes = gson.toJson(user);
-    	    		PrintWriter writer = response.getWriter();
-    	    		writer.println(JsonRes);
-    	    		writer.close();
+    				}   				
+    	    		JsonRes = gson.toJson(user);		
     			}
     			catch (Exception e){
     				getServletContext().log("Error while fetching user info", e);
 					response.sendError(500);//internal server error
-    			}
+    			} finally {
+					try {
+						if (rs != null){
+							rs.close();
+						}
+						if (pstmt != null){
+							pstmt.close();
+						}
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
     		}
+    		
+    		/* get all users info - 20 each time */
     		else if (uri.indexOf(UserConstants.GET_ALL_USERS_INFO) != -1) {
+    			PreparedStatement pstmt = null;
+    			ResultSet allUsersRS = null;
     			try {
     				Integer allUsersCount = countUsers(conn);
+    				// offset by page number
     				int offset = 20 * (Integer.parseInt(request.getParameter("pageNum")) -1);
     				Collection<User> userCollection = new ArrayList<User>();
 
-    				PreparedStatement pstmt;
     				pstmt = conn.prepareStatement(UserConstants.GET_ALL_USERS_INFO_QUERY); 
     				pstmt.setInt(1, offset);
-					ResultSet allUsersRS = pstmt.executeQuery();
+					allUsersRS = pstmt.executeQuery();
 					while (allUsersRS.next())
 					{
 						List<String> expertise = getUserExp(allUsersRS.getString(1), conn);
@@ -182,39 +236,56 @@ public class UserServlet extends HttpServlet {
 						    						allUsersRS.getDouble(4),
 						    						expertise));
 					}
-					allUsersRS.close();
-					pstmt.close();
-					
-    	    		Gson gson = new Gson();
-    	    		String JsonRes;  
     	    		JsonRes = "{\"numUsers\":" + allUsersCount.toString() + ", \"users\":";
 					JsonRes += gson.toJson(userCollection, UserConstants.USER_COLLECTION);
 					JsonRes += "}";
-					
-    	    		PrintWriter writer = response.getWriter();
-    	    		writer.println(JsonRes);
-    	    		writer.close();
     			}
     			catch (Exception e){
     				getServletContext().log("Error while fetching all user info", e);
 					response.sendError(500);//internal server error
-    			}
+    			} finally {
+					try {
+						if (allUsersRS != null){
+							allUsersRS.close();
+						}
+						if (pstmt != null){
+							pstmt.close();
+						}
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
     		}
     		
-    		conn.close();
-		
+    		if (!JsonRes.isEmpty()) {
+    			writer = response.getWriter();
+    			writer.println(JsonRes);    			
+    		}
+    		
 		} catch (SQLException | NamingException e)
 		{
 			getServletContext().log("Error while closing connection", e);
     		response.sendError(500);//internal server error
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (writer != null) {
+		    		writer.close();
+				}
+			} catch (Exception e){
+				e.printStackTrace();
+			}
 		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Simply call doGet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

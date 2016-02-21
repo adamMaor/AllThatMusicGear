@@ -1,6 +1,7 @@
 package allthatmusicgear.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,104 +31,138 @@ public class LogAndRegServlet extends HttpServlet {
      */
     public LogAndRegServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Connection conn = null;
+		PrintWriter writer = null;
 		try {			
 			Context context = new InitialContext();
     		BasicDataSource ds = (BasicDataSource)context.lookup(DBConstants.DB_DATASOURCE);
-    		Connection conn = ds.getConnection();
+    		conn = ds.getConnection();
     		String uri = request.getRequestURI();
     		
-    		/* First Case - Fetch all Users and passwords to match later */
+    		/* Log in to server */
     		if (uri.indexOf(LogAndRegConstants.LOGIN) != -1)
      		{
-			 PreparedStatement pstmt;
+			 PreparedStatement pstmt = null;
+			 ResultSet rs = null;
      			try {
+     				writer = response.getWriter();
      				pstmt = conn.prepareStatement(LogAndRegConstants.LOGIN_USER);
      				pstmt.setString(1, request.getParameter("userName"));
 	    			pstmt.setString(2, request.getParameter("password"));
-	    			ResultSet rs = pstmt.executeQuery();
+	    			rs = pstmt.executeQuery();
 	    			if (rs.next()){
+	    				// if a user matches we update session details
 	    				request.getSession().setAttribute("LoggedInUserNickName", rs.getString(1));
 		    			request.getSession().setAttribute("LoggedInUserPhotoURL", rs.getString(2));
-		    			response.getWriter().println("{\"success\":\"true\"}");
+		    			// and write "success" in the writer
+		    			writer.println("{\"success\":\"true\"}");
 	    			}
 	    			else {
-	    				response.getWriter().println("{\"success\":\"false\", \"errorMsg\":\"Invalid username/password combination\"}");
+	    				// if no user found then we send the error via Json
+	    				writer.println("{\"success\":\"false\", \"errorMsg\":\"Invalid username/password combination\"}");
 	    			}
- 					rs.close();
- 					pstmt.close();
      			} catch (SQLException e) {
      				getServletContext().log("Error On Login", e);
      	    		response.sendError(500);//internal server error
+     			} finally {
+     				try {
+     					if (pstmt != null) {
+     						pstmt.close();
+     					}
+     					if (rs != null) {
+     						rs.close();
+     					}
+     				} catch (Exception e) {
+     					e.printStackTrace();
+     				}
      			}
      		}
-    		   		
+    		  
+    		/* Register a new user */
     		else if (uri.indexOf(LogAndRegConstants.REGISTER) != -1)
     		{
-    			PreparedStatement pstmt, pstmt2;		
+    			PreparedStatement checkUserPstmt = null, regUserPstmt = null;
+    			ResultSet checkUserRS = null;
     			try {
+    				writer = response.getWriter();
     				String userName = request.getParameter("userName");
     				String password = request.getParameter("password");
     				String nickName = request.getParameter("nickName");
     				String desc = request.getParameter("description") == null ? "" : request.getParameter("description");
     				String photo = request.getParameter("phtoUrl") == null ? "media/defaultIcon.png" : request.getParameter("phtoUrl");
     				
-     				pstmt = conn.prepareStatement(LogAndRegConstants.CHECK_EXISTING_USER);
-     				pstmt.setString(1, request.getParameter("userName"));
-	    			pstmt.setString(2, request.getParameter("nickName"));
-	    			ResultSet rs = pstmt.executeQuery();
-	    			if (rs.next()){
-	    				response.getWriter().println("{\"success\":\"false\", \"errorMsg\":\"Existing username or nickname\"}");
-	    				rs.close();
-	 					pstmt.close();
+     				checkUserPstmt = conn.prepareStatement(LogAndRegConstants.CHECK_EXISTING_USER);
+     				checkUserPstmt.setString(1, userName);
+	    			checkUserPstmt.setString(2, nickName);
+	    			checkUserRS = checkUserPstmt.executeQuery();
+	    			if (checkUserRS.next()){
+	    				writer.println("{\"success\":\"false\", \"errorMsg\":\"Existing username or nickname\"}");
 	 					return;
 	    			}
-
- 					rs.close();
- 					pstmt.close();
          			   								
-    				pstmt2 = conn.prepareStatement(LogAndRegConstants.REGISTER_USER); 					
-	    			pstmt2.setString(1, userName);
-	    			pstmt2.setString(2, password);
-	    			pstmt2.setString(3, nickName);
-	    			pstmt2.setString(4, desc);
-	    			pstmt2.setString(5, photo);
-	    			pstmt2.setInt(6, 0);
-	    			pstmt2.executeUpdate();	    			
+    				regUserPstmt = conn.prepareStatement(LogAndRegConstants.REGISTER_USER); 					
+	    			regUserPstmt.setString(1, userName);
+	    			regUserPstmt.setString(2, password);
+	    			regUserPstmt.setString(3, nickName);
+	    			regUserPstmt.setString(4, desc);
+	    			regUserPstmt.setString(5, photo);
+	    			regUserPstmt.setInt(6, 0);
+	    			regUserPstmt.executeUpdate();	    			
 	    			//commit update
 	    			conn.commit();
-	    			//close statements
-	    			pstmt2.close();
-	    			response.getWriter().println("{\"success\":\"true\"}");
+	    			writer.println("{\"success\":\"true\"}");
 	    			request.getSession().setAttribute("LoggedInUserNickName", nickName);
 	    			request.getSession().setAttribute("LoggedInUserPhotoURL", photo);
 
     			} catch (SQLException e) {
     				getServletContext().log("Error while registering new user", e);
     	    		response.sendError(500);//internal server error
-    			}
+    			} finally {
+     				try {
+     					if (checkUserPstmt != null) {
+     						checkUserPstmt.close();
+     					}
+     					if (checkUserRS != null) {
+     						checkUserRS.close();
+     					}
+     					if (regUserPstmt != null) {
+     						regUserPstmt.close();
+     					}
+     				} catch (Exception e) {
+     					e.printStackTrace();
+     				}
+     			}
     		}
-    		   		
-    		conn.close();
-    		
+    		   		    		
 		} catch (SQLException | NamingException e)
 		{
 			getServletContext().log("Error while closing connection", e);
     		response.sendError(500);//internal server error
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (Exception e){
+				e.printStackTrace();
+			}
 		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Simply call doGet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 }
