@@ -5,9 +5,7 @@
     <welcome-file>login.html</welcome-file>
   </welcome-file-list>
   <session-config>
-  	<session-timeout>
-  		30 <!-- minutes -->
-  	</session-timeout>
+    <session-timeout>30</session-timeout>
   </session-config>
   <servlet>
     <description></description>
@@ -19,9 +17,6 @@
     <servlet-name>LogAndRegServlet</servlet-name>
     <url-pattern>/LogAndRegServlet/*</url-pattern>
   </servlet-mapping>
-  <listener>
-    <listener-class>allthatmusicgear.listeners.LogAndRegListener</listener-class>
-  </listener>
   <resource-ref>
     <res-ref-name>jdbc/AllThatMusicGearDatasource</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
@@ -47,4 +42,17 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/UserServlet/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ServerListener</display-name>
+    <servlet-name>ServerListener</servlet-name>
+    <servlet-class>allthatmusicgear.listeners.ServerListener</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServerListener</servlet-name>
+    <url-pattern>/ServerListener</url-pattern>
+  </servlet-mapping>
+  <listener>
+    <listener-class>allthatmusicgear.listeners.ServerListener</listener-class>
+  </listener>
 </web-app>
