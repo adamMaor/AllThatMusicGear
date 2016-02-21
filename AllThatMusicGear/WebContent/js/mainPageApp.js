@@ -60,3 +60,6 @@ mainPageApp.directive('voteButton', function ($compile) {
     };
 });
 
+$(".btn").mouseup(function(){
+    $(this).blur();
+})
