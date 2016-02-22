@@ -24,7 +24,9 @@
 </head>
 <body ng-app="mainPageApp">
 	<!-- header directive -->
-	<header></header>
-	<questionsthread></questionsthread>
+	<div ng-controller="mainController" ng-include="header.url"></div>
+	<!-- questionThread directive -->
+	<div ng-controller="mainController" ng-include="questionThread.url"></div>
+
   </body>
 </html>

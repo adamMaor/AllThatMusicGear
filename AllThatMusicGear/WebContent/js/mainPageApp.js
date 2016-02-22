@@ -1,3 +1,13 @@
+var mainPageApp = angular.module('mainPageApp',[]);
+
+mainPageApp.controller('mainController', ['$scope', function($scope){
+	$scope.templates = 
+		[ { name: 'header', url: '/AllThatMusicGear/html-resources/header.html'},
+		  { name: 'questionThread', url: '/AllThatMusicGear/html-resources/questionsthread.html'} ];
+	$scope.header = $scope.templates[0];
+	$scope.questionThread = $scope.templates[1];
+}]);
+
 var loggedInUser = "null";
 var checkLogin = function () {
 	$.get("UserServlet/GetSessionInfo", function(data, status){
@@ -13,26 +23,6 @@ var checkLogin = function () {
 window.onhashchange = function() {
 	window.location.reload();
 };
-
-var mainPageApp = angular.module('mainPageApp',[]);
-
-mainPageApp.directive('header', function(){
-	return {
-	    templateUrl: "/AllThatMusicGear/html-resources/header.html",
-	};
-});
-
-mainPageApp.directive('footer', function(){
-	return {
-	    templateUrl: "/AllThatMusicGear/html-resources/footer.html",
-	};
-});
-
-mainPageApp.directive('questionsthread', function(){
-	return {
-	    templateUrl: "/AllThatMusicGear/html-resources/questionsthread.html",
-	};
-});
 
 mainPageApp.directive('voteButton', function ($compile) {
     return function (scope, element, attrs) {
@@ -60,6 +50,3 @@ mainPageApp.directive('voteButton', function ($compile) {
     };
 });
 
-$(".btn").mouseup(function(){
-    $(this).blur();
-})

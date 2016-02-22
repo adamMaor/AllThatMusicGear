@@ -1,5 +1,8 @@
-var logIn = angular.module('logIn',[]);
-logIn.controller('logInController', ['$scope', '$http','$window', function($scope, $http, $window) {
+/**
+ * 
+ */
+
+angular.module('mainPageApp').controller('logInController', ['$scope', '$http','$window', function($scope, $http, $window) {
 	 	
 	$scope.logInError = "";
 	
@@ -50,6 +53,8 @@ logIn.controller('logInController', ['$scope', '$http','$window', function($scop
 		$("#logInForm").removeClass('hidden');
 		$("#registerForm").addClass('hidden');
 	}
+	
+	$scope.showLogin();
 	
 	$scope.clearLogInError = function(){
 		$scope.logInError = "";

@@ -23,7 +23,7 @@
 </head>
 <body ng-app="mainPageApp">
 	<!-- header directive -->
-	<header></header>
+	<div ng-controller="mainController" ng-include="header.url"></div>
 	
 	<div class="container" ng-controller="leaderboardCtrl">
 		<h2><b>Leaderboard:</b></h2>

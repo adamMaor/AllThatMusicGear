@@ -9,26 +9,22 @@
     <title>ATMG - LogIn</title>
 	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
 <!-- 	Log In JS App -->
-	<script type="text/javascript" src="js/logIn.js"></script>	
+	<script type="text/javascript" src="js/mainPageApp.js"></script>
+	<script type="text/javascript" src="js/logInController.js"></script>
 <!--     Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
     <link href="css/general.css" rel="stylesheet">
 </head>
 
-<body ng-app ="logIn" ng-controller="logInController">
+<body ng-app ="mainPageApp" ng-controller="logInController">
+	<a href="login.html#"><h1>AllThatMusicGear.com</h1></a><br>
 	<div class ="container" id="content">
 		<div id="logInForm" class="row">
 			<div class = "col-md-5 col-center">
 				<div class="panel panel-info" >
 					  <div class="panel-heading">
-					    <div class="logoDiv">
-					   		 <a href="login.html">
-						    	<img class="logoImg" align="top" src="media/ATMG_logo2.png">
-					    	</a>
-					    <h4 class="panel-title"><strong>Log in</strong></h4>
-						    
-						</div>
+					    <h4 class="panel-title"><strong><span class="glyphicon glyphicon-log-in"> </span>&nbsp&nbsp Log in</strong></h4>
 					  </div>
 					  <div class="panel-body">
 					    <form role="form" ng-submit="logIn()">
@@ -48,7 +44,7 @@
  							<button type="button" class="btn btn-default form-btn" ng-click="resetLogFields()" value="Reset">
  								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
  							Reset</button>
- 							<p class="buttons">New here? <a href="#" ng-click="showReg()">Create a User profile</a> </p>
+ 							<p class="buttons">New here? <a href="" ng-click="showReg()">Create a User profile</a> </p>
 						</form>
 					  </div>
 				</div>
@@ -58,12 +54,7 @@
 			<div class = "col-md-5 col-center">
 				<div class="panel panel-success" >
 					  <div class="panel-heading">
-						  <div class="logoDiv">
-						    <a href="login.html">
-							    	<img class="logoImg" align="top" src="media/ATMG_logo2.png">
-						    	</a>
-						    <h4 class="panel-title"><strong>New User Registration</strong></h4>
-						  </div>
+						    <h4 class="panel-title"><strong><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp&nbsp User Registration</strong></h4>
 					  </div>
 					  <div class="panel-body">
 					    <form role="form" ng-submit="register()">
@@ -95,7 +86,7 @@
  							<button type="button" class="btn btn-default form-btn" ng-click="resetRegFields()" value="Reset">
  								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
  							Reset</button>
- 							<p class="buttons">Already a member? <a href="#" ng-click="showLogin()">Log In</a> </p>
+ 							<p class="buttons">Already a member? <a href="" ng-click="showLogin()">Log In</a> </p>
  							<span class="redSpan">*</span> - Required Fields<br>
 						</form>
 					</div>

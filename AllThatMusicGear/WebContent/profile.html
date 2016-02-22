@@ -22,9 +22,9 @@
     <link href="css/general.css" rel="stylesheet">
 
 </head>
-<body ng-app="mainPageApp">
-<!-- 	header directive -->
-	<header></header>
+<body ng-app="mainPageApp" >
+	<!-- 	header directive -->
+	<div ng-controller="mainController" ng-include="header.url"></div>
 	
 	<div class="container" ng-controller="userProfile">
 		<div class="row">
