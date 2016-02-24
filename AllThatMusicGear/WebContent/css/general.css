@@ -261,3 +261,7 @@ h4 {
 .votingScore{
 	margin-top: 0px;
 }
+
+.profileEntryDate{
+	text-align: right;
+}
