@@ -48,9 +48,11 @@
  			</td>
  			<td class="col-sm-3">
  				<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}" title="See user's profile">
-	 				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
+	 				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo"></a>
+	 			<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}" title="See user's profile">
 	 				&nbsp;<strong>{{user.nickName}}</strong>
- 				</a>
+	 			</a>
+ 				
  			</td>
  			<td class="col-sm-2">
  				{{user.userRating | number:2}}
