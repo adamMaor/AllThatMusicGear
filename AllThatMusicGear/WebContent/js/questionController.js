@@ -37,6 +37,7 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 	$scope.questions = [];
 	
 	$scope.updateQuestions = function(){
+		$scope.answerBoxOpen = 0;
 		$http.get("QandAServlet/" + $scope.questionMode, parameter)
 		.success(function(response) {
 			$scope.questions = response.questions;				
