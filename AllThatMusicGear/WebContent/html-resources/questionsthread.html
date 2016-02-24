@@ -16,17 +16,17 @@
    		<div class="col-sm-9">
    			<div class="row">
 		       	<div class="col-xs-1 votingScore" > 
-		        	<button type="button" vote-button id="voteQuestionUp" aria-label="Left Align" data-ng-click="voteQuestion(qstn.qst.qID, 1, $event)">
+		        	<button type="button" class="voteButton" id="voteQuestionUp" aria-label="Left Align" data-ng-click="voteQuestion(qstn.qst.qID, 1, $event)">
 						<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>
 					</button>
 					<div>{{qstn.qst.qVotingScore}}</div>
-					<button type="button" vote-button id="voteQuestionDown" aria-label="Left Align" data-ng-click="voteQuestion(qstn.qst.qID, -1, $event)">
+					<button type="button" class="voteButton" id="voteQuestionDown" aria-label="Left Align" data-ng-click="voteQuestion(qstn.qst.qID, -1, $event)">
 						<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 					</button>
 				</div>
 		       	<div class="col-xs-10" >
 		       		<div>
-		       			<p id="textParagraph">{{qstn.qst.qText}}</p>
+		       			<p>{{qstn.qst.qText}}</p>
 			       		<div class="row questionTopics">
 		       				<div class="col-xs-1 topicGlyphCol" >
 		       					<span class="glyphicon glyphicon-tags"></span>
@@ -85,29 +85,27 @@
 		<div class="row">
 			<div class="col-sm-8 col-sm-offset-1 answerBlock"  data-ng-repeat="anwr in qstn.ans" data-ng-show="$index==0 || expandAnswers">
 				<div class="col-xs-1 votingScore"> 
-		        	<button type="button" vote-button id="voteAnswerUp" aria-label="Left Align" data-ng-click="voteAnswer(qstn.qst.qID ,anwr.aID, 1, $event)">
+		        	<button type="button" class="voteButton" id="voteAnswerUp" aria-label="Left Align" data-ng-click="voteAnswer(qstn.qst.qID ,anwr.aID, 1, $event)">
 					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ></span>
 					</button>
 					<div>{{anwr.aVotingScore}}</div>
-					<button type="button" vote-button id="voteAnswerDown" aria-label="Left Align" data-ng-click="voteAnswer(qstn.qst.qID ,anwr.aID, -1, $event)">
+					<button type="button" class="voteButton" id="voteAnswerDown" aria-label="Left Align" data-ng-click="voteAnswer(qstn.qst.qID ,anwr.aID, -1, $event)">
 					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 					</button>
 				</div>
 				<div class="col-xs-10">		       		
 		       		<div class="row answerTextBody">
 		       			<div id="textParagraph">
-		       				<span class="smSpan">
-			       				<div class="profilePhoto"> 
+		       				<span class="smSpan profilePhoto">
 				       				<a class="userProfileLink" data-ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">
 				       					<img src="#" data-ng-src="{{anwr.userPhoto}}" class="img-circle questionThreadProfilePhotoSM" alt="Missing Photo">
 					       			</a>
-			       				</div>
 				       			<a class="userProfileLink" data-ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">{{anwr.aUserNickName}}</a>
 				       			<span>UR:{{anwr.userRating | number:1}}</span> 
 				       			<span class="smSpan">{{anwr.aSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>
 			       			</span>
 		       			</div>
-		       			<p id="textParagraph">{{anwr.aText}}</p>
+		       			<p>{{anwr.aText}}</p>
 	       			</div>
        			</div>
 			</div>
