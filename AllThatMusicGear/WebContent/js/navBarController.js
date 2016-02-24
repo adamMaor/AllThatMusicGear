@@ -2,7 +2,7 @@
  * 
  */
 
-angular.module('mainPageApp').controller('navBarController', ['$scope', '$http', function($scope, $http) {
+angular.module('mainPageApp').controller('navBarController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 	$scope.qTopics = [];
 	
 	$scope.loggedInUserInfo = function(){
@@ -23,25 +23,29 @@ angular.module('mainPageApp').controller('navBarController', ['$scope', '$http',
 	    $('[data-toggle="popover"]').popover(); 
 	});
 	
+	
+	// set active state for the navbar icons - marked effect
 	var location = window.location.pathname;
-	if (location.toLocaleString().indexOf("leaderboard", 16) != -1){
+	if (location == "/AllThatMusicGear/leaderboard.html"){
 		$("#leaderNav").addClass( "active" );
 	}
-	else if (location.toLocaleString().indexOf("profile", 16) != -1){
+	else if (location == "/AllThatMusicGear/profile.html"){
 		$("#profileNav").addClass( "active" );
 	}
+	else if (location == "/AllThatMusicGear/topics.html"){
+		$("#topicsNav").addClass( "active" );
+	}
 	else{
-		var hash = window.location.hash;
-		if (location.toLocaleString().indexOf("topic", 16) != -1 || hash.toLocaleString().indexOf("topic", 0) != -1){
+		var hash = $location.path();
+		if (hash == "/bytopic"){
 			$("#topicsNav").addClass( "active" );
 		}
-		else if(hash.toLocaleString().indexOf("newquestions", 0) != -1){
+		else if(hash =="/newquestions"){
 			$("#newQNav").addClass( "active" );
 		}
-		else if(hash.toLocaleString().indexOf("topquestions", 0) != -1){
+		else if(hash == "/topquestions"){
 			$("#allQNav").addClass( "active" );
-		}
-		
+		}	
 	}
 	
 	$scope.submitQuestion = function(){
