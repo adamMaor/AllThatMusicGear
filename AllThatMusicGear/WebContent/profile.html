@@ -31,22 +31,22 @@
 			<h2><b>User Profile:</b></h2>
 		</div>
 		<div class="row">
-			<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}">
-				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
-				<b>{{user.nickName}}</b>
- 			</a>
+			<h3><a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}">
+				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo"></a>
+				&nbsp;<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}">{{user.nickName}}</a>
+			</h3>
+		</div>
+		<div class="row">
+			<h3>Rating: {{user.userRating | number:2}}</h3>
 		</div>
 		<div class="row" data-ng-show='user.descreption!=""'>
-			<p><b>User description:</b></p>
+			<h3>User description:</h3>
 			<blockquote>
 				<p>{{user.descreption}}</p>
 			</blockquote>
 		</div>
-		<div class="row">
-			<p><b>Rating: </b>{{user.userRating | number:2}}</p>
-		</div>
 		<div class="row" data-ng-show="user.expertise.length!=0">
-			<b>User expertise:</b>
+			<h3>User expertise:</h3>
        		<span data-ng-repeat="topic in user.expertise" class="topic">
        			<a data-ng-href="questions.html#/bytopic#{{topic}}">{{topic}}</a>
        		</span>

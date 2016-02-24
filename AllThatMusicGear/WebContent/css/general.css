@@ -1,11 +1,13 @@
 body{
  	margin-top:60px;
- 	background-image: url("../media/music-notes.png");
+ 	background-image: url("../media/music-notes2.png");
  	background-repeat: no-repeat;
 	background-position: top;
-	background-attachment: scroll;
-	
-	
+	background-attachment: scroll;	
+}
+
+h3 {
+	font-weight: bold;
 }
 .navbar {
 /* 	background-color: ; */
@@ -157,11 +159,6 @@ h4 {
 	background-color: #E0FFFF
 }
 
-.col-center {
-	float: none;
-    margin: 0 auto;
-}
-
 .profilePic{
 	width:18px;
 	height:18px;
@@ -174,8 +171,17 @@ h4 {
 
 .table > tbody > tr > th {	
    	text-align: center;
-   	vertical-align: middle;	
-   	
+   	vertical-align: middle;	  	
+}
+
+.col-center {
+	float: none;
+    margin: 0 auto;
+}
+
+.col-left-align {
+	text-align: left;
+	margin-top: 15px;
 }
 
 .col-center-align, .col-center-align > p {
@@ -211,8 +217,6 @@ h4 {
 	padding-left: 0px;
 	text-align: left;
 }
-
-
 
 .questionBlock {
 	padding:2px;
