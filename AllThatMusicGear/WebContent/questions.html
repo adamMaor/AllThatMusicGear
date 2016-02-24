@@ -22,11 +22,11 @@
     <link href="css/general.css" rel="stylesheet">
 
 </head>
-<body ng-app="mainPageApp">
+<body data-ng-app="mainPageApp" data-ng-controller="mainController">
 	<!-- header directive -->
-	<div ng-controller="mainController" ng-include="header.url"></div>
+	<div data-ng-include="header.url"></div>
 	<!-- questionThread directive -->
-	<div ng-controller="mainController" ng-include="questionThread.url"></div>
+	<div data-ng-include="questionThread.url"></div>
 
   </body>
 </html>

@@ -21,43 +21,43 @@
     <link href="css/general.css" rel="stylesheet">
 
 </head>
-<body ng-app="mainPageApp">
+<body data-ng-app="mainPageApp">
 	<!-- header directive -->
-	<div ng-controller="mainController" ng-include="header.url"></div>
+	<div data-ng-controller="mainController" data-ng-include="header.url"></div>
 	
-	<div class="container" ng-controller="leaderboardCtrl">
-		<h2><b>Leaderboard:</b></h2>
-		<b>Total of {{userCount}} users</b>
+	<div class="container" data-ng-controller="leaderboardCtrl">
+		<h2><strong>Leaderboard:</strong></h2>
+		<strong>Total of {{userCount}} users</strong>
 		<nav>
   			<ul class="pager">
-			    <li><a href="#" ng-click="prevPage()" title="Show previous 20 users">Previous</a></li>
-			    <b>[ {{pageNum}} / {{maxPageNum}} ]</b>
-			    <li><a href="#" ng-click="nextPage()" title="Show nex 20 users">Next</a></li>
+			    <li><a href="#" data-ng-click="prevPage()" title="Show previous 20 users">Previous</a></li>
+			    <li><strong>[ {{pageNum}} / {{maxPageNum}} ]</strong></li>
+			    <li><a href="#" data-ng-click="nextPage()" title="Show nex 20 users">Next</a></li>
   			</ul>
 		</nav>
 		<table class="table table-striped ">
  		<tr>
- 			<th>Rank</th>
-	 		<th>User</th>
-	 		<th>Rating</th>
-	 		<th>Expertise</th>
+ 			<th class="col-sm-2"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span>&nbsp; Rank</th>
+	 		<th class="col-sm-3"><span class="glyphicon glyphicon-user"></span>&nbsp; User</th>
+	 		<th class="col-sm-2"><span class="glyphicon glyphicon-headphones"></span>&nbsp; Rating</th>
+	 		<th class="col-sm-5"><span class="glyphicon glyphicon-tags"></span>&nbsp; Expertise</th>
  		</tr>
- 		<tr ng-repeat="user in allUsers">
- 			<td class="col-md-1">
+ 		<tr data-ng-repeat="user in allUsers">
+ 			<td class="col-sm-2">
  				<p><b>#{{(pageNum-1)*20 + $index +1}}</b></p>
  			</td>
- 			<td class="col-md-3">
- 				<a class="userProfileLink" ng-href="profile.html#/user#{{user.nickName}}" title="See user's profile">
-	 				<img src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
-	 				<b>{{user.nickName}}</b>
+ 			<td class="col-sm-3">
+ 				<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}" title="See user's profile">
+	 				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
+	 				&nbsp;<strong>{{user.nickName}}</strong>
  				</a>
  			</td>
- 			<td class="col-md-1">
+ 			<td class="col-sm-2">
  				{{user.userRating | number:2}}
  			</td>
- 			<td class="col-md-7">
- 				<span ng-repeat="topics in user.expertise" class="topic" title="See all questions related to this topic">
-       				<a class="topicLink" ng-href="questions.html#/bytopic#{{topics}}" >{{topics}}</a>
+ 			<td class="col-sm-5">
+ 				<span data-ng-repeat="topics in user.expertise" class="topic" title="See all questions related to this topic">
+       				<a class="topicLink" data-ng-href="questions.html#/bytopic#{{topics}}" >{{topics}}</a>
 	       		</span>
        		</td>
  		</tr>

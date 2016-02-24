@@ -17,34 +17,34 @@
     <link href="css/general.css" rel="stylesheet">
 </head>
 
-<body ng-app ="mainPageApp" ng-controller="logInController">
+<body data-ng-app ="mainPageApp" data-ng-controller="logInController">
 	<a href="login.html#"><h1>AllThatMusicGear.com</h1></a><br>
 	<div class ="container" id="content">
 		<div id="logInForm" class="row">
 			<div class = "col-md-5 col-center">
 				<div class="panel panel-info" >
 					  <div class="panel-heading">
-					    <h4 class="panel-title"><strong><span class="glyphicon glyphicon-log-in"> </span>&nbsp&nbsp Log in</strong></h4>
+					    <h4 class="panel-title"><strong><span class="glyphicon glyphicon-log-in"> </span>&nbsp;&nbsp; Log in</strong></h4>
 					  </div>
 					  <div class="panel-body">
-					    <form role="form" ng-submit="logIn()">
+					    <form data-ng-submit="logIn()">
 						    <div class="form-group">
 						    	<label for="username"><span class="glyphicon glyphicon-user"></span> User Name:</label>
-					    		<input type="text" class="form-control" title="Username is required" maxlength="10" id="username" placeholder="Username" ng-model="logUserName" ng-change="clearLogInError()" required autofocus>
+					    		<input type="text" class="form-control" title="Username is required" maxlength="10" id="username" placeholder="Username" data-ng-model="logUserName" data-ng-change="clearLogInError()" required autofocus>
 						   	</div>
 						   	<div class="form-group">
 						   		<label for="pwd" class="control-label"><span class="glyphicon glyphicon-eye-open"></span> Password:</label>
-					   			<input type="password" class="form-control" title="Password is required" maxlength="8" id="pwd" placeholder="Password" ng-model="logPassword" ng-change="clearLogInError()" required/>
+					   			<input type="password" class="form-control" title="Password is required" maxlength="8" id="pwd" placeholder="Password" data-ng-model="logPassword" data-ng-change="clearLogInError()" required/>
 						   	</div>
 						    <p class="errors hidden" id="logInError">{{logInError}}</p>
 						    <p class="buttons">
 						   	<button type="submit" class="btn btn-primary form-btn-primary" value="Log In">
 						   		<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
 						   	Log In</button>
- 							<button type="button" class="btn btn-default form-btn" ng-click="resetLogFields()" value="Reset">
+ 							<button type="button" class="btn btn-default form-btn" data-ng-click="resetLogFields()" value="Reset">
  								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
  							Reset</button>
- 							<p class="buttons">New here? <a href="" ng-click="showReg()">Create a User profile</a> </p>
+ 							<p class="buttons">New here? <a href="" data-ng-click="showReg()">Create a User profile</a> </p>
 						</form>
 					  </div>
 				</div>
@@ -54,39 +54,39 @@
 			<div class = "col-md-5 col-center">
 				<div class="panel panel-success" >
 					  <div class="panel-heading">
-						    <h4 class="panel-title"><strong><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp&nbsp User Registration</strong></h4>
+						    <h4 class="panel-title"><strong><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp; User Registration</strong></h4>
 					  </div>
 					  <div class="panel-body">
-					    <form role="form" ng-submit="register()">
+					    <form data-ng-submit="register()">
 						    <div class="form-group">
 						    	<label for="rusername"><span class="glyphicon glyphicon-user"> </span> User Name: <span class="redSpan"> *</span></label>
-					    		<input type="text" class="form-control" id="rusername" placeholder="Username" title="Username is required" maxlength="10" ng-model="regUserName" ng-change="validateUserName()" required autofocus>
+					    		<input type="text" class="form-control" id="rusername" placeholder="Username" title="Username is required" maxlength="10" data-ng-model="regUserName" data-ng-change="validateUserName()" required >
 						   	</div>
 						   	<div class="form-group">
 						   		<label for="rpwd"><span class="glyphicon glyphicon-eye-open"> </span> Password: <span class="redSpan"> *</span></label>
-					   			<input type="password" class="form-control" id="rpwd" placeholder="Password" title="Password is required" maxlength="8" ng-model="regPassword" required>
+					   			<input type="password" class="form-control" id="rpwd" placeholder="Password" title="Password is required" maxlength="8" data-ng-model="regPassword" required>
 						   	</div>
 						   	<div class="form-group">
 						    	<label for="rnickname"><span class="glyphicon glyphicon-headphones"></span> Nickname: <span class="redSpan"> *</span></label>
-					    		<input type="text" class="form-control" id="rnickname" placeholder="Nickname" title="Nickname is required" maxlength="20" ng-model="regNickName" ng-change="validateNickName()" required>
+					    		<input type="text" class="form-control" id="rnickname" placeholder="Nickname" title="Nickname is required" maxlength="20" data-ng-model="regNickName" data-ng-change="validateNickName()" required>
 						   	</div>
 						   	<div class="form-group">
 						    	<label for="rdescription"><span class="glyphicon glyphicon-pencil"></span> Description:</label>
-					    		<textarea class="form-control" rows="2" id="rdescription" placeholder="Description" maxlength="50" ng-model="regDesc"></textarea>
+					    		<textarea class="form-control" rows="2" id="rdescription" placeholder="Description" maxlength="50" data-ng-model="regDesc"></textarea>
 						   	</div>
 						   	<div class="form-group">
 						    	<label for="rphoto"><span class="glyphicon glyphicon-picture"></span> Profile Picture URL:</label>
-					    		<input type="url" class="form-control" id="rphoto" placeholder="http://www.example.com/myphoto.jpg" ng-model="regPhoto">
+					    		<input type="url" class="form-control" id="rphoto" placeholder="http://www.example.com/myphoto.jpg" data-ng-model="regPhoto">
 						   	</div>
 						    <p class="errors hidden" id="regError">{{registerError}}</p>
 						    <p class="buttons">
 						   	<button type="submit" class="btn btn-primary form-btn-primary" value="Register">
 						   		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 						   	Register and login</button>
- 							<button type="button" class="btn btn-default form-btn" ng-click="resetRegFields()" value="Reset">
+ 							<button type="button" class="btn btn-default form-btn" data-ng-click="resetRegFields()" value="Reset">
  								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
  							Reset</button>
- 							<p class="buttons">Already a member? <a href="" ng-click="showLogin()">Log In</a> </p>
+ 							<p class="buttons">Already a member? <a href="" data-ng-click="showLogin()">Log In</a> </p>
  							<span class="redSpan">*</span> - Required Fields<br>
 						</form>
 					</div>

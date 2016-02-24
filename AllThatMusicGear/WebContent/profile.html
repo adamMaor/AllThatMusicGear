@@ -22,21 +22,21 @@
     <link href="css/general.css" rel="stylesheet">
 
 </head>
-<body ng-app="mainPageApp" >
+<body data-ng-app="mainPageApp" >
 	<!-- 	header directive -->
-	<div ng-controller="mainController" ng-include="header.url"></div>
+	<div data-ng-controller="mainController" data-ng-include="header.url"></div>
 	
-	<div class="container" ng-controller="userProfile">
+	<div class="container" data-ng-controller="userProfile">
 		<div class="row">
 			<h2><b>User Profile:</b></h2>
 		</div>
 		<div class="row">
-			<a class="userProfileLink" ng-href="profile.html#/user#{{user.nickName}}">
-				<img src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
+			<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}">
+				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
 				<b>{{user.nickName}}</b>
  			</a>
 		</div>
-		<div class="row" ng-show='user.descreption!=""'>
+		<div class="row" data-ng-show='user.descreption!=""'>
 			<p><b>User description:</b></p>
 			<blockquote>
 				<p>{{user.descreption}}</p>
@@ -45,27 +45,27 @@
 		<div class="row">
 			<p><b>Rating: </b>{{user.userRating | number:2}}</p>
 		</div>
-		<div class="row" ng-show="user.expertise.length!=0">
+		<div class="row" data-ng-show="user.expertise.length!=0">
 			<b>User expertise:</b>
-       		<span ng-repeat="topic in user.expertise" class="topic">
-       			<a ng-href="questions.html#/bytopic#{{topic}}">{{topic}}</a>
+       		<span data-ng-repeat="topic in user.expertise" class="topic">
+       			<a data-ng-href="questions.html#/bytopic#{{topic}}">{{topic}}</a>
        		</span>
 		</div>
 		<div class="row">
 			<h3>User last asked questions:</h3>
-			<div class="row" ng-repeat="qstn in lastAsked">
-				<div class="col-md-9" id="elementBody">
+			<div class="row" data-ng-repeat="qstn in lastAsked">
+				<div class="col-md-9">
 		     		<div class="row">
 				       		<p>{{qstn.qText}}</p>
 		       		</div>
 		       		<div class="row">
 			       		<div class="col-md-12">
 				       		<p> question rating: {{qstn.qRating | number:2}}</p>
-				       		<a ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
+				       		<a data-ng-href="profile.html#/#{{qstn.qUserNickName}}">{{qstn.qUserNickName}}</a>
 				       		<p>date : {{qstn.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
 							<span><b>Topics:</b></span>
-				       		<span ng-repeat="topics in qstn.qTopics" class="topic">
-				       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
+				       		<span data-ng-repeat="topics in qstn.qTopics" class="topic">
+				       			<a data-ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
 				       		</span>
 			       		</div>
 			       	</div>
@@ -74,26 +74,26 @@
 		</div>
 		<div class="row">
 		<h3>User last answered answers:</h3>
-		<div class="row" ng-repeat="qstn in lastAnswered">
-			<div class="col-md-9" id="elementBody">
+		<div class="row" data-ng-repeat="qstn in lastAnswered">
+			<div class="col-md-9">
 	     		<div class="row">
 			       		<p>{{qstn.qst.qText}}</p>
 	       		</div>
 	       		<div class="row">
 		       		<div class="col-md-12">
 			       		<p> question rating: {{qstn.qst.qRating | number:2}}</p>
-			       		<a ng-href="profile.html#/#{{qstn.qst.qUserNickName}}">{{qstn.qst.qUserNickName}}</a>
+			       		<a data-ng-href="profile.html#/#{{qstn.qst.qUserNickName}}">{{qstn.qst.qUserNickName}}</a>
 			       		<p>date : {{qstn.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</p>
 						<span><b>Topics:</b></span>
-			       		<span ng-repeat="topics in qstn.qst.qTopics" class="topic">
-			       			<a ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
+			       		<span data-ng-repeat="topics in qstn.qst.qTopics" class="topic">
+			       			<a data-ng-href="questions.html#/bytopic#{{topics}}">{{topics}}</a>
 			       		</span>
 		       		</div>
 		       	</div>
 			</div>
-			<div class="row" id="answers" >
+			<div class="row">
 				<div class ="col-md-8 col-md-offset-1" >
-					<div class="col-md-9" id="elementBody">
+					<div class="col-md-9">
 			       		<div class="row">
 				       		<p>{{qstn.ans.aText}}</p>
 			       		</div>

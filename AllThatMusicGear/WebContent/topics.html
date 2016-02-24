@@ -23,26 +23,26 @@
     <link href="css/general.css" rel="stylesheet">
 
 </head>
-<body ng-app="mainPageApp">
+<body data-ng-app="mainPageApp">
 	<!-- header directive -->
-	<div ng-controller="mainController" ng-include="header.url"></div>
+	<div data-ng-controller="mainController" data-ng-include="header.url"></div>
 	
-	<div class="container" ng-controller="topicsCtrl">
-		<h2><b>Topics:</b></h2>
+	<div class="container" data-ng-controller="topicsCtrl">
+		<h2><strong>Topics:</strong></h2>
 		<b>Total of {{topicCount}} topics</b>
 		<div class="row">
 			<nav>
 	  			<ul class="pager">
-				    <li><a href="" ng-click="prevPage()">Previous</a></li>
-				    <li><b>[ {{pageNum}} / {{maxPageNum}} ]</b></li>
-				    <li><a href="" ng-click="nextPage()">Next</a></li>
+				    <li><a href="" data-ng-click="prevPage()">Previous</a></li>
+				    <li><strong>[ {{pageNum}} / {{maxPageNum}} ]</strong></li>
+				    <li><a href="" data-ng-click="nextPage()">Next</a></li>
 	  			</ul>
 			</nav>
 		</div>
 		<div class="row">
 			<div class="topicDiv">
-	     		<span ng-repeat="topic in topics" class="topic" ng-style="topicCloudStyle(topic.tPop)">
-	     			<a ng-href="questions.html#/bytopic#{{topic.topic}}" title="See all questions related to this topic">{{topic.topic}}</a>
+	     		<span data-ng-repeat="topic in topics" class="topic" data-ng-style="topicCloudStyle(topic.tPop)">
+	     			<a data-ng-href="questions.html#/bytopic#{{topic.topic}}" title="See all questions related to this topic">{{topic.topic}}</a>
 	     		</span>
 			</div>
 		</div>
