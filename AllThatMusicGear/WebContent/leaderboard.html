@@ -43,22 +43,31 @@
 	 		<th class="col-sm-5"><span class="glyphicon glyphicon-tags"></span>&nbsp; Expertise</th>
  		</tr>
  		<tr data-ng-repeat="user in allUsers">
- 			<td class="col-sm-2">
+ 			<td class="col-sm-2 col-center-align">
  				<p><b>#{{(pageNum-1)*20 + $index +1}}</b></p>
  			</td>
  			<td class="col-sm-3">
- 				<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}" title="See user's profile">
-	 				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo">
-	 				&nbsp;<strong>{{user.nickName}}</strong>
- 				</a>
+ 				<div class="row">
+ 					<div class="col-xs-1 col-xs-offset-2">
+		 				<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}" title="See user's profile">
+		 				</a>
+ 					</div>
+ 					<div class="col-xs-7"> 
+	 					<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo"> 					
+		 				&nbsp;<strong>{{user.nickName}}</strong>
+ 					</div>
+ 					
+ 				</div>
  			</td>
- 			<td class="col-sm-2">
- 				{{user.userRating | number:2}}
+ 			<td class="col-sm-2 col-center-align">
+ 				<p>{{user.userRating | number:2}}</p>
  			</td>
- 			<td class="col-sm-5">
- 				<span data-ng-repeat="topics in user.expertise" class="topic" title="See all questions related to this topic">
-       				<a class="topicLink" data-ng-href="questions.html#/bytopic#{{topics}}" >{{topics}}</a>
-	       		</span>
+ 			<td class="col-sm-5 col-center-align">
+ 				<p>
+ 					<span data-ng-repeat="topics in user.expertise" class="topic" title="See all questions related to this topic">
+       					<a class="topicLink" data-ng-href="questions.html#/bytopic#{{topics}}" >{{topics}}</a>
+	       			</span>
+       			</p>
        		</td>
  		</tr>
  		</table>
