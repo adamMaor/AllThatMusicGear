@@ -34,81 +34,81 @@ public interface QAndAConstants {
 	public final Type QUESTION_AND_ANS_PAIR_COLLECTION = new TypeToken<Collection<QuestionAnswerPair>>() {}.getType();
 	
 	
-	public final String COUNT_NEW_QUESTIONS = "SELECT COUNT(*) FROM app.tblQuestion "
-			+ "WHERE app.tblQuestion.QID NOT IN	(SELECT DISTINCT QuestionID FROM app.tblAnswer)";
-	public final String COUNT_ALL_QUESTIONS = "SELECT COUNT(*) FROM app.tblQuestion";
-	public final String COUNT_ALL_TOPICS = "SELECT COUNT(DISTINCT app.tblQuestionTopics.Topic) FROM app.tblQuestionTopics";
-	public final String COUNT_ALL_TOPIC_QUESTIONS = "SELECT COUNT(app.tblQuestionTopics.QID) FROM app.tblQuestionTopics WHERE app.tblQuestionTopics.Topic = ? ";
+	public final String COUNT_NEW_QUESTIONS = "SELECT COUNT(*) FROM tblQuestion "
+			+ "WHERE tblQuestion.QID NOT IN	(SELECT DISTINCT QuestionID FROM tblAnswer)";
+	public final String COUNT_ALL_QUESTIONS = "SELECT COUNT(*) FROM tblQuestion";
+	public final String COUNT_ALL_TOPICS = "SELECT COUNT(DISTINCT tblQuestionTopics.Topic) FROM tblQuestionTopics";
+	public final String COUNT_ALL_TOPIC_QUESTIONS = "SELECT COUNT(tblQuestionTopics.QID) FROM tblQuestionTopics WHERE tblQuestionTopics.Topic = ? ";
 	
 	
 	
-	public final String INSERT_NEW_QUESTION = "INSERT INTO app.tblQuestion (QUNickName, QText) VALUES (?,?)";
-	public final String INSERT_TOPIC_TO_LATEST_QUESTION = "INSERT INTO app.tblQuestionTopics VALUES (IDENTITY_VAL_LOCAL(), ?)";
-	public final String GET_LATEST_QUESTION = "SELECT * FROM app.tblQuestion WHERE QID = IDENTITY_VAL_LOCAL()";
-	public final String INSERT_NEW_ANSWER = "INSERT INTO app.tblAnswer (QuestionID, AUNickName, AText) VALUES (?,?,?)";
+	public final String INSERT_NEW_QUESTION = "INSERT INTO tblQuestion (QUNickName, QText) VALUES (?,?)";
+	public final String INSERT_TOPIC_TO_LATEST_QUESTION = "INSERT INTO tblQuestionTopics VALUES (IDENTITY_VAL_LOCAL(), ?)";
+	public final String GET_LATEST_QUESTION = "SELECT * FROM tblQuestion WHERE QID = IDENTITY_VAL_LOCAL()";
+	public final String INSERT_NEW_ANSWER = "INSERT INTO tblAnswer (QuestionID, AUNickName, AText) VALUES (?,?,?)";
 	
-	public final String GET_NEW_QUESTIONS = "SELECT app.tblQuestion.*, app.tblUser.PhotoURL, app.tblUser.UserRating " 
-										+ "FROM app.tblQuestion JOIN app.tblUser ON app.tblQuestion.QUNickName = app.tblUser.NickName "
-										+ "WHERE app.tblQuestion.QID NOT IN (SELECT DISTINCT QuestionID FROM app.tblAnswer) "
-										+ "ORDER BY app.tblQuestion.QSubmissionTime DESC "
+	public final String GET_NEW_QUESTIONS = "SELECT tblQuestion.*, tblUser.PhotoURL, tblUser.UserRating " 
+										+ "FROM tblQuestion JOIN tblUser ON tblQuestion.QUNickName = tblUser.NickName "
+										+ "WHERE tblQuestion.QID NOT IN (SELECT DISTINCT QuestionID FROM tblAnswer) "
+										+ "ORDER BY tblQuestion.QSubmissionTime DESC "
 										+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 	
-	public final String GET_ALL_QUESTIONS = "SELECT app.tblQuestion.*, app.tblUser.PhotoURL, app.tblUser.UserRating "
-										+ "FROM app.tblQuestion JOIN app.tblUser ON app.tblQuestion.QUNickName = app.tblUser.NickName "
-										+ "ORDER BY app.tblQuestion.QRating DESC "
+	public final String GET_ALL_QUESTIONS = "SELECT tblQuestion.*, tblUser.PhotoURL, tblUser.UserRating "
+										+ "FROM tblQuestion JOIN tblUser ON tblQuestion.QUNickName = tblUser.NickName "
+										+ "ORDER BY tblQuestion.QRating DESC "
 										+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 	
-	public final String GET_ANSWERS_TO_QUESTION = "SELECT app.tblAnswer.*, app.tblUser.PhotoURL, app.tblUser.UserRating "
-											+ "FROM app.tblAnswer JOIN app.tblUser ON app.tblAnswer.AUNickName = app.tblUser.NickName "
-											+ "WHERE app.tblAnswer.QuestionID = ? "
-											+ "ORDER BY app.tblAnswer.AVotingScore DESC";
+	public final String GET_ANSWERS_TO_QUESTION = "SELECT tblAnswer.*, tblUser.PhotoURL, tblUser.UserRating "
+											+ "FROM tblAnswer JOIN tblUser ON tblAnswer.AUNickName = tblUser.NickName "
+											+ "WHERE tblAnswer.QuestionID = ? "
+											+ "ORDER BY tblAnswer.AVotingScore DESC";
 	
-	final public String GET_QUESTION_TOPICS = "SELECT Topic FROM app.tblQuestionTopics "
-			+ "WHERE app.tblQuestionTopics.QID = ?";
+	final public String GET_QUESTION_TOPICS = "SELECT Topic FROM tblQuestionTopics "
+			+ "WHERE tblQuestionTopics.QID = ?";
 	
-	final public String GET_QUESTIONS_BY_TOPIC = "SELECT app.tblQuestion.*, app.tblUser.PhotoURL, app.tblUser.UserRating "
-			+ "FROM app.tblQuestionTopics "
-			+ "JOIN app.tblQuestion ON app.tblQuestionTopics.QID = app.tblQuestion.QID "
-			+ "JOIN app.tblUser ON app.tblQuestion.QUNickName = app.tblUser.NickName "
-			+ "WHERE app.tblQuestionTopics.Topic = ? "
-			+ "ORDER BY app.tblQuestion.QRating DESC "
+	final public String GET_QUESTIONS_BY_TOPIC = "SELECT tblQuestion.*, tblUser.PhotoURL, tblUser.UserRating "
+			+ "FROM tblQuestionTopics "
+			+ "JOIN tblQuestion ON tblQuestionTopics.QID = tblQuestion.QID "
+			+ "JOIN tblUser ON tblQuestion.QUNickName = tblUser.NickName "
+			+ "WHERE tblQuestionTopics.Topic = ? "
+			+ "ORDER BY tblQuestion.QRating DESC "
 			+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 	
-	final public String GET_TOPICS_BY_POPULARITY = "SELECT app.tblQuestionTopics.Topic, SUM(app.tblQuestion.QRating) as TPop "
-			+ "FROM app.tblQuestionTopics JOIN app.tblQuestion "
-			+ "ON app.tblQuestionTopics.QID = app.tblQuestion.QID "
-			+ "GROUP BY app.tblQuestionTopics.Topic "
+	final public String GET_TOPICS_BY_POPULARITY = "SELECT tblQuestionTopics.Topic, SUM(tblQuestion.QRating) as TPop "
+			+ "FROM tblQuestionTopics JOIN tblQuestion "
+			+ "ON tblQuestionTopics.QID = tblQuestion.QID "
+			+ "GROUP BY tblQuestionTopics.Topic "
 			+ "ORDER BY TPop DESC "
 			+ "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ";
 		
 	
-	public final String GET_QUESTION_SCORES = "SELECT app.tblQuestion.QVotingScore, AVG(Cast(app.tblAnswer.AVotingScore as Float)) as AVGAnswerScore"
-											+ " FROM app.tblQuestion LEFT OUTER JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID"
-											+ " WHERE app.tblQuestion.QID=?"
-											+ " GROUP BY app.tblQuestion.QVotingScore";
+	public final String GET_QUESTION_SCORES = "SELECT tblQuestion.QVotingScore, AVG(Cast(tblAnswer.AVotingScore as Float)) as AVGAnswerScore"
+											+ " FROM tblQuestion LEFT OUTER JOIN tblAnswer ON tblQuestion.QID = tblAnswer.QuestionID"
+											+ " WHERE tblQuestion.QID=?"
+											+ " GROUP BY tblQuestion.QVotingScore";
 	
-	public final String UPDATE_QUESTION_SCORES = "UPDATE app.tblQuestion "
-			+ "SET app.tblQuestion.QVotingScore = ?, app.tblQuestion.QRating = ? "
-			+ "WHERE app.tblQuestion.QID=?";
+	public final String UPDATE_QUESTION_SCORES = "UPDATE tblQuestion "
+			+ "SET tblQuestion.QVotingScore = ?, tblQuestion.QRating = ? "
+			+ "WHERE tblQuestion.QID=?";
 	
-	public final String ADD_QUESTION_VOTE = "INSERT INTO app.tblQuestionVotes VALUES(?,?,?)";
+	public final String ADD_QUESTION_VOTE = "INSERT INTO tblQuestionVotes VALUES(?,?,?)";
 	
-	public final String ADD_ANSWER_VOTE = "INSERT INTO app.tblAnswerVotes VALUES(?,?,?)";
+	public final String ADD_ANSWER_VOTE = "INSERT INTO tblAnswerVotes VALUES(?,?,?)";
 	
-	public final String VOTE_ANSWER = "UPDATE app.tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID=?";
+	public final String VOTE_ANSWER = "UPDATE tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID=?";
 		
-	public final String GET_USER_LAST_QUESTION = "SELECT app.tblQuestion.*, app.tblUser.PhotoURL, app.tblUser.UserRating "
-			+ "FROM app.tblQuestion JOIN app.tblUser ON app.tblQuestion.QUNickName = app.tblUser.NickName "
-			+ "WHERE app.tblQuestion.QUNickName = ? "
-			+ "ORDER BY app.tblQuestion.QSubmissionTime DESC "
+	public final String GET_USER_LAST_QUESTION = "SELECT tblQuestion.*, tblUser.PhotoURL, tblUser.UserRating "
+			+ "FROM tblQuestion JOIN tblUser ON tblQuestion.QUNickName = tblUser.NickName "
+			+ "WHERE tblQuestion.QUNickName = ? "
+			+ "ORDER BY tblQuestion.QSubmissionTime DESC "
 			+ "FETCH FIRST 5 ROWS ONLY ";
 	
-	public final String GET_USER_LAST_ANSWERS = "SELECT app.tblQuestion.*, qUser.PhotoURL, qUser.UserRating, app.tblAnswer.*, aUser.PhotoURL, aUser.UserRating "
-			+ "FROM app.tblQuestion JOIN app.tblUser AS qUser ON app.tblQuestion.QUNickName = qUser.NickName "
-			+ "JOIN app.tblAnswer ON app.tblQuestion.QID = app.tblAnswer.QuestionID "
-			+ "JOIN app.tblUser AS aUser ON app.tblAnswer.AUNickName = aUser.NickName "
-			+ "WHERE app.tblAnswer.AUNickName = ? "
-			+ "ORDER BY app.tblAnswer.ASubmissionTime DESC "
+	public final String GET_USER_LAST_ANSWERS = "SELECT tblQuestion.*, qUser.PhotoURL, qUser.UserRating, tblAnswer.*, aUser.PhotoURL, aUser.UserRating "
+			+ "FROM tblQuestion JOIN tblUser qUser ON tblQuestion.QUNickName = qUser.NickName "
+			+ "JOIN tblAnswer ON tblQuestion.QID = tblAnswer.QuestionID "
+			+ "JOIN tblUser aUser ON tblAnswer.AUNickName = aUser.NickName "
+			+ "WHERE tblAnswer.AUNickName = ? "
+			+ "ORDER BY tblAnswer.ASubmissionTime DESC "
 			+ "FETCH FIRST 5 ROWS ONLY ";
 
 	

@@ -27,36 +27,36 @@ public interface UserConstants {
 	public final Type TOPIC_LIST = new TypeToken<Collection<String>>() {}.getType();
 	public final Type USER_COLLECTION = new TypeToken<Collection<User>>() {}.getType();
 	
-	public final String COUNT_ALL_USERS = "SELECT COUNT(*) FROM app.tblUser";
+	public final String COUNT_ALL_USERS = "SELECT COUNT(*) FROM tblUser";
 
 	
-	public final String GET_USER_NICK_FROM_QUESTION = "SELECT app.tblQuestion.QUNickName FROM app.tblQuestion WHERE app.tblQuestion.qID = ?";
-	public final String GET_USER_NICK_FROM_ANSWER = "SELECT app.tblAnswer.AUNickName FROM app.tblAnswer WHERE app.tblAnswer.aID = ?";
+	public final String GET_USER_NICK_FROM_QUESTION = "SELECT tblQuestion.QUNickName FROM tblQuestion WHERE tblQuestion.qID = ?";
+	public final String GET_USER_NICK_FROM_ANSWER = "SELECT tblAnswer.AUNickName FROM tblAnswer WHERE tblAnswer.aID = ?";
 		
-	public final String GET_USER_AVG_Q_SCORES = "SELECT AVG(app.tblQuestion.QRating) FROM app.tblQuestion WHERE app.tblQuestion.QUNickName = ? ";
-	public final String GET_USER_AVG_A_SCORES = "SELECT AVG(app.tblAnswer.AVotingScore) FROM app.tblAnswer WHERE app.tblAnswer.AUNickName = ? ";
-	public final String UPDATE_UR_QUERY = "UPDATE app.tblUser SET app.tblUser.UserRating = ? WHERE app.tblUser.NickName=?";
+	public final String GET_USER_AVG_Q_SCORES = "SELECT AVG(tblQuestion.QRating) FROM tblQuestion WHERE tblQuestion.QUNickName = ? ";
+	public final String GET_USER_AVG_A_SCORES = "SELECT AVG(tblAnswer.AVotingScore) FROM tblAnswer WHERE tblAnswer.AUNickName = ? ";
+	public final String UPDATE_UR_QUERY = "UPDATE tblUser SET tblUser.UserRating = ? WHERE tblUser.NickName=?";
 	
-	public final String GET_USER_QST_VOTE = "SELECT app.tblQuestionVotes.QID, app.tblQuestionVotes.Vote "
-										+ "FROM app.tblQuestionVotes "
-										+ "WHERE app.tblQuestionVotes.UNickName = ? ";
-	public final String GET_USER_ANS_VOTE = "SELECT app.tblAnswerVotes.AID, app.tblAnswerVotes.Vote "
-										+ "FROM app.tblAnswerVotes "
-										+ "WHERE app.tblAnswerVotes.UNickName = ? ";
+	public final String GET_USER_QST_VOTE = "SELECT tblQuestionVotes.QID, tblQuestionVotes.Vote "
+										+ "FROM tblQuestionVotes "
+										+ "WHERE tblQuestionVotes.UNickName = ? ";
+	public final String GET_USER_ANS_VOTE = "SELECT tblAnswerVotes.AID, tblAnswerVotes.Vote "
+										+ "FROM tblAnswerVotes "
+										+ "WHERE tblAnswerVotes.UNickName = ? ";
 	
-	public final String GET_USER_EXPERTISE = "SELECT app.tblQuestionTopics.topic as Topic, "
-											+ "SUM(app.tblAnswer.AVotingScore) as TotalVotes "
-											+ "FROM app.tblAnswer JOIN app.tblQuestionTopics "
-											+ "ON app.tblAnswer.QuestionID = app.tblQuestionTopics.QID "
-											+ "WHERE app.tblAnswer.AUNickName = ? "
-											+ "GROUP BY app.tblQuestionTopics.topic "
+	public final String GET_USER_EXPERTISE = "SELECT tblQuestionTopics.topic as Topic, "
+											+ "SUM(tblAnswer.AVotingScore) as TotalVotes "
+											+ "FROM tblAnswer JOIN tblQuestionTopics "
+											+ "ON tblAnswer.QuestionID = tblQuestionTopics.QID "
+											+ "WHERE tblAnswer.AUNickName = ? "
+											+ "GROUP BY tblQuestionTopics.topic "
 											+ "ORDER BY TotalVotes DESC "
 											+ "FETCH FIRST 5 ROWS ONLY ";
 	
 	public final String GET_USER_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " +
-			"FROM app.tblUser WHERE app.tblUser.NickName=?";
+			"FROM tblUser WHERE tblUser.NickName=?";
 	public final String GET_ALL_USERS_INFO_QUERY = "SELECT NICKNAME,DESCREPTION,PHOTOURL,USERRATING " 
-												+ "FROM app.tblUser ORDER BY USERRATING DESC "
+												+ "FROM tblUser ORDER BY USERRATING DESC "
 												+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 
 

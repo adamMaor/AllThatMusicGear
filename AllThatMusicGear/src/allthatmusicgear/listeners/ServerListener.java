@@ -60,14 +60,14 @@ public class ServerListener implements ServletContextListener {
  
 //    		If you want to remove all the tables uncomment this and comment the next 4 Lines - remeber to comment them again
     		
-//    		dmlList.add("DROP TABLE app.tblQuestionVotes");
-//    		dmlList.add("DROP TABLE app.tblAnswerVotes");
-//    		dmlList.add("DROP TABLE app.tblAnswer");
-//    		dmlList.add("DROP TABLE app.tblQuestionTopics");
-//    		dmlList.add("DROP TABLE app.tblQuestion");
-//    		dmlList.add("DROP TABLE app.tblUser");
-    		
-    		
+//    		dmlList.add("DROP TABLE tblQuestionVotes");
+//    		dmlList.add("DROP TABLE tblAnswerVotes");
+//    		dmlList.add("DROP TABLE tblAnswer");
+//    		dmlList.add("DROP TABLE tblQuestionTopics");
+//    		dmlList.add("DROP TABLE tblQuestion");
+//    		dmlList.add("DROP TABLE tblUser");
+//    		dmlList.add("DROP SCHEMA ATMG RESTRICT");
+
     		dmlList.add(CreateTablesConstants.CREATE_USER_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_QUESTION_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_QUESTION_TOPIC_TABLE);
