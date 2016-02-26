@@ -221,7 +221,7 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 					// find the question that was answered and update its answers
 					for (var i = 0; i < $scope.questions.length; i++){
 						if ($scope.questions[i].qst.qID == qID){
-							$scope.questions[i].ans = response;
+							$scope.questions[i].ans = angular.copy(response);
 						}
 					}
 				}
