@@ -1,3 +1,6 @@
+/* Login page has several induvidual features */
+
+/* main selectors (inc. body) */
 body {
 	padding-top: 30px;
 	padding-bottom: 40px;
@@ -17,24 +20,14 @@ h1 {
 	font-size: 350%;
 }
 
-.logoDiv{
-	text-align: center;
-}
-
-.logoImg{
-	
-	width: 250px;
-	height: 250px;
-}
-
 textarea { resize:none; }
 
+/* A centered column and other column visual features*/
 .center {
     margin-left: auto;
     margin-right: auto;
 	margin-top: 50px;
-    width: 70%;
-    
+    width: 70%;    
 }
 
 .col-md-4 {
@@ -42,22 +35,10 @@ textarea { resize:none; }
 	width: 400px;	
 }
 
-.redSpan {
-	color: red;
-}
-
 .col-center {
 	float: none;
     margin: 0 auto;
 }
-
-.panel {
-	border-style: none;
-}
-
-.panel-title {
-	text-align: center;
-}	
 
 .errors {
 	text-align: center;

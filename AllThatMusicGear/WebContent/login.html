@@ -4,22 +4,24 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--     The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!-- 	 Our tab icon and Title	 -->
 	<link rel="icon" type="image/gif" href="media/ATMG_icon.gif" />
     <title>ATMG - LogIn</title>
 	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
-<!--     Bootstrap -->
+<!-- 	    Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!--         our general and login css file -->
     <link href="css/login.css" rel="stylesheet">
     <link href="css/general.css" rel="stylesheet">
-<!-- 	 Log In JS App -->
+<!--     	MainPage JS App and needed controllers -->
 	<script type="text/javascript" src="js/mainPageApp.js"></script>
 	<script type="text/javascript" src="js/logInController.js"></script>
 </head>
-
+<!-- login page body body consists of 2 form where only one is shown at a time using "add/remove class()" in JS - see also logInController.js -->
 <body data-ng-app ="mainPageApp" data-ng-controller="logInController">
 	<h1><a href="login.html#">AllThatMusicGear.com</a></h1><br>
 	<div class ="container" id="content">
+<!-- 		first and default show is the login form -->
 		<div id="logInForm" class="row">
 			<div class = "col-md-5 col-center">
 				<div class="panel panel-info" >
@@ -29,27 +31,32 @@
 					  <div class="panel-body">
 					    <form data-ng-submit="logIn()">
 						    <div class="form-group">
-						    	<label for="username"><span class="glyphicon glyphicon-user"></span> User Name:</label>
-					    		<input type="text" class="form-control" title="Username is required" maxlength="10" id="username" placeholder="Username" data-ng-model="logUserName" data-ng-change="clearLogInError()" required autofocus>
+						    	<label for="username">
+						    		<span class="glyphicon glyphicon-user"></span> User Name:
+					    		</label>
+					    		<input type="text" class="form-control" title="Username is required" maxlength="10" placeholder="Username" data-ng-model="logUserName" data-ng-change="clearLogInError()" required autofocus>
 						   	</div>
 						   	<div class="form-group">
 						   		<label for="pwd" class="control-label"><span class="glyphicon glyphicon-eye-open"></span> Password:</label>
-					   			<input type="password" class="form-control" title="Password is required" maxlength="8" id="pwd" placeholder="Password" data-ng-model="logPassword" data-ng-change="clearLogInError()" required/>
+					   			<input type="password" class="form-control" title="Password is required" maxlength="8" placeholder="Password" data-ng-model="logPassword" data-ng-change="clearLogInError()" required/>
 						   	</div>
 						    <p class="errors hidden" id="logInError">{{logInError}}</p>
 						    <p class="buttons">
 						   	<button type="submit" class="btn btn-primary form-btn-primary" value="Log In">
 						   		<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-						   	Log In</button>
+						   		Log In
+						   	</button>
  							<button type="button" class="btn btn-default form-btn" data-ng-click="resetLogFields()" value="Reset">
  								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
- 							Clear</button>
+ 								Clear
+							</button>
  							<p class="buttons">New here? <a href="" data-ng-click="showReg()">Create a User profile</a> </p>
 						</form>
 					  </div>
 				</div>
 			</div>
 		</div>
+<!-- 		if a new user wants to register this form will show instead -->
 		<div id="registerForm" class="row hidden">
 			<div class = "col-md-5 col-center">
 				<div class="panel panel-success" >
@@ -82,10 +89,12 @@
 						    <p class="buttons">
 						   	<button type="submit" class="btn btn-primary form-btn-primary" value="Register">
 						   		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						   	Register and login</button>
+						   		Register and login
+						   	</button>
  							<button type="button" class="btn btn-default form-btn" data-ng-click="resetRegFields()" value="Reset">
  								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
- 							Clear</button>
+ 								Clear
+ 							</button>
  							<p class="buttons">Already a member? <a href="" data-ng-click="showLogin()">Log In</a> </p>
  							<span class="redSpan">*</span> - Required Fields<br>
 						</form>
