@@ -1,11 +1,12 @@
 /**
- * 
+ * logInController - Controller that handles login and registration page.
  */
 
 angular.module('mainPageApp').controller('logInController', ['$scope', '$http','$window', function($scope, $http, $window) {
 	 	
 	$scope.logInError = "";
 	
+	// send login information to server, if successful move to main page
 	$scope.logIn = function() {
 		$http({
 			method : "POST",
@@ -24,6 +25,7 @@ angular.module('mainPageApp').controller('logInController', ['$scope', '$http','
 		})						
 	}
 	
+	// send registration information to server, if successful move to main page
 	$scope.register = function(){ 
 		$http({
 			method : "POST",

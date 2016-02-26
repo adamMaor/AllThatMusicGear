@@ -1,5 +1,6 @@
 /**
- * 
+ * navBarController - Controller for the navbar elements, handles showing current logged in user information, handling question 
+ * submission and marking active state for navbar elements.
  */
 
 angular.module('mainPageApp').controller('navBarController', ['$scope', '$http', '$location', function($scope, $http, $location) {
@@ -19,12 +20,12 @@ angular.module('mainPageApp').controller('navBarController', ['$scope', '$http',
 	}
 	$scope.loggedInUserInfo();
 	
+	// show bootstrap popovers when document finishes loading
 	$(document).ready(function(){
 	    $('[data-toggle="popover"]').popover(); 
 	});
 	
-	
-	// set active state for the navbar icons - marked effect
+	// set active state for the navbar items - marked effect
 	var location = window.location.pathname;
 	if (location == "/AllThatMusicGear/leaderboard.html"){
 		$("#leaderNav").addClass( "active" );
@@ -55,6 +56,8 @@ angular.module('mainPageApp').controller('navBarController', ['$scope', '$http',
 		for (var i =0; i < $scope.qTopics.length; i++){
 			topicString += $scope.qTopics[i] + ",";
 		}
+		if ($scope.qTopic != "")
+			topicString += $scope.qTopic;
 		var parameters = {
 				params: {
 					qText: $scope.qText,
@@ -66,6 +69,7 @@ angular.module('mainPageApp').controller('navBarController', ['$scope', '$http',
 		$('#askQuestionModal').modal('hide');
 	}
 	
+	// on every keypress on topic field, check if the last char is ',' signaling a complete topic to register
 	$scope.checkQuestionTopic = function(){
 		if($scope.qTopic[$scope.qTopic.length-1] == ','){
 			if ($scope.qTopic.length>1){

@@ -1,11 +1,14 @@
 /**
- * 
+ * leaderboardCtrl - Controller that handles leaderboards page,
+ * getting user information from server depending on current page
  */
 
 angular.module('mainPageApp').controller('leaderboardCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.pageNum = 1;
 	$scope.maxPageNum = 1;
 	var parameter = { params: { pageNum: $scope.pageNum,} };
+	
+	// get 20 users according to current page sent in parameter
 	$scope.updateLeaderboard = function(){
 		$http.get("UserServlet/GetAllUsersInfo", parameter)
 		.success(function(response){

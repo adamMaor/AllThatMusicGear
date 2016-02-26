@@ -47,6 +47,7 @@
 		</div>
 		<div class="row" data-ng-show="user.expertise.length!=0">
 			<h3>User expertise:</h3>
+			<span class="glyphicon glyphicon-tags"></span>
        		<span data-ng-repeat="topic in user.expertise" class="topic">
        			<a data-ng-href="questions.html#/bytopic#{{topic}}">{{topic}}</a>
        		</span>
@@ -100,16 +101,17 @@
 				       	<div class="profileEntryDate">
 				       		<span class="xsSpan">{{pair.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>
 				       	</div>
-					<div class="row questionTopics">
-	       				<div class="col-xs-1 topicGlyphCol" >
-	       					<span class="glyphicon glyphicon-tags"></span>
-       					</div>
-       					<div class="col-xs-11 topicsCol" >
-		       				<span data-ng-repeat="topics in pair.qst.qTopics" class="topic">
-		       					<a class="topicLink" data-ng-href="questions.html#/bytopic#{{topics}}" title="See all questions related to this topic">{{topics}}</a>
-		       				</span>
-	       				</div>
-		       		</div>		       		</div>
+						<div class="row questionTopics">
+		       				<div class="col-xs-1 topicGlyphCol" >
+		       					<span class="glyphicon glyphicon-tags"></span>
+	       					</div>
+	       					<div class="col-xs-11 topicsCol" >
+			       				<span data-ng-repeat="topics in pair.qst.qTopics" class="topic">
+			       					<a class="topicLink" data-ng-href="questions.html#/bytopic#{{topics}}" title="See all questions related to this topic">{{topics}}</a>
+			       				</span>
+		       				</div>
+			       		</div>		       		
+		       		</div>
 	   			</div>
 			</div>
 			<div class="row">

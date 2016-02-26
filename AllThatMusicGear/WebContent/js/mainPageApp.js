@@ -1,3 +1,7 @@
+/**
+ * Define main module and common functions 
+ */
+
 var mainPageApp = angular.module('mainPageApp',[]);
 
 mainPageApp.controller('mainController', ['$scope', function($scope){
@@ -20,35 +24,10 @@ var checkLogin = function () {
 	});
 };
 
+// we are using hash values in url's, by default
+// hash change does not trigger refresh, a behaviour we'd like
+// so we force refresh on hash change
 window.onhashchange = function() {
 	window.location.reload();
 };
-
-mainPageApp.directive('voteButton', function ($compile) {
-    return {
-    	restrict: 'C',
-    	link: function (scope, element, attrs) {
-	    	var id = element[0].id;
-	    	var buttonClass;
-	    	if (id =="voteQuestionUp"){
-	    		buttonClass = scope.buttonClass(scope.qstn.qst.loggedUserVote, true);
-	    	}
-	    	else if(id == "voteQuestionDown"){
-	    		buttonClass = scope.buttonClass(scope.qstn.qst.loggedUserVote, false);
-	    	}
-	    	else if (id == "voteAnswerUp"){
-	    		buttonClass = scope.buttonClass(scope.anwr.loggedUserVote, true);
-	    	}
-	    	else if (id == "voteAnswerDown"){
-	    		buttonClass = scope.buttonClass(scope.anwr.loggedUserVote, false);
-	    	}
-	    	
-	    	$(element).addClass(buttonClass);
-	    	if (buttonClass.indexOf("disabled") > -1 
-	    			|| buttonClass.indexOf("primary") > -1 
-	    			|| buttonClass.indexOf("danger") > -1){
-	    		element.attr("disabled", "disabled");
-    	}
-    },};
-});
 
