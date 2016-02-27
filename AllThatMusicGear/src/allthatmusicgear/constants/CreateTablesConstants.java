@@ -3,8 +3,8 @@ package allthatmusicgear.constants;
 /**
  * @author Adam Ma'or, Vadim Xaxam
  * 
- * This interface holds the constants to build our tables;
- *
+ * This interface holds the constants to build our tables
+ * @see SQLSchema.sql
  */
 public interface CreateTablesConstants {
 	

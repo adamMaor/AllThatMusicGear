@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  *  this model class represents a Question.
- * @author Adam & Vadim
+ * @author Adam Ma'or, Vadim Xaxam
  *
  */
 public class Question {

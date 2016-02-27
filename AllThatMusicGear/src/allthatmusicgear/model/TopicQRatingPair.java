@@ -2,7 +2,7 @@ package allthatmusicgear.model;
 
 /**
  * this model class is used to return a topic and it's Tpop (as required in specs.)
- * @author Adam & Vadim
+ * @author Adam Ma'or, Vadim Xaxam
  *
  */
 public class TopicQRatingPair {

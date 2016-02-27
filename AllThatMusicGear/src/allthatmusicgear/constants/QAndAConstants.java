@@ -11,6 +11,12 @@ import allthatmusicgear.model.QuestionAnswerPair;
 import allthatmusicgear.model.QuestionWithAnswers;
 import allthatmusicgear.model.TopicQRatingPair;
 
+/**
+ * @author Adam Ma'or, Vadim Xaxam
+ * 
+ * This interface holds the constants for all Question and Answer handling
+ * @see SQLSchema.sql
+ */
 public interface QAndAConstants {
 
 	/* constants for URL in servlet */

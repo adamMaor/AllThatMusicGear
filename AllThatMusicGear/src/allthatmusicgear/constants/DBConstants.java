@@ -1,5 +1,11 @@
 package allthatmusicgear.constants;
 
+/**
+ * @author Adam Ma'or, Vadim Xaxam
+ * 
+ * This interface holds the constants for DB access
+ *
+ */
 public interface DBConstants {
 
 	//derby constants

@@ -800,20 +800,7 @@ public class QandAServlet extends HttpServlet {
 					}
 				}	
 			}
-    		
-			/* get a specific question answers - used to update view after user inserts an answer */
-			else if (uri.indexOf(QAndAConstants.QUESTION_ANS) != -1) {    				    				
-				try{
-					int qID = Integer.parseInt(request.getParameter("qID"));
-					Collection<Answer> ansCollection = getQuestionAnswers(qID, conn, loggedUserNickName);
-	    			JsonRes = gson.toJson(ansCollection, QAndAConstants.ANSWER_COLLECTION);
-
-				}  catch (SQLException e) {
-					getServletContext().log("Error while querying for Answers to Question", e);
-					response.sendError(500);//internal server error
-				} 	
-			}
-			
+    					
 			/* Insert a new answer */
 			else if (uri.indexOf(QAndAConstants.INSERT_ANSWER) != -1) {
 				PreparedStatement pstmt = null;
@@ -836,7 +823,11 @@ public class QandAServlet extends HttpServlet {
 					// question and user
 					updateQuestionScores(qId, 0, conn);
 					String questionUser = getUserNickNameFromQid(qId, conn);
-					updateUserRating(questionUser, conn);	
+					updateUserRating(questionUser, conn);
+					
+					// put new answers collection in response - saves a request from js
+					Collection<Answer> ansCollection = getQuestionAnswers(qId, conn, loggedUserNickName);
+	    			JsonRes = gson.toJson(ansCollection, QAndAConstants.ANSWER_COLLECTION);
 					
 				}  catch (SQLException e) {
 					getServletContext().log("Error while Inserting a New Answer", e);

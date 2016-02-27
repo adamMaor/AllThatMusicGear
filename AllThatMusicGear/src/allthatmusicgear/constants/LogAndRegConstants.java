@@ -7,6 +7,12 @@ import com.google.gson.reflect.TypeToken;
 
 import allthatmusicgear.model.User;
 
+/**
+ * @author Adam Ma'or, Vadim Xaxam
+ * 
+ * This interface holds the constants for login and registration
+ * @see SQLSchema.sql
+ */
 public interface LogAndRegConstants {
 
 	/* constants for URL in servlet */

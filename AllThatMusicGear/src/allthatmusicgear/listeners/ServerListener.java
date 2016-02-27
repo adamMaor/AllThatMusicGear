@@ -20,6 +20,7 @@ import allthatmusicgear.constants.CreateTablesConstants;
 import allthatmusicgear.constants.DBConstants;
 
 /**
+ * @author Adam Ma'or, Vadim Xaxam
  * Application Lifecycle Listener implementation class ServerListener
  *
  */
@@ -31,7 +32,7 @@ public class ServerListener implements ServletContextListener {
     public ServerListener() {
     }
     
-  //utility that checks whether the customer tables already exists
+  // utility that checks whether the exception was thrown due to table already exists
     private boolean tableAlreadyExists(SQLException e) {
         boolean exists;
         if(e.getSQLState().equals("X0Y32")) {
@@ -44,6 +45,8 @@ public class ServerListener implements ServletContextListener {
 
 	/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
+     * we used this implicitly called method o initialize our DB tables
+     * SCHEMA ATMG is auto-generated as we defined in the context.xml file
      */
     public void contextInitialized(ServletContextEvent event)  { 
     	System.setProperty("derby.system.home", "c:/Web/DerbyDBFolder");
@@ -58,7 +61,7 @@ public class ServerListener implements ServletContextListener {
     		conn = ds.getConnection();  		
     		List<String> dmlList = new ArrayList<String>();
  
-//    		If you want to remove all the tables uncomment this and comment the next 4 Lines - remeber to comment them again
+//    		If you want to remove all the tables uncomment the next 7 lines - remember to comment them again
     		
 //    		dmlList.add("DROP TABLE tblQuestionVotes");
 //    		dmlList.add("DROP TABLE tblAnswerVotes");
@@ -75,27 +78,31 @@ public class ServerListener implements ServletContextListener {
     		dmlList.add(CreateTablesConstants.CREATE_QUESTION_VOTES_TABLE);
     		dmlList.add(CreateTablesConstants.CREATE_ANSWER_VOTES_TABLE);
     		
-    		
+    		Statement stmt = null;
     		
     		for (String currCreateStat : dmlList)
     		{    			
     			boolean created = false;
     			try{
-    				Statement stmt = conn.createStatement();
+    				stmt = conn.createStatement();
     				stmt.executeUpdate(currCreateStat);
     				conn.commit();
-    				stmt.close();
-    			}catch (SQLException e){
+    			} catch (SQLException e){
     				//check if exception thrown since table was already created (so we created the database already 
     				//in the past
     				created = tableAlreadyExists(e);
     				if (!created){
-    					if (conn != null) {
-    	    				conn.close();
-    	    			}
     					throw e;//re-throw the exception so it will be caught in the
     					//external try..catch and recorded as error in the log
     				}
+    			} finally {
+    				try {
+     					if (stmt != null) {
+     						stmt.close();
+     					}
+     				} catch (Exception e) {
+     					e.printStackTrace();
+     				}
     			}
     		}
 
@@ -115,14 +122,15 @@ public class ServerListener implements ServletContextListener {
 
 	/**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
+     * we used this implicitly called method to shut down our DB 
      */
     public void contextDestroyed(ServletContextEvent event)  { 
     	try { 
 			DriverManager.getConnection(DBConstants.PROTOCOL + DBConstants.DB_NAME +";shutdown=true");
  		} catch (SQLException e) {
  			String state = e.getSQLState();
+ 			// if one of these errors - it ok - no need to print the exception details
  			if (state.equals("XJ015") || state.equals("08006")){
- 				// if one of these errors - it ok - no need to print the exception details
  				// garbage collector
  				System.gc();
  			}

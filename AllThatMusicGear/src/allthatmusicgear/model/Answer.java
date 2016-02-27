@@ -1,17 +1,12 @@
-/**
- * 
- */
 package allthatmusicgear.model;
 
 
 /**
  * this model class represents an Answer.
- * @author Adam & Vadim
+ * @author Adam Ma'or, Vadim Xaxam
  *
  */
-public class Answer {
-		
-	
+public class Answer {	
 	/**
 	 * @param aID - the auto generating Answer ID
 	 * @param qID - the question ID this answer relates to

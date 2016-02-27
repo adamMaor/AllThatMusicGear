@@ -4,7 +4,7 @@ import java.util.Collection;
 
 /**
  * this model class is used to return a Question with all it's answers
- * @author Adam & Vadim
+ * @author Adam Ma'or, Vadim Xaxam
  *
  */
 public class QuestionWithAnswers {
@@ -13,7 +13,6 @@ public class QuestionWithAnswers {
 	 * @param ans - a List of Answers sorted by Rating (votes)
 	 */
 	public QuestionWithAnswers(Question qst, Collection<Answer> ans) {
-		super();
 		this.qst = qst;
 		this.ans = ans;
 	}

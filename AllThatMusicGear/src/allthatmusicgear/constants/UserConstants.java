@@ -1,6 +1,3 @@
-/**
- * 
- */
 package allthatmusicgear.constants;
 
 import java.lang.reflect.Type;
@@ -11,8 +8,10 @@ import com.google.gson.reflect.TypeToken;
 import allthatmusicgear.model.User;
 
 /**
- * @author Adam
- *
+ * @author Adam Ma'or, Vadim Xaxam
+ * 
+ * This interface holds the constants for all user related handling
+ * @see SQLSchema.sql
  */
 public interface UserConstants {
 	

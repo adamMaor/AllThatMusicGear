@@ -192,7 +192,7 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 		this.showAnswerBox = !this.showAnswerBox;
 	}	
 	
-	
+	// will submit a new answer and put it the questionthread
 	$scope.submitAnswer = function(qID, aText)
 	{
 		checkLogin();
@@ -209,24 +209,15 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 		
 		$http.get("QandAServlet/InsertAnswer", parameters)
 		.success(function(response) {
-			var parameters = {
-					params: {
-						qID: qID,
-					}
-			};
-			// update answers to question from server after successful insertion of answer
-			$http.get("QandAServlet/AnswersOfQ", parameters)
-			.success(function(response) {
-				if(response[0] !== undefined){
-					// find the question that was answered and update its answers
-					for (var i = 0; i < $scope.questions.length; i++){
-						if ($scope.questions[i].qst.qID == qID){
-							$scope.questions[i].ans = angular.copy(response);
-						}
+			if(response[0] !== undefined){
+				// find the question that was answered and update its answers
+				// update answers to question from server after successful insertion of answer
+				for (var i = 0; i < $scope.questions.length; i++){
+					if ($scope.questions[i].qst.qID == qID){
+						$scope.questions[i].ans = angular.copy(response);
 					}
 				}
-			});
-			
+			};
 		});
 	}
 }]);

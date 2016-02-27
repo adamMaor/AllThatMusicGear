@@ -2,7 +2,7 @@
 package allthatmusicgear.model;
 
 /**
- * @author  Adam & Vadim
+ * @author Adam Ma'or, Vadim Xaxam
  *	This model class is implemented because we need to get a question with and a single attached answer 
  */
 public class QuestionAnswerPair {
