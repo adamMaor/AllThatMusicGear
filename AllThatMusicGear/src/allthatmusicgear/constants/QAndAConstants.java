@@ -13,6 +13,7 @@ import allthatmusicgear.model.TopicQRatingPair;
 
 public interface QAndAConstants {
 
+	/* constants for URL in servlet */
 	public final String QUESTION = "Question";
 	public final String ANSWER = "Answer";
 	public final String NEW_QUESTIONS = "NewQuestions";
@@ -27,24 +28,22 @@ public interface QAndAConstants {
 	public final String TOPIC_BY_TPOP = "QuestionTopicsByTpop";
 	public final String QUESTIONS_BY_TOPIC = "QuestionsByTopic";
 	
+	/* for GSON */
 	public final Type QUESTION_COLLECTION = new TypeToken<Collection<Question>>() {}.getType();
 	public final Type ANSWER_COLLECTION = new TypeToken<Collection<Answer>>() {}.getType();
 	public final Type QUESTION__AND_ANS_COLLECTION = new TypeToken<Collection<QuestionWithAnswers>>() {}.getType();
 	public final Type TOPIC_AND_TPOP_COLLECTION = new TypeToken<Collection<TopicQRatingPair>>() {}.getType();
 	public final Type QUESTION_AND_ANS_PAIR_COLLECTION = new TypeToken<Collection<QuestionAnswerPair>>() {}.getType();
 	
-	
+	/* see SQLSchema.sql */
 	public final String COUNT_NEW_QUESTIONS = "SELECT COUNT(*) FROM tblQuestion "
 			+ "WHERE tblQuestion.QID NOT IN	(SELECT DISTINCT QuestionID FROM tblAnswer)";
 	public final String COUNT_ALL_QUESTIONS = "SELECT COUNT(*) FROM tblQuestion";
 	public final String COUNT_ALL_TOPICS = "SELECT COUNT(DISTINCT tblQuestionTopics.Topic) FROM tblQuestionTopics";
 	public final String COUNT_ALL_TOPIC_QUESTIONS = "SELECT COUNT(tblQuestionTopics.QID) FROM tblQuestionTopics WHERE tblQuestionTopics.Topic = ? ";
-	
-	
-	
+		
 	public final String INSERT_NEW_QUESTION = "INSERT INTO tblQuestion (QUNickName, QText) VALUES (?,?)";
 	public final String INSERT_TOPIC_TO_LATEST_QUESTION = "INSERT INTO tblQuestionTopics VALUES (IDENTITY_VAL_LOCAL(), ?)";
-	public final String GET_LATEST_QUESTION = "SELECT * FROM tblQuestion WHERE QID = IDENTITY_VAL_LOCAL()";
 	public final String INSERT_NEW_ANSWER = "INSERT INTO tblAnswer (QuestionID, AUNickName, AText) VALUES (?,?,?)";
 	
 	public final String GET_NEW_QUESTIONS = "SELECT tblQuestion.*, tblUser.PhotoURL, tblUser.UserRating " 
@@ -74,7 +73,7 @@ public interface QAndAConstants {
 			+ "ORDER BY tblQuestion.QRating DESC "
 			+ "OFFSET ? ROWS FETCH NEXT 20 ROWS ONLY ";
 	
-	final public String GET_TOPICS_BY_POPULARITY = "SELECT tblQuestionTopics.Topic, SUM(tblQuestion.QRating) as TPop "
+	final public String GET_TOPICS_BY_POPULARITY = "SELECT tblQuestionTopics.Topic, SUM(tblQuestion.QRating) AS TPop "
 			+ "FROM tblQuestionTopics JOIN tblQuestion "
 			+ "ON tblQuestionTopics.QID = tblQuestion.QID "
 			+ "GROUP BY tblQuestionTopics.Topic "
@@ -82,20 +81,20 @@ public interface QAndAConstants {
 			+ "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ";
 		
 	
-	public final String GET_QUESTION_SCORES = "SELECT tblQuestion.QVotingScore, AVG(Cast(tblAnswer.AVotingScore as Float)) as AVGAnswerScore"
+	public final String GET_QUESTION_SCORES = "SELECT tblQuestion.QVotingScore, AVG(Cast(tblAnswer.AVotingScore as DOUBLE)) as AVGAnswerScore"
 											+ " FROM tblQuestion LEFT OUTER JOIN tblAnswer ON tblQuestion.QID = tblAnswer.QuestionID"
-											+ " WHERE tblQuestion.QID=?"
+											+ " WHERE tblQuestion.QID = ?"
 											+ " GROUP BY tblQuestion.QVotingScore";
 	
 	public final String UPDATE_QUESTION_SCORES = "UPDATE tblQuestion "
 			+ "SET tblQuestion.QVotingScore = ?, tblQuestion.QRating = ? "
-			+ "WHERE tblQuestion.QID=?";
+			+ "WHERE tblQuestion.QID = ?";
 	
 	public final String ADD_QUESTION_VOTE = "INSERT INTO tblQuestionVotes VALUES(?,?,?)";
 	
 	public final String ADD_ANSWER_VOTE = "INSERT INTO tblAnswerVotes VALUES(?,?,?)";
 	
-	public final String VOTE_ANSWER = "UPDATE tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID=?";
+	public final String VOTE_ANSWER = "UPDATE tblAnswer SET AVotingScore = AVotingScore + ? WHERE AID = ?";
 		
 	public final String GET_USER_LAST_QUESTION = "SELECT tblQuestion.*, tblUser.PhotoURL, tblUser.UserRating "
 			+ "FROM tblQuestion JOIN tblUser ON tblQuestion.QUNickName = tblUser.NickName "

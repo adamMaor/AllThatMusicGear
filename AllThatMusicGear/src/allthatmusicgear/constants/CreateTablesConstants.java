@@ -12,7 +12,7 @@ public interface CreateTablesConstants {
 			+ "(UserName VARCHAR(10) PRIMARY KEY,"
 			+ "Password VARCHAR(8) NOT NULL,"
 			+ "NickName VARCHAR(20) UNIQUE NOT NULL,"
-			+ "Descreption	VARCHAR(50) DEFAULT '',"
+			+ "Descreption VARCHAR(50) DEFAULT '',"
 			+ "PhotoURL VARCHAR(300) DEFAULT '', "
 			+ "UserRating DOUBLE DEFAULT 0 )" ;
 		
