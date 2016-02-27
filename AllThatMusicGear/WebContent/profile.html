@@ -28,16 +28,14 @@
 	
 	<div class="container" data-ng-controller="userProfile">
 		<div class="row">
-			<h2><b>User Profile:</b></h2>
-		</div>
-		<div class="row">
-			<h3><a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}">
+			<h2><strong>User Profile:</strong></h2>
+				<h3><a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}">
 				<img src="#" data-ng-src="{{user.photoURL}}" class="img-circle leaderboardPhoto" alt="Missing Photo"></a>
 				&nbsp;<a class="userProfileLink" data-ng-href="profile.html#/user#{{user.nickName}}">{{user.nickName}}</a>
 			</h3>
 		</div>
 		<div class="row">
-			<h3>Rating: {{user.userRating | number:2}}</h3>
+			<h3><span class="glyphicon glyphicon-headphones"></span> &nbsp;Rating: {{user.userRating | number:2}} </h3>
 		</div>
 		<div class="row" data-ng-show='user.descreption!=""'>
 			<h3>User description:</h3>
@@ -46,14 +44,15 @@
 			</blockquote>
 		</div>
 		<div class="row" data-ng-show="user.expertise.length!=0">
-			<h3>User expertise:</h3>
-			<span class="glyphicon glyphicon-tags"></span>
+			<h3> <span class="glyphicon glyphicon-tags"></span> &nbsp;User expertise:
+			
        		<span data-ng-repeat="topic in user.expertise" class="topic">
        			<a data-ng-href="questions.html#/bytopic#{{topic}}">{{topic}}</a>
        		</span>
+       		</h3>
 		</div>
 		<div class="row">
-			<h3>User last asked questions:</h3>
+			<h3><span class="glyphicon glyphicon-edit"></span> &nbsp;User last asked:</h3>
 		</div>
 		<div class="row">
 	   		<div class="col-sm-9" data-ng-repeat="qstn in lastAsked">
@@ -84,7 +83,7 @@
    			</div>
 		</div>
 		<div class="row">
-			<h3>User last answered answers:</h3>
+			<h3><span class="glyphicon glyphicon-pencil"></span> &nbsp;User last answered:</h3>
 		</div>
 		<div class="row" data-ng-repeat="pair in lastAnswered">
 			<div class="row">

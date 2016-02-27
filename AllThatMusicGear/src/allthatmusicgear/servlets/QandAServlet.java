@@ -49,7 +49,7 @@ public class QandAServlet extends HttpServlet {
     }
     
     /**
-     * This assist method is used to check if exception was caused because of duplicate key 
+     * This Utility method is used to check if exception was caused because of duplicate key 
      * used for user's votes 
      * @param e - exception thrown
      * @return - true if exception is of duplicated key creation in table
@@ -65,7 +65,7 @@ public class QandAServlet extends HttpServlet {
     }
     	
 	/** 
-	 * This assist method is used to get question topics, given a question ID
+	 * This Utility method is used to get question topics, given a question ID
 	 * @param qID - Question that topics are related to
 	 * @param conn - the current connection
 	 * @return - a StringList of topics
@@ -97,7 +97,7 @@ public class QandAServlet extends HttpServlet {
 	}
 	
 	/**
-	 * This method builds a map of QID as key, as Vote pos/neg as value for question the given user had voted for
+	 * This Utility method builds a map of QID as key, as Vote pos/neg as value for question the given user had voted for
 	 * @param userNickName - user to check votes for
 	 * @param conn - the current connection
 	 * @return Map<QID,VoteScore> of the given user
@@ -129,7 +129,7 @@ public class QandAServlet extends HttpServlet {
 	}
 	
 	/**
-	 * This method builds a map of AID as key, as Vote pos/neg as value for answers the given user had voted for
+	 * This Utility method builds a map of AID as key, as Vote pos/neg as value for answers the given user had voted for
 	 * @param userNickName - user to check votes for
 	 * @param conn - the current connection
 	 * @return Map<AID,VoteScore> of the given user
@@ -161,7 +161,7 @@ public class QandAServlet extends HttpServlet {
 	}
 	
 	/**
-	 * This assist method is used to get a user vote (coded) for a specific question OR answer
+	 * This Utility method is used to get a user vote (coded) for a specific question OR answer
 	 * @param qOrAUserNickName - Q/A submitter's nickName
 	 * @param loggedUserNickName - Logged in user's nickName
 	 * @param userAnsOrQstMap - a map containing actual votes {@link} - getCurrUserAnsVoteMap
@@ -186,7 +186,7 @@ public class QandAServlet extends HttpServlet {
 	}
 	
 	/**
-	 * This method is used to get a List of Answers to a given question
+	 * This Utility is used to get a List of Answers to a given question
 	 * @param qID - the question ID answers need to be recovered for
 	 * @param conn - the current connection
 	 * @param LoggedUserNickName - used to pass to assist method {@link} getCurrUserAnsVoteMap
@@ -232,7 +232,7 @@ public class QandAServlet extends HttpServlet {
 	}
 		
 	/**
-	 * This assist method is used to update the user rating - used at every vote, and at every Q/A submission
+	 * Utility method is used to update the user rating - used at every vote, and at every Q/A submission
 	 * @param userNickName - user to update
 	 * @param conn - the current connection
 	 * @throws SQLException - to be handled by caller
@@ -245,6 +245,7 @@ public class QandAServlet extends HttpServlet {
     	ResultSet avgARS = null;
     	PreparedStatement updateUserPstmt = null;
     	try {
+    		// first get question scores (QVS and QRating)
     		avgQPstmt = conn.prepareStatement(UserConstants.GET_USER_AVG_Q_SCORES); 
     		avgQPstmt.setString(1, userNickName);
     		double avgQRating = 0;
@@ -252,6 +253,7 @@ public class QandAServlet extends HttpServlet {
     		while (avgQRS.next()) {
     			avgQRating = avgQRS.getObject(1) == null ? 0 : avgQRS.getDouble(1);	
     		}
+    		// now get AVG answer score 
     		avgAPstmt = conn.prepareStatement(UserConstants.GET_USER_AVG_A_SCORES); 
     		avgAPstmt.setString(1, userNickName);
     		double avgARating = 0;
@@ -259,6 +261,7 @@ public class QandAServlet extends HttpServlet {
     		while (avgARS.next()) {
     			avgARating = avgARS.getObject(1) == null ? 0 : avgARS.getDouble(1);	
     		}
+    		// create the new Rating Score - and push to DB
     		double newRatingScore = 0.2 * avgQRating + 0.8 * avgARating;   		
     		updateUserPstmt = conn.prepareStatement(UserConstants.UPDATE_UR_QUERY);
     		updateUserPstmt.setDouble(1, newRatingScore);
@@ -287,7 +290,7 @@ public class QandAServlet extends HttpServlet {
     }
 	
 	/**
-	 * A simple assist method to get a user nickname to a given QID 
+	 * Utility method to get a user nickname to a given QID 
 	 * @param qID - the question who's user nickname is needed
 	 * @param conn - the current connection
 	 * @return - User's nickName
@@ -319,7 +322,7 @@ public class QandAServlet extends HttpServlet {
 	}
 	
 	/**
-	 * A simple assist method to get a user nickname to a given AID 
+	 * Utility method to get a user nickname to a given AID 
 	 * @param aID - the answer who's user nickname is needed
 	 * @param conn - the current connection
 	 * @return - User's nickName
@@ -351,6 +354,7 @@ public class QandAServlet extends HttpServlet {
 	}
 	
 	/**
+	 * Utility for updating Question Voting score and Rating score
 	 * @param qID - Question ID to update
 	 * @param votingScoreChange - the change in voting score (-1, 0 or +1)
 	 * @param conn - the current connection
@@ -418,6 +422,7 @@ public class QandAServlet extends HttpServlet {
 				PreparedStatement pstmt = null;
 				ResultSet questionRS = null;
 				try {
+					// first count all questions for pages and offset
 					Integer totalQuestionCount = 0;
 					countQuestions = conn.createStatement();
 					questionCountRs = countQuestions.executeQuery(QAndAConstants.COUNT_NEW_QUESTIONS);
@@ -437,6 +442,7 @@ public class QandAServlet extends HttpServlet {
 						int qID = questionRS.getInt(1);
 						String questionUserNickName = questionRS.getString(2);
 						int currUserVoted = getUserVote(questionUserNickName, loggedUserNickName, userQstVoteMap, qID);
+						// get question topics
 						List<String> qTopicList = getQuestionTopics(qID, conn);  						    						
 						Question newQuestion = new Question(qID, 
 														questionUserNickName, 
@@ -452,7 +458,7 @@ public class QandAServlet extends HttpServlet {
 						List<Answer> qAnswers = new ArrayList<Answer>();
 						questCollection.add(new QuestionWithAnswers(newQuestion, qAnswers));
 					}
-					
+					// put in Json
 					JsonRes = "{\"numQuestion\":" + totalQuestionCount.toString() + ", \"questions\":";
 					JsonRes += gson.toJson(questCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
 					JsonRes += "}";
@@ -487,6 +493,7 @@ public class QandAServlet extends HttpServlet {
 				PreparedStatement pstmt = null;
 				ResultSet questionRS = null;
 				try {
+					// first count all questions for pages and offset
 					Integer totalQuestionCount = 0;
 					countQuestions = conn.createStatement();
 					questionCountRs = countQuestions.executeQuery(QAndAConstants.COUNT_ALL_QUESTIONS);
@@ -506,6 +513,7 @@ public class QandAServlet extends HttpServlet {
 						int qID = questionRS.getInt(1);
 						String questionUserNickName = questionRS.getString(2);
 						int currUserVoted = getUserVote(questionUserNickName, loggedUserNickName, userQstVoteMap, qID);
+						// get topics
 						List<String> qTopicList = getQuestionTopics(qID, conn); 
 						Question newQuestion = new Question(qID, 
 														questionUserNickName, 
@@ -521,7 +529,7 @@ public class QandAServlet extends HttpServlet {
 						List<Answer> qAnswers = getQuestionAnswers(qID, conn, loggedUserNickName);
 						questCollection.add(new QuestionWithAnswers(newQuestion, qAnswers));
 					}
-
+					// put in Json
 					JsonRes = "{\"numQuestion\":" + totalQuestionCount.toString() + ", \"questions\":";
 					JsonRes += gson.toJson(questCollection, QAndAConstants.QUESTION__AND_ANS_COLLECTION);
 					JsonRes += "}";
@@ -560,6 +568,7 @@ public class QandAServlet extends HttpServlet {
 					pstmt.executeUpdate();
 					conn.commit();
 					String[] topicList = request.getParameter("topicList").split(",");
+					// insert the topics - locked by default derby locks
 					for (int i = 0; i < topicList.length; ++i)
 					{
 						topicPstmt = conn.prepareStatement(QAndAConstants.INSERT_TOPIC_TO_LATEST_QUESTION);
@@ -567,7 +576,7 @@ public class QandAServlet extends HttpServlet {
 						topicPstmt.executeUpdate();		    			
 						conn.commit();;
 					}	
-					// now to update user rating
+					// now to update user rating - a new question -> a new UserRating
 					updateUserRating(loggedUserNickName, conn);					
 				}  catch (SQLException e) {
 					getServletContext().log("Error while Inserting a New Question", e);
@@ -693,14 +702,14 @@ public class QandAServlet extends HttpServlet {
     				// offset by page number
     				pstmt.setInt(1, Integer.parseInt(request.getParameter("offset")));
     				pstmt.setInt(2, Integer.parseInt(request.getParameter("listSize")));
-    				
+    				// the topic list
     				List<TopicQRatingPair> topicList = new ArrayList<TopicQRatingPair>();
     				rs = pstmt.executeQuery();
 					while (rs.next())
 					{
 						topicList.add(new TopicQRatingPair(rs.getString(1), rs.getDouble(2)));   						
 					}
-					
+					// put in Json
 					JsonRes = "{\"numTopics\":" + totalTopics.toString() + ", \"topics\":";
 					JsonRes += gson.toJson(topicList, QAndAConstants.TOPIC_AND_TPOP_COLLECTION);
 					JsonRes += "}";

@@ -53,11 +53,11 @@
 	       				<div>
 	       					<a class="userProfileLink" data-ng-href="profile.html#/#{{qstn.qst.qUserNickName}}" title="See user's profile">{{qstn.qst.qUserNickName}}</a>
 	       				</div>
-	       				<div>UR:{{qstn.qst.userRating | number:1}}</div>
+	       				<div title="User's rating score">{{qstn.qst.userRating | number:2}} &nbsp;<span class="glyphicon glyphicon-headphones"></span> </div>
 	       			</div>
 	       		</div>
 	       		<div>
-	       			<span class="xsSpan">{{qstn.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>				
+	       			<span class="xsSpan" title="Qusetion submittion time">{{qstn.qst.qSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>				
 	       		</div>
        			<div class="answerBTns">	
 	       			<button type="button" class="btn btn-default ansBtn" data-ng-click="toggleAnswerBox()" aria-label="Left Align" title="Answer this question">
@@ -101,8 +101,8 @@
 				       					<img src="#" data-ng-src="{{anwr.userPhoto}}" class="img-circle questionThreadProfilePhotoSM" alt="Missing Photo">
 					       			</a>
 				       			<a class="userProfileLink" data-ng-href="profile.html#/#{{anwr.aUserNickName}}" title="See user's profile">{{anwr.aUserNickName}}</a>
-				       			<span>UR:{{anwr.userRating | number:1}}</span> 
-				       			<span class="smSpan">{{anwr.aSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>
+				       			,<span title="User's rating score">{{anwr.userRating | number:2}}&nbsp;<span class="glyphicon glyphicon-headphones"></span> </span> 
+				       			,&nbsp;&nbsp;<span class="smSpan" title="Answer submittion time">{{anwr.aSubDate |  date:'dd/MM/yyyy HH:mm:ss' }}</span>
 			       			</span>
 		       			</div>
 		       			<p>{{anwr.aText}}</p>

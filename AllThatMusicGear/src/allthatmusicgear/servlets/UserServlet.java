@@ -41,7 +41,7 @@ public class UserServlet extends HttpServlet {
         super();
     }
     /**
-     * A service method for getting user expertise
+     * A Utility method for getting user expertise
      * @param nickName - The User
      * @param conn - the current connection
      * @return
@@ -73,7 +73,7 @@ public class UserServlet extends HttpServlet {
     }  
     
     /**
-     * This assist method is used to count all the users in the system
+     * This Utility method is used to count all the users in the system
      * @param conn - the current connection
      * @return int - the number of total users in the system
      * @throws SQLException
@@ -131,7 +131,7 @@ public class UserServlet extends HttpServlet {
 					{
 						topicList.add(rs.getString(1));	
 					}
-		    		
+		    		// put in Json
 					JsonRes = gson.toJson(topicList, UserConstants.TOPIC_LIST);
 			
 				} catch (SQLException e) {
@@ -236,6 +236,7 @@ public class UserServlet extends HttpServlet {
 						    						allUsersRS.getDouble(4),
 						    						expertise));
 					}
+					// put in Json
     	    		JsonRes = "{\"numUsers\":" + allUsersCount.toString() + ", \"users\":";
 					JsonRes += gson.toJson(userCollection, UserConstants.USER_COLLECTION);
 					JsonRes += "}";

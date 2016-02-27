@@ -97,11 +97,13 @@ public class LogAndRegServlet extends HttpServlet {
     				String desc = request.getParameter("description") == null ? "" : request.getParameter("description");
     				String photo = request.getParameter("phtoUrl") == null ? "media/defaultIcon.png" : request.getParameter("phtoUrl");
     				
+    				// first of all check for existing user with same name or nickname
      				checkUserPstmt = conn.prepareStatement(LogAndRegConstants.CHECK_EXISTING_USER);
      				checkUserPstmt.setString(1, userName);
 	    			checkUserPstmt.setString(2, nickName);
 	    			checkUserRS = checkUserPstmt.executeQuery();
 	    			if (checkUserRS.next()){
+	    				// if a user was found then we send the error via Json
 	    				writer.println("{\"success\":\"false\", \"errorMsg\":\"Existing username or nickname\"}");
 	 					return;
 	    			}
@@ -116,6 +118,7 @@ public class LogAndRegServlet extends HttpServlet {
 	    			regUserPstmt.executeUpdate();	    			
 	    			//commit update
 	    			conn.commit();
+	    			// if successful - update session details and send success via JSon
 	    			writer.println("{\"success\":\"true\"}");
 	    			request.getSession().setAttribute("LoggedInUserNickName", nickName);
 	    			request.getSession().setAttribute("LoggedInUserPhotoURL", photo);
