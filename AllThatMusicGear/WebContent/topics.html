@@ -39,6 +39,7 @@
 		</div>
 		<div class="row">
 			<div class="topicDiv">
+				<!-- Topic cloud repeated for topics in this page to be displayed - style controlled by JS topicCloudStyle() -->
 	     		<span data-ng-repeat="topic in topics" class="topic" data-ng-style="topicCloudStyle(topic.tPop)">
 	     			<a data-ng-href="questions.html#/bytopic#{{topic.topic}}" title="See all questions related to this topic">{{topic.topic}}</a>
 	     		</span>
