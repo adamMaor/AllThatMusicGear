@@ -44,7 +44,6 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 	$scope.questions = [];
 	
 	$scope.updateQuestions = function(){
-		$scope.answerBoxOpen = 0;
 		$http.get("QandAServlet/" + $scope.questionMode, parameter)
 		.success(function(response) {
 			$scope.questions = response.questions;				
@@ -60,6 +59,7 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 		if ($scope.pageNum < $scope.maxPageNum){
 			$scope.pageNum += 1;
 			parameter = { params: { topic: $scope.Topic, pageNum: $scope.pageNum,} };
+			$scope.answerBoxOpen = 0;
 			$scope.updateQuestions();
 		}
 	}
@@ -68,6 +68,7 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 		if ($scope.pageNum > 1){
 			$scope.pageNum -= 1;
 			parameter = { params: { topic: $scope.Topic, pageNum: $scope.pageNum,} };
+			$scope.answerBoxOpen = 0;
 			$scope.updateQuestions();
 		}	
 	}
@@ -98,6 +99,7 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 		});
 	}
 	
+	// Similiar behaviour to voteQuestion()
 	$scope.voteAnswer = function(qID, aID, changeScore, event)
 	{
 		checkLogin();
@@ -116,6 +118,7 @@ angular.module('mainPageApp').controller('questions', ['$scope', '$http', '$loca
 						for (var j = 0;j < $scope.questions[i].ans.length; j++){
 							if ($scope.questions[i].ans[j].aID == aID){
 								$scope.questions[i].ans[j].aVotingScore += changeScore;
+								// sorting answers upon voting change, to show re-ordering live to user
 								$scope.questions[i].ans.sort(function(a,b)
 										{
 											return b.aVotingScore - a.aVotingScore;

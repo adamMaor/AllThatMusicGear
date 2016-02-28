@@ -6,6 +6,7 @@
 angular.module('mainPageApp').controller('navBarController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 	$scope.qTopics = [];
 	
+	// get logged in user information to display on navbar
 	$scope.loggedInUserInfo = function(){
 		$http.get("UserServlet/GetSessionInfo")
 		.success(function(response) {
@@ -49,6 +50,7 @@ angular.module('mainPageApp').controller('navBarController', ['$scope', '$http',
 		}	
 	}
 	
+	// question submission method upon user clicking submit
 	$scope.submitQuestion = function(){
 		checkLogin();
 		var topicString = "";
@@ -56,6 +58,7 @@ angular.module('mainPageApp').controller('navBarController', ['$scope', '$http',
 		for (var i =0; i < $scope.qTopics.length; i++){
 			topicString += $scope.qTopics[i] + ",";
 		}
+		// if user hasn't written ',' on the last topic, we grab what he's written too
 		if ($scope.qTopic != "")
 			topicString += $scope.qTopic;
 		var parameters = {
@@ -92,6 +95,4 @@ angular.module('mainPageApp').controller('navBarController', ['$scope', '$http',
 	$scope.logOut = function(){
 		$http.post("UserServlet/LogOut");
 	}
-	
-	
  }]);

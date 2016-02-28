@@ -131,6 +131,7 @@ h4 {
 .votingScore {
 	text-align:center;
 	min-width:60px;
+	margin-top: 0px;
 }
 
 /* Handle topics, their columns and every thing else regarding */

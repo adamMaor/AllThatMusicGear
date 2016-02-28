@@ -37,12 +37,14 @@
 		<div class="row">
 			<h3><span class="glyphicon glyphicon-headphones"></span> &nbsp;Rating: {{user.userRating | number:2}} </h3>
 		</div>
+		<!-- User description block - will be displayed only if user has provided description -->
 		<div class="row" data-ng-show='user.descreption!=""'>
 			<h3>User description:</h3>
 			<blockquote>
 				<p>{{user.descreption}}</p>
 			</blockquote>
 		</div>
+		<!-- User expertise block - a list of 5 top topics for user will be displayed if there currently are any -->
 		<div class="row" data-ng-show="user.expertise.length!=0">
 			<h3> <span class="glyphicon glyphicon-tags"></span> &nbsp;User expertise:
 			
@@ -54,6 +56,7 @@
 		<div class="row">
 			<h3><span class="glyphicon glyphicon-edit"></span> &nbsp;User last asked:</h3>
 		</div>
+		<!-- Last asked questions by user block -->
 		<div class="row">
 	   		<div class="col-sm-9" data-ng-repeat="qstn in lastAsked">
 	   			<div class="col-xs-1">
@@ -85,7 +88,9 @@
 		<div class="row">
 			<h3><span class="glyphicon glyphicon-pencil"></span> &nbsp;User last answered:</h3>
 		</div>
+		<!-- Last answered questions and their answer answered by user block -->
 		<div class="row" data-ng-repeat="pair in lastAnswered">
+			<!-- Question block -->
 			<div class="row">
 		   		<div class="col-sm-9">
 		   			<div class="col-xs-1">
@@ -114,6 +119,7 @@
 	   			</div>
 			</div>
 			<div class="row">
+				<!-- User Answer block -->
 				<div class="col-sm-8 col-sm-offset-1 answerBlock">
 					<div class="col-xs-1">
 			   			<div>

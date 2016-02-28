@@ -1,5 +1,6 @@
 /**
- * 
+ * User profile controller - gets all the information by server based on the required
+ * user specified by the hash value.
  */
 
 angular.module('mainPageApp').controller('userProfile', ['$scope', '$http', '$location', function($scope, $http, $location) {

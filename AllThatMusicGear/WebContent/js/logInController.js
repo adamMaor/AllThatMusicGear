@@ -47,6 +47,9 @@ angular.module('mainPageApp').controller('logInController', ['$scope', '$http','
 		})
 	}
 	
+	// We have two windows in log-in page, one for registration
+	// and one for login, the user can click to move between them,
+	// clicking will call the following functions
 	$scope.showReg = function(){
 		$("#logInForm").addClass('hidden');
 		$("#registerForm").removeClass('hidden');

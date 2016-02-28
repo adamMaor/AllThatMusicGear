@@ -28,7 +28,7 @@ var checkLogin = function () {
 };
 
 // we are using hash values in url's, by default
-// hash change does not trigger refresh, a behaviour we'd like
+// hash change does not trigger refresh, a behavior we'd like
 // so we force refresh on hash change
 window.onhashchange = function() {
 	window.location.reload();
