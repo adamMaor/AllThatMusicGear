@@ -3,9 +3,9 @@ package allthatmusicgear.model;
 import java.util.List;
 
 /**
- * this model class is used to represent a User in the system
+ * This model class is used to represent a User in the system.<br>
+ * Used for Json/Gson only.
  * @author Adam Ma'or, Vadim Xaxam
- *
  */
 public class User {
 	/**

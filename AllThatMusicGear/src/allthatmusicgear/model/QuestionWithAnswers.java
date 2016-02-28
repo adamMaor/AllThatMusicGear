@@ -3,9 +3,9 @@ package allthatmusicgear.model;
 import java.util.Collection;
 
 /**
- * this model class is used to return a Question with all it's answers
+ * This model class is used to return a Question with all it's answers.<br>
+ * Used for Json/Gson only.
  * @author Adam Ma'or, Vadim Xaxam
- *
  */
 public class QuestionWithAnswers {
 	/**

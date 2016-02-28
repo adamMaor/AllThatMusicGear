@@ -2,8 +2,9 @@
 package allthatmusicgear.model;
 
 /**
+ * This model class is implemented because we need to get a question with and a single attached answer.<br>
+ * Used for Json/Gson only.
  * @author Adam Ma'or, Vadim Xaxam
- *	This model class is implemented because we need to get a question with and a single attached answer 
  */
 public class QuestionAnswerPair {
 	

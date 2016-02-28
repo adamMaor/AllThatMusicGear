@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="js/mainPageApp.js"></script>
 	<script type="text/javascript" src="js/navBarController.js"></script>
 	<script type="text/javascript" src="js/leaderboardController.js"></script>
-    <!-- Bootstrap -->
+<!--     Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="bootstrap/js/bootstrap.min.js"></script>
 <!--     our general css file -->
@@ -24,7 +24,7 @@
 <body data-ng-app="mainPageApp">
 	<!-- header directive -->
 	<div data-ng-controller="mainController" data-ng-include="header.url"></div>
-	
+<!-- 	Leaderboard page in a pretty basic table implemented by bootstrap columns -->
 	<div class="container" data-ng-controller="leaderboardCtrl">
 		<h2><strong>Leaderboard:</strong></h2>
 		<strong>Total of {{userCount}} users</strong>

@@ -3,9 +3,9 @@ package allthatmusicgear.model;
 import java.util.List;
 
 /**
- *  this model class represents a Question.
+ * This model class represents a Question.<br>
+ * Used for Json/Gson only.
  * @author Adam Ma'or, Vadim Xaxam
- *
  */
 public class Question {
 

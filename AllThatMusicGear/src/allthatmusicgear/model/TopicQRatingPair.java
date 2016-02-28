@@ -1,9 +1,9 @@
 package allthatmusicgear.model;
 
 /**
- * this model class is used to return a topic and it's Tpop (as required in specs.)
+ * This model class is used to return a topic and it's Tpop (as required in specs.).<br>
+ * Used for Json/Gson only.
  * @author Adam Ma'or, Vadim Xaxam
- *
  */
 public class TopicQRatingPair {
 

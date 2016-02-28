@@ -4,26 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--  Our tab icon and Title -->    
+<!-- 	 Our tab icon and Title     -->
 	<link rel="icon" type="image/gif" href="media/ATMG_icon.gif" />
     <title>ATMG - Profile</title>
    	<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
-   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!--    	jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+<!--     Include all compiled plugins (below), or include individual files as needed -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
-    <!-- 	MainPage JS App and needed controllers -->
+<!--     	MainPage JS App and needed controllers -->
 	<script type="text/javascript" src="js/mainPageApp.js"></script>
 	<script type="text/javascript" src="js/navBarController.js"></script>
 	<script type="text/javascript" src="js/userProfileController.js"></script>
-
-    <!-- Bootstrap -->
+<!--     Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/general.css" rel="stylesheet">
 
 </head>
 <body data-ng-app="mainPageApp" >
-	<!-- 	header directive -->
+<!-- 		header directive -->
 	<div data-ng-controller="mainController" data-ng-include="header.url"></div>
 	
 	<div class="container" data-ng-controller="userProfile">
@@ -37,14 +36,14 @@
 		<div class="row">
 			<h3><span class="glyphicon glyphicon-headphones"></span> &nbsp;Rating: {{user.userRating | number:2}} </h3>
 		</div>
-		<!-- User description block - will be displayed only if user has provided description -->
+<!-- 		User description block - will be displayed only if user has provided description -->
 		<div class="row" data-ng-show='user.descreption!=""'>
 			<h3>User description:</h3>
 			<blockquote>
 				<p>{{user.descreption}}</p>
 			</blockquote>
 		</div>
-		<!-- User expertise block - a list of 5 top topics for user will be displayed if there currently are any -->
+<!-- 		User expertise block - a list of 5 top topics for user will be displayed if there currently are any -->
 		<div class="row" data-ng-show="user.expertise.length!=0">
 			<h3> <span class="glyphicon glyphicon-tags"></span> &nbsp;User expertise:
 			
@@ -56,7 +55,7 @@
 		<div class="row">
 			<h3><span class="glyphicon glyphicon-edit"></span> &nbsp;User last asked:</h3>
 		</div>
-		<!-- Last asked questions by user block -->
+<!-- 		Last asked questions by user block -->
 		<div class="row">
 	   		<div class="col-sm-9" data-ng-repeat="qstn in lastAsked">
 	   			<div class="col-xs-1">
@@ -88,7 +87,7 @@
 		<div class="row">
 			<h3><span class="glyphicon glyphicon-pencil"></span> &nbsp;User last answered:</h3>
 		</div>
-		<!-- Last answered questions and their answer answered by user block -->
+<!-- 		Last answered questions and their answer answered by user block -->
 		<div class="row" data-ng-repeat="pair in lastAnswered">
 			<!-- Question block -->
 			<div class="row">

@@ -8,10 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import allthatmusicgear.model.User;
 
 /**
+ * This interface holds the constants for login and registration<br>
+ * see SQLSchema.sql for more details.
  * @author Adam Ma'or, Vadim Xaxam
- * 
- * This interface holds the constants for login and registration
- * @see SQLSchema.sql
  */
 public interface LogAndRegConstants {
 

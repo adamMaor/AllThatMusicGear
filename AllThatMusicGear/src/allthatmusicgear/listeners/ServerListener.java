@@ -20,8 +20,9 @@ import allthatmusicgear.constants.CreateTablesConstants;
 import allthatmusicgear.constants.DBConstants;
 
 /**
+ * Application Lifecycle Listener implementation class ServerListener<br>
+ * we used the listener to initialize our tables upon initialize and shut down the DB upon exit (destroy).
  * @author Adam Ma'or, Vadim Xaxam
- * Application Lifecycle Listener implementation class ServerListener
  *
  */
 public class ServerListener implements ServletContextListener {
@@ -44,9 +45,9 @@ public class ServerListener implements ServletContextListener {
     }
 
 	/**
+	 * we used this implicitly called method o initialize our DB tables
+	 * SCHEMA ATMG is auto-generated as we defined in the context.xml file
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
-     * we used this implicitly called method o initialize our DB tables
-     * SCHEMA ATMG is auto-generated as we defined in the context.xml file
      */
     public void contextInitialized(ServletContextEvent event)  { 
     	System.setProperty("derby.system.home", "c:/Web/DerbyDBFolder");
@@ -121,8 +122,8 @@ public class ServerListener implements ServletContextListener {
     }
 
 	/**
+	 * we used this implicitly called method to shut down our DB 
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
-     * we used this implicitly called method to shut down our DB 
      */
     public void contextDestroyed(ServletContextEvent event)  { 
     	try { 

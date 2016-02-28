@@ -1,10 +1,9 @@
 package allthatmusicgear.constants;
 
 /**
+ * This interface holds the constants for DB access<br>
+ * see SQLSchema.sql for more details.
  * @author Adam Ma'or, Vadim Xaxam
- * 
- * This interface holds the constants for DB access
- *
  */
 public interface DBConstants {
 

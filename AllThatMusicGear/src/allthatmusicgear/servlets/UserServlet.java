@@ -29,7 +29,8 @@ import allthatmusicgear.model.User;
 
 
 /**
- * Servlet implementation class UserServlet
+ * Servlet implementation class UserServlet<br>
+ * This servlet is responsible for all interaction involed with User details and attributes
  */
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -44,7 +45,7 @@ public class UserServlet extends HttpServlet {
      * A Utility method for getting user expertise
      * @param nickName - The User
      * @param conn - the current connection
-     * @return
+     * @return - a List of size 5 with user top Topics.
      * @throws SQLException - will throw the exception
      */
     private List<String> getUserExp(String nickName, Connection conn) throws SQLException

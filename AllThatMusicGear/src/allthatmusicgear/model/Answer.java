@@ -2,9 +2,9 @@ package allthatmusicgear.model;
 
 
 /**
- * this model class represents an Answer.
+ * This model class represents an Answer.<br>
+ * Used for Json/Gson only.
  * @author Adam Ma'or, Vadim Xaxam
- *
  */
 public class Answer {	
 	/**

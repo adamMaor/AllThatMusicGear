@@ -8,10 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import allthatmusicgear.model.User;
 
 /**
+ * This interface holds the constants for all user related handling<br>
+ * see SQLSchema.sql for more details.
  * @author Adam Ma'or, Vadim Xaxam
- * 
- * This interface holds the constants for all user related handling
- * @see SQLSchema.sql
  */
 public interface UserConstants {
 	

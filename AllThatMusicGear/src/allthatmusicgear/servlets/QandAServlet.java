@@ -35,7 +35,7 @@ import allthatmusicgear.model.QuestionWithAnswers;
 import allthatmusicgear.model.TopicQRatingPair;
 
 /**
- * Servlet implementation class QandAServlet
+ * Servlet implementation class QandAServlet<br>
  * This servlet will handle all DB accesses related to questions and answers
  */
 public class QandAServlet extends HttpServlet {
@@ -853,7 +853,7 @@ public class QandAServlet extends HttpServlet {
 	
 			}
 			
-			/* Update answer after vote */
+			/** Update answer after vote */
 			else if (uri.indexOf(QAndAConstants.UPDATE_ANSWER) != -1) {
 				PreparedStatement saveVoteStmt = null;
 				PreparedStatement pstmt = null;
@@ -908,7 +908,7 @@ public class QandAServlet extends HttpServlet {
 				}		
 			}
 			
-			/* Get User's last 5 Answers with questions */
+			/** Get User's last 5 Answers with questions */
 			else if (uri.indexOf(QAndAConstants.USER_LAST_ANSWERED) != -1) {
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;

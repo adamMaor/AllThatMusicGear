@@ -21,7 +21,8 @@ import allthatmusicgear.constants.DBConstants;
 import allthatmusicgear.constants.LogAndRegConstants;
 
 /**
- * Servlet implementation class LogAndRegServlet
+ * Servlet implementation class LogAndRegServlet.<br>
+ * This Servlet is responsible for all DB access related to User's login and registration
  */
 public class LogAndRegServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -162,8 +163,8 @@ public class LogAndRegServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 * Simply call doGet
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
