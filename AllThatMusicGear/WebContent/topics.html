@@ -26,7 +26,7 @@
 	<div data-ng-controller="mainController" data-ng-include="header.url"></div>
 	
 	<div class="container" data-ng-controller="topicsCtrl">
-		<h2><strong>Topics:</strong></h2>
+		<h2><b>Topics:</b></h2>
 		<b>Total of {{topicCount}} topics</b>
 		<div class="row">
 			<nav>
@@ -38,7 +38,7 @@
 			</nav>
 		</div>
 		<div class="row">
-			<div class="topicDiv">
+			<div class="col-md col-center topicDiv">
 				<!-- Topic cloud repeated for topics in this page to be displayed - style controlled by JS topicCloudStyle() -->
 	     		<span data-ng-repeat="topic in topics" class="topic" data-ng-style="topicCloudStyle(topic.tPop)">
 	     			<a data-ng-href="questions.html#/bytopic#{{topic.topic}}" title="See all questions related to this topic">{{topic.topic}}</a>

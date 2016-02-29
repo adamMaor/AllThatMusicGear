@@ -28,7 +28,6 @@ h4 {
 
 /* NavBar properties */
 .navbar {
-/* 	background-color: ; */
 	background-image: linear-gradient(90deg, #008B8B, #3D59AB);
 	border-top: 5px solid transparent;
 }
@@ -67,6 +66,12 @@ h4 {
 
 .nav-icon {
 	font-size: 130%;	
+}
+
+.nav-btn:focus{
+	background-color: rgb(234, 243, 228)!important;
+	color: #008B8B!important;
+	border-style: solid!important;
 }
 
 /* Buttons (including hover and focus) throughout the website */
@@ -132,6 +137,7 @@ h4 {
 	text-align:center;
 	min-width:60px;
 	margin-top: 0px;
+	margin-right: 5px;
 }
 
 /* Handle topics, their columns and every thing else regarding */
@@ -151,7 +157,12 @@ h4 {
 }
 
 .topicDiv {
-	margin-top: 20px;
+	max-width: 900px;
+	padding: 50px;
+	background-color: #c4ffff;
+	border-radius: 70px;
+	box-shadow: 15px 15px 15px #9d9dff;
+	text-align: center;	
 }
 
 .questionTopics {
@@ -211,7 +222,6 @@ h4 {
 	text-align: left;
 	margin-top: 15px;
 }
-
 .col-center-align, .col-center-align > p {
 	text-align: center;
 	margin-top: 15px;
@@ -239,6 +249,13 @@ h4 {
 	font-size: 80%;
 }
 
+.votingScoreSpan {
+	font-size: 110%;
+	color: black; 
+	text-shadow: 0px 0px 2px gray;
+	
+}
+
 /* handle user profile links and photos */
 .profilePic{
 	width:18px;
@@ -263,6 +280,8 @@ h4 {
 	width:30px;
 	height:30px;
 }
+
+
 
 /* Handle profile view */
 .profileUserInfo{
@@ -297,3 +316,27 @@ h4 {
 	margin-top: 5px;
 	border-radius: 5px;
 }
+
+/* Handle responsiveness when resizing to xs */
+@media (max-width: 767px) {
+	
+	div {
+		padding-left: 10px;
+	}
+			
+	.answerBlock {
+		overflow: auto;
+		max-width: 85%;
+		margin-left: 50px;
+	}
+	
+	.col-center.idBlock {
+		text-align: right;
+	}
+	
+	.col-left-align {
+		text-align: justify!important;
+		margin-left: 13px;
+	}
+}
+

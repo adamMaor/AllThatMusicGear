@@ -599,8 +599,16 @@ public class QandAServlet extends HttpServlet {
 			else if (uri.indexOf(QAndAConstants.UPDATE_QUESTION) != -1) {
 				PreparedStatement saveVoteStmt = null;
 				try {
-					// first: user has voted and we need to save the vote
+					// For security and DB integrity, 
+					// even though we took care of it in Client side - we still validate there is no user self vote
 					int qId = Integer.parseInt(request.getParameter("qId"));
+					String questionSubmitter = getUserNickNameFromQid(qId, conn);
+					if (questionSubmitter.equals(loggedUserNickName)){
+						JsonRes = "{\"failed\":\"true\",\"error\":\"Cannot vote for own submitted question\"}";
+						return;
+					}
+					
+					// first: user has voted and we need to save the vote
 					int votingScoreChange = Integer.parseInt(request.getParameter("changeVS"));
 					saveVoteStmt = conn.prepareStatement(QAndAConstants.ADD_QUESTION_VOTE);
 					saveVoteStmt.setInt(1, qId);
@@ -613,7 +621,6 @@ public class QandAServlet extends HttpServlet {
 					conn.commit(); 								
 					 					
 					// now to update user rating
-					String questionSubmitter = getUserNickNameFromQid(qId, conn);
 					updateUserRating(questionSubmitter, conn);
 					
 				} catch (SQLException e) {
@@ -858,9 +865,16 @@ public class QandAServlet extends HttpServlet {
 				PreparedStatement saveVoteStmt = null;
 				PreparedStatement pstmt = null;
 				try {
-					// Save Vote
+					// For security and DB integrity, 
+					// even though we took care of it in Client side - we still validate there is no user self vote
 					int aId = Integer.parseInt(request.getParameter("aID"));
-					int qId = Integer.parseInt(request.getParameter("qID"));
+					String answerUser = getUserNickNameFromAid(aId, conn);
+					if (answerUser.equals(loggedUserNickName)){
+						JsonRes = "{\"failed\":\"true\",\"error\":\"Cannot vote for own submitted answer\"}";
+						return;
+					}
+					
+					// Save Vote
 					int newVote = Integer.parseInt(request.getParameter("changeVS"));
 					saveVoteStmt = conn.prepareStatement(QAndAConstants.ADD_ANSWER_VOTE);
 					saveVoteStmt.setInt(1, aId);
@@ -876,11 +890,11 @@ public class QandAServlet extends HttpServlet {
 					conn.commit();
 					
 					// now we need to update answer submitter User Rating and the question rating and user rating  					
+					int qId = Integer.parseInt(request.getParameter("qID"));
 					updateQuestionScores(qId, 0, conn);
 					String questionUser = getUserNickNameFromQid(qId, conn);
 					updateUserRating(questionUser, conn);    						
 		
-					String answerUser = getUserNickNameFromAid(aId, conn);
 					if (!answerUser.equals(questionUser)){
 						updateUserRating(answerUser, conn);
 					}
